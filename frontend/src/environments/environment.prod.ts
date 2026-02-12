@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://YOUR_BACKEND_URL/api', // Placeholder
+    apiUrl: '/api', // Automatic for Monolith (Backend served)
     firebase: {
         apiKey: "AIzaSyDrqmeXhqloKwC8fqN3dRPMx_7naaKyRXM",
         authDomain: "quotecompare-c48f1.firebaseapp.com",
