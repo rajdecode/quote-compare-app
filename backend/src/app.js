@@ -54,7 +54,8 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Catch-all route: for any request NOT starting with /api, serve index.html
-app.get('*', (req, res) => {
+// Catch-all route: for any request NOT starting with /api, serve index.html
+app.get(/.*/, (req, res) => {
     if (!req.url.startsWith('/api')) {
         res.sendFile(path.join(__dirname, '../public/index.html'));
     }
