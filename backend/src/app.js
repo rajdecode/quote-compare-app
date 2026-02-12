@@ -50,14 +50,13 @@ app.use('/api/quotes', quoteRoutes);
 
 // --- SERVE FRONTEND (Production) ---
 const path = require('path');
-// Serve static files from the "public" directory (where Angular builds to)
-app.use(express.static(path.join(__dirname, '../public')));
+// Serve static files from the "public/browser" directory (Angular's build output)
+app.use(express.static(path.join(__dirname, '../public/browser')));
 
-// Catch-all route: for any request NOT starting with /api, serve index.html
 // Catch-all route: for any request NOT starting with /api, serve index.html
 app.get(/.*/, (req, res) => {
     if (!req.url.startsWith('/api')) {
-        res.sendFile(path.join(__dirname, '../public/index.html'));
+        res.sendFile(path.join(__dirname, '../public/browser/index.html'));
     }
 });
 
