@@ -1,0 +1,43 @@
+<div class="container page-content">
+    <div class="glass-panel form-card">
+        <h2>Request a Quote</h2>
+        <p class="subtitle">Tell us what you need, and we'll match you with top vendors.</p>
+
+        <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="serviceType">Service Type</label>
+                <select id="serviceType" [(ngModel)]="serviceType" name="serviceType" required>
+                    <option value="heat-pump">Heat Pump Installation</option>
+                    <option value="maintenance">Maintenance / Repair</option>
+                </select>
+            </div>
+
+            @if (!authService.currentUser()) {
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" [(ngModel)]="email" name="email" required
+                    placeholder="To receive your quotes">
+            </div>
+            }
+
+            <div class="form-group">
+                <label for="postalCode">Postal Code</label>
+                <input type="text" id="postalCode" [(ngModel)]="postalCode" name="postalCode" required
+                    placeholder="e.g. 2000">
+            </div>
+
+            <div class="form-group">
+                <label for="details">Project Details</label>
+                <textarea id="details" [(ngModel)]="details" name="details" rows="4"
+                    placeholder="Describe your home type, current heating system, etc."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" routerLink="/buyer">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                    {{ loading ? 'Submitting...' : 'Submit Request' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment Variables & Secrets
+.env
+serviceAccountKey.json
+
+# Logs
+npm-debug.log
+yarn-error.log
+
+# Mock DB (Optional: keep if you want to persist mock data across deploys, remove if you want fresh start)
+# quotes.json
+
+# Text Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Generated
+.DS_Store
+Thumbs.db

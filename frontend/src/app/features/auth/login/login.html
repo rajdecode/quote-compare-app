@@ -1,0 +1,33 @@
+<div class="auth-page">
+    <div class="auth-card glass-panel">
+        <h2>Welcome Back to <span class="highlight">Quote</span>Compare</h2>
+        <p class="subtitle">Sign in to manage your quotes and requests.</p>
+
+        <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" [(ngModel)]="email" name="email" required placeholder="name@example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" [(ngModel)]="password" name="password" required
+                    placeholder="••••••••">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-block" [disabled]="loading">
+                    {{ loading ? 'Signing In...' : 'Sign In' }}
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a routerLink="/register">Register here</a></p>
+            </div>
+
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+        </form>
+    </div>
+</div>

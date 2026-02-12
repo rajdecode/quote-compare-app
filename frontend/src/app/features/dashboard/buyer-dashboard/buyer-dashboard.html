@@ -1,0 +1,46 @@
+<div class="dashboard container">
+    <div class="dashboard-header glass-panel">
+        <h1>Buyer Dashboard</h1>
+        <p>Welcome back! Manage your quote requests here.</p>
+        <button class="btn btn-primary" routerLink="/request-quote">Request New Quote</button>
+    </div>
+
+    <div class="dashboard-section">
+        <h2>Active Requests</h2>
+
+        @if (loading()) {
+        <div class="loading-state glass-panel">
+            <p>Loading your requests...</p>
+        </div>
+        } @else if (quotes().length === 0) {
+        <div class="empty-state glass-panel">
+            <span class="material-icons">post_add</span>
+            <p>No active quote requests found.</p>
+            <button class="btn btn-secondary btn-sm" routerLink="/request-quote">Start a Request</button>
+        </div>
+        } @else {
+        <div class="quotes-grid">
+            @for (quote of quotes(); track quote.id) {
+            <div class="quote-card glass-panel" [routerLink]="['/buyer/quote', quote.id]" style="cursor: pointer;">
+                <div class="quote-header">
+                    <span class="service-type">{{ quote.serviceType | titlecase }}</span>
+                    <div class="header-badges">
+                        <span class="status-badge status-{{quote.status.toLowerCase()}}">{{ quote.status }}</span>
+                        @if (quote.responses?.length) {
+                        <span class="badge response-count">{{ quote.responses.length }} Offers</span>
+                        }
+                    </div>
+                </div>
+                <p class="details">{{ quote.details }}</p>
+
+                <div class="quote-meta" style="display: flex; justify-content: space-between; margin-top: 1rem;">
+                    <span class="location" style="display: flex; align-items: center; gap: 5px;"><span
+                            class="material-icons" style="font-size: 1.1rem;">place</span> {{ quote.postalCode }}</span>
+                    <span class="date">Posted: {{ quote.createdAt | date }}</span>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>

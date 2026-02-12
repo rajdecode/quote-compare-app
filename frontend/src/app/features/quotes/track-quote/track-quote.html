@@ -1,0 +1,87 @@
+<div class="container page-content">
+    <div class="track-container" [class.has-results]="!!quote">
+
+        <!-- Search Section -->
+        <div class="glass-panel search-card">
+            <h1>Track Your Quote</h1>
+            <p>Enter your Quote ID to see the status and responses from vendors.</p>
+
+            <form (submit)="submitSearch()" class="search-form">
+                <input type="text" [(ngModel)]="quoteId" name="quoteId" placeholder="Enter Quote ID (e.g., mock-seed-1)"
+                    required>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                    {{ loading ? 'Tracking...' : 'Track' }}
+                </button>
+            </form>
+
+            @if (error) {
+            <div class="error-message">
+                <span class="material-icons">error_outline</span> {{ error }}
+            </div>
+            }
+        </div>
+
+        <!-- Results Section -->
+        @if (quote) {
+        <div class="results-area">
+            <!-- Status Card -->
+            <div class="glass-panel status-card">
+                <div class="status-header">
+                    <h2>Quote Status</h2>
+                    <span class="status-badge" [class.status-open]="quote.status === 'open'"
+                        [class.status-responded]="quote.status === 'responded'">
+                        {{ quote.status | uppercase }}
+                    </span>
+                </div>
+
+                <div class="quote-summary">
+                    <div class="summary-item">
+                        <span class="label">Service</span>
+                        <span class="value">{{ quote.serviceType | titlecase }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Location</span>
+                        <span class="value">{{ quote.postalCode }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Submitted</span>
+                        <span class="value">{{ quote.createdAt | date:'mediumDate' }}</span>
+                    </div>
+                </div>
+
+                <div class="details-box">
+                    <h3>Your Request</h3>
+                    <p>{{ quote.details }}</p>
+                </div>
+            </div>
+
+            <!-- Vendor Responses -->
+            <div class="responses-section">
+                <h3>Vendor Responses ({{ quote.responses?.length || 0 }})</h3>
+
+                @if (!quote.responses || quote.responses.length === 0) {
+                <div class="glass-panel empty-responses">
+                    <span class="material-icons">pending</span>
+                    <p>No vendors have responded yet. We'll notify you via email when they do.</p>
+                </div>
+                } @else {
+                <div class="responses-grid">
+                    @for (response of quote.responses; track $index) {
+                    <div class="glass-panel response-card">
+                        <div class="vendor-info">
+                            <span class="vendor-name">{{ response.vendorName || 'Vendor' }}</span>
+                            <span class="price">{{ response.price | currency }}</span>
+                        </div>
+                        <p class="message">{{ response.message }}</p>
+                        <div class="response-meta">
+                            Received: {{ response.createdAt | date:'short' }}
+                        </div>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+        }
+    </div>
+</div>

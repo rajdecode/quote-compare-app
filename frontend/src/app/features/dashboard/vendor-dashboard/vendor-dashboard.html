@@ -1,0 +1,101 @@
+<div class="dashboard container">
+    <div class="dashboard-header glass-panel">
+        <div class="header-content">
+            <h1>Vendor Dashboard</h1>
+            <p>Manage incoming quote requests and your profile.</p>
+        </div>
+        <div class="stats-group">
+            <div class="stat-item stat-new">
+                <span class="value">{{ newRequests().length }}</span>
+                <span class="label">New Requests</span>
+            </div>
+            <div class="stat-item stat-sent">
+                <span class="value">{{ quotesSentCount() }}</span>
+                <span class="label">Quotes Sent</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-section">
+        <!-- Tabs -->
+        <div class="tabs-container glass-panel" style="display: flex; gap: 1rem; padding: 1rem; margin-bottom: 2rem;">
+            <button class="tab-btn" [class.active]="activeTab() === 'new'" (click)="setActiveTab('new')"
+                style="border: none; background: none; font-size: 1.1rem; font-weight: 600; padding: 0.5rem 1rem; cursor: pointer; border-bottom: 2px solid transparent; color: var(--text-dim); display: flex; align-items: center; gap: 8px;">
+                New Requests
+                <span class="badge-count" [class.highlight]="newRequests().length > 0">{{ newRequests().length }}</span>
+            </button>
+            <button class="tab-btn" [class.active]="activeTab() === 'sent'" (click)="setActiveTab('sent')"
+                style="border: none; background: none; font-size: 1.1rem; font-weight: 600; padding: 0.5rem 1rem; cursor: pointer; border-bottom: 2px solid transparent; color: var(--text-dim); display: flex; align-items: center; gap: 8px;">
+                Quotes Sent
+                <span class="badge-count">{{ sentQuotes().length }}</span>
+            </button>
+        </div>
+
+        @if (loading()) {
+        <div class="loading-state glass-panel">
+            <p>Loading requests...</p>
+        </div>
+        }
+
+        <!-- NEW REQUESTS TAB -->
+        @else if (activeTab() === 'new') {
+        @if (newRequests().length === 0) {
+        <div class="empty-state glass-panel">
+            <span class="material-icons">inbox</span>
+            <p>No new requests matching your postal codes.</p>
+            <button class="btn btn-secondary btn-sm" (click)="updateServiceArea()">Update Service Area</button>
+        </div>
+        } @else {
+        <div class="quotes-grid">
+            @for (quote of newRequests(); track quote.id) {
+            <div class="quote-card glass-panel">
+                <div class="quote-header">
+                    <span class="service-type">{{ quote.serviceType | titlecase }}</span>
+                    <span class="location"><span class="material-icons">place</span> {{ quote.postalCode }}</span>
+                </div>
+                <p class="details">{{ quote.details }}</p>
+                <div class="quote-footer"
+                    style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                    <span class="date" style="margin-right: 15px;">Posted: {{ quote.createdAt | date }}</span>
+                    <button (click)="respondToQuote(quote.id)" class="btn btn-sm btn-primary">Submit Quote</button>
+                </div>
+            </div>
+            }
+        </div>
+        }
+        }
+
+        <!-- QUOTES SENT TAB -->
+        @else if (activeTab() === 'sent') {
+        @if (sentQuotes().length === 0) {
+        <div class="empty-state glass-panel">
+            <span class="material-icons">send</span>
+            <p>You haven't sent any quotes yet.</p>
+        </div>
+        } @else {
+        <div class="quotes-grid">
+            @for (quote of sentQuotes(); track quote.id) {
+            <div class="quote-card glass-panel responded">
+                <div class="quote-header">
+                    <span class="service-type">{{ quote.serviceType | titlecase }}</span>
+                    <span class="status-badge status-responded">Responded</span>
+                </div>
+                <p class="details">{{ quote.details }}</p>
+                <div class="quote-footer"
+                    style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                    <div class="sent-info" style="font-size: 0.9rem; color: var(--text-dim);">
+                        <span class="material-icons"
+                            style="font-size: 1rem; vertical-align: middle; color: #3498db;">check_circle</span>
+                        Sent on {{ quote.createdAt | date }}
+                    </div>
+                    <button (click)="editQuote(quote.id)" class="btn btn-sm btn-secondary">Edit Quote</button>
+                </div>
+            </div>
+            }
+        </div>
+        }
+        }
+    </div>
+
+
+</div>

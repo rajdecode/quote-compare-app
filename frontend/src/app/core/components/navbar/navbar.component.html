@@ -1,0 +1,30 @@
+<nav class="navbar glass-panel">
+    <div class="container navbar-content">
+        <a [routerLink]="currentUser() ? getDashboardRoute() : '/'" class="logo">
+            <span class="logo-highlight">Quote</span>Compare
+        </a>
+        <div class="nav-links">
+            <!-- Only show Home for guests -->
+            @if (!currentUser()) {
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+            <a href="#">Products</a>
+            <a href="#">How it Works</a>
+            }
+        </div>
+        <div class="auth-buttons">
+            @if (!currentUser()) {
+            <a routerLink="/login" class="btn btn-secondary btn-sm">Sign In</a>
+            <a routerLink="/request-quote" class="btn btn-primary btn-sm">Get Started</a>
+            } @else {
+            @if (userRole() === 'vendor') {
+            <a routerLink="/vendor" class="btn btn-secondary btn-sm">Dashboard</a>
+            } @else if (userRole() === 'admin') {
+            <a routerLink="/admin" class="btn btn-secondary btn-sm">Dashboard</a>
+            } @else {
+            <a routerLink="/buyer" class="btn btn-secondary btn-sm">Dashboard</a>
+            }
+            <button (click)="logout()" class="btn btn-primary btn-sm">Sign Out</button>
+            }
+        </div>
+    </div>
+</nav>

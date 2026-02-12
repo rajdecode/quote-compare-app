@@ -1,0 +1,55 @@
+.navbar {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1200px;
+    z-index: 1000;
+    padding: 12px 0;
+    border-radius: 16px;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    /* Changed from text-light */
+
+    .logo-highlight {
+        color: var(--primary-color);
+    }
+}
+
+.nav-links {
+    display: flex;
+    gap: 32px;
+
+    a {
+        color: var(--text-dim);
+        font-weight: 500;
+        transition: color 0.2s;
+
+        &:hover,
+        &.active {
+            color: var(--primary-color);
+            /* Changed from text-light */
+        }
+    }
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 16px;
+
+    .btn-sm {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}

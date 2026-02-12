@@ -1,0 +1,39 @@
+/* Respond Quote Styles */
+.request-quote-page {
+    padding-top: 120px;
+    /* Clear fixed navbar */
+    display: flex;
+    justify-content: center;
+    padding-bottom: 4rem;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2.5rem;
+    box-sizing: border-box;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        box-sizing: border-box;
+        /* Fix overflow */
+    }
+}

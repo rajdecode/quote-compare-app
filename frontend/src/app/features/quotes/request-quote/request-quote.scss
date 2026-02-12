@@ -1,0 +1,84 @@
+@import '../../auth/login/login.scss';
+
+.page-content {
+    padding-top: 100px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    /* Ensure card is on top */
+    position: relative;
+    z-index: 10;
+}
+
+h2 {
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    margin-bottom: 2rem;
+    color: var(--text-dim);
+}
+
+textarea {
+    width: 100%;
+    padding: 1rem;
+    background: #FFFFFF !important;
+    /* Force white background for readability */
+    border: 1px solid #E2E8F0;
+    border-radius: 0.5rem;
+    color: var(--text-main) !important;
+    /* Force text color */
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+    min-height: 120px;
+    box-sizing: border-box;
+    /* Important for width calculation */
+
+    /* Ensure it's interactable */
+    pointer-events: auto;
+    position: relative;
+    z-index: 20;
+
+    &:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+}
+
+select {
+    width: 100%;
+    padding: 1rem;
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0;
+    border-radius: 0.5rem;
+    color: var(--text-main);
+    font-size: 1rem;
+    height: auto;
+    appearance: auto;
+    /* Let browser handle arrow */
+}
+
+input {
+    box-sizing: border-box;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+    }
+}

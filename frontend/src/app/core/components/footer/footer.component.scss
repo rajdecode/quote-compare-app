@@ -1,0 +1,43 @@
+.footer {
+    margin-top: 80px;
+    padding: 40px 0;
+    border-top: 1px solid var(--glass-border);
+    background: var(--surface-dark);
+    /* Solid background for footer or keep glass */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-brand {
+    .logo-highlight {
+        color: var(--primary-color);
+        font-weight: 700;
+    }
+
+    p {
+        color: var(--text-dim);
+        font-size: 0.9rem;
+        margin-top: 8px;
+    }
+}
+
+.footer-links {
+    display: flex;
+    gap: 24px;
+
+    a {
+        color: var(--text-dim);
+        font-size: 0.9rem;
+        transition: color 0.2s;
+
+        &:hover {
+            color: var(--text-light);
+        }
+    }
+}

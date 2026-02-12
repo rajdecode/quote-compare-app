@@ -1,0 +1,73 @@
+<div class="container" style="padding-top: 2rem;">
+    <div class="back-link" style="margin-bottom: 1rem;">
+        <a routerLink="/buyer" class="btn btn-sm btn-secondary">
+            <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">arrow_back</span> Back to
+            Dashboard
+        </a>
+    </div>
+
+    @if (loading()) {
+    <div class="glass-panel" style="text-align: center; padding: 40px;">
+        <p>Loading details...</p>
+    </div>
+    } @else if (!quote()) {
+    <div class="glass-panel" style="text-align: center; padding: 40px;">
+        <p>Quote not found.</p>
+    </div>
+    } @else {
+    <div class="quote-detail-layout glass-panel" style="padding: 2rem;">
+        <div class="detail-header">
+            <h1>{{ quote().serviceType | titlecase }} Quote</h1>
+            <span class="status-badge status-{{quote().status.toLowerCase()}}">{{ quote().status }}</span>
+        </div>
+
+        <div class="detail-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
+            <div class="info-group">
+                <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Postal Code</label>
+                <span style="font-size: 1.1rem;">{{ quote().postalCode }}</span>
+            </div>
+            <div class="info-group">
+                <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Date Posted</label>
+                <span style="font-size: 1.1rem;">{{ quote().createdAt | date:'medium' }}</span>
+            </div>
+            <div class="info-group" style="grid-column: 1 / -1;">
+                <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Details</label>
+                <p style="font-size: 1.1rem; line-height: 1.6;">{{ quote().details }}</p>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 3rem; margin-bottom: 1.5rem;">Vendor Offers ({{ quote().responses?.length || 0 }})</h2>
+
+        @if (quote().responses?.length) {
+        <div class="table-responsive">
+            <table class="comparison-table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <th style="padding: 1rem; text-align: left;">Vendor</th>
+                        <th style="padding: 1rem; text-align: left;">Message</th>
+                        <th style="padding: 1rem; text-align: right;">Date</th>
+                        <th style="padding: 1rem; text-align: right;">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (response of quote().responses; track $index) {
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <td style="padding: 1rem; color: var(--primary-color); font-weight: 500;">{{ response.vendorName
+                            }}</td>
+                        <td style="padding: 1rem; color: var(--text-dim);">{{ response.message }}</td>
+                        <td style="padding: 1rem; text-align: right; color: var(--text-dim);">{{ response.createdAt |
+                            date:'short' }}</td>
+                        <td
+                            style="padding: 1rem; text-align: right; font-weight: bold; color: #2ecc71; font-size: 1.1rem;">
+                            ${{ response.price }}</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        } @else {
+        <p style="color: var(--text-dim); font-style: italic;">No offers received yet.</p>
+        }
+    </div>
+    }
+</div>

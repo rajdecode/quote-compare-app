@@ -1,0 +1,136 @@
+@import '../buyer-dashboard/buyer-dashboard.scss';
+
+.dashboard-header {
+    /* Ensure flex layout for header to separate title/subtitle from stats */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    h1 {
+        margin-bottom: 0.5rem;
+    }
+}
+
+.stats-group {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    background: #F8FAFC;
+    /* Light gray background for stats box */
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    border: 1px solid #E2E8F0;
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        min-width: 100px;
+
+        .value {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            /* Curved square */
+            border: 3px solid var(--primary-color);
+            background: white;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.25rem;
+            /* Increased spacing */
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1);
+        }
+
+        .label {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    .stat-item.stat-new .value {
+        border-color: #EF4444;
+        /* Red 500 */
+        color: #EF4444;
+        box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.15);
+    }
+
+    .stat-item.stat-sent .value {
+        border-color: #10B981;
+        /* Emerald 500 */
+        color: #10B981;
+        box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.15);
+    }
+}
+
+/* Explicit text color overrides for inherited buyer-dashboard styles */
+.quote-card {
+    background: white;
+
+    .quote-header .service-type {
+        color: var(--text-main) !important;
+    }
+
+    .details {
+        color: var(--text-dim) !important;
+    }
+
+    .location {
+        color: var(--text-dim) !important;
+    }
+
+    .date {
+        color: var(--text-dim) !important;
+    }
+}
+
+/* Tab Styles */
+.tab-btn {
+    transition: all 0.2s;
+
+    &:hover {
+        color: var(--primary-color) !important;
+    }
+
+    &.active {
+        color: var(--primary-color) !important;
+        border-bottom-color: var(--primary-color) !important;
+
+        .badge-count {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+    }
+}
+
+.badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 1px solid #CBD5E1;
+    /* Slate 300 */
+    color: var(--text-dim);
+    background-color: white;
+    transition: all 0.2s;
+
+    &.highlight {
+        border-color: var(--secondary-color);
+        color: var(--secondary-color);
+    }
+}
