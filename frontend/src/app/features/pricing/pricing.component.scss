@@ -132,17 +132,25 @@
 }
 
 .card-footer {
-    /* Cache Bust: Force Update 2026-02-14 */
+    /* Cache Bust: Force Update 2026-02-14 V2 */
     margin-top: auto !important;
     /* Force alignment to bottom */
     padding-top: 1.5rem;
-    width: 100%;
-    /* Ensure full width */
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
 
-    .btn-block {
-        display: block;
-        width: 100%;
-        text-align: center;
+    // Target the button directly, ignoring .btn-block if needed
+    a.btn {
+        display: flex !important;
+        width: 100% !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        margin: 0 !important;
+        max-width: none !important;
+        /* Prevent shrinking */
     }
 }
 
