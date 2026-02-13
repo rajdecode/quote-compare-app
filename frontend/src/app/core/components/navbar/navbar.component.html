@@ -8,8 +8,16 @@
             @if (!currentUser()) {
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
             <a routerLink="/pricing" routerLinkActive="active">Pricing</a>
-            <a href="#">Products</a>
-            <a href="#">How it Works</a>
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Products</a>
+                <div class="dropdown-content glass-panel">
+                    <a routerLink="/products/heat-pumps">Heat Pumps</a>
+                    <a routerLink="/products/water-filters">Water Filters</a>
+                    <a routerLink="/products/aircons">Aircons</a>
+                    <a routerLink="/products/batteries">Batteries</a>
+                </div>
+            </div>
+            <a routerLink="/" fragment="how-it-works">How it Works</a>
             }
         </div>
         <div class="auth-buttons">
