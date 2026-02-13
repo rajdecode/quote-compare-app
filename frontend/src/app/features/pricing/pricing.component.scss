@@ -132,9 +132,12 @@
 }
 
 .card-footer {
+    /* Cache Bust: Force Update 2026-02-14 */
     margin-top: auto !important;
     /* Force alignment to bottom */
     padding-top: 1.5rem;
+    width: 100%;
+    /* Ensure full width */
 
     .btn-block {
         display: block;
