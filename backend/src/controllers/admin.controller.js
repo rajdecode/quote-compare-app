@@ -115,3 +115,87 @@ exports.getStats = async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch stats' });
     }
 };
+
+// Get Specific User Stats (for Modal)
+exports.getUserStats = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { start, end } = req.query;
+        const db = getDb();
+
+        const userDoc = await db.collection('users').doc(id).get();
+        if (!userDoc.exists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        const user = userDoc.data();
+
+        // Date Filtering
+        const startDate = start ? new Date(start) : new Date(0); // Default to epoch
+        const endDate = end ? new Date(end) : new Date(); // Default to now
+        // End date should include the whole day
+        endDate.setHours(23, 59, 59, 999);
+
+        // Metrics container
+        let metrics = {
+            requestsSent: 0,
+            quotesReceived: 0,
+            quotesResponded: 0,
+            leadsAvailableInPeriod: 0
+        };
+
+        if (user.role === 'buyer') {
+            // Count quotes created by this buyer
+            const quotesSnap = await db.collection('quotes')
+                .where('buyerId', '==', id)
+                .where('createdAt', '>=', startDate)
+                .where('createdAt', '<=', endDate)
+                .get();
+
+            metrics.requestsSent = quotesSnap.size;
+
+            quotesSnap.forEach(doc => {
+                const data = doc.data();
+                if (data.responses && data.responses.length > 0) {
+                    metrics.quotesReceived += data.responses.length;
+                }
+            });
+
+        } else if (user.role === 'vendor') {
+            // For vendors, we have to scan quotes to see their responses
+            // Firestore doesn't support array-contains-any with object fields easily for complex queries
+            // So we fetch relevant quotes and filter in memory, or fetch all quotes in date range (if optimized)
+
+            // 1. Quotes Responded: Quotes where responses array contains object with vendorId == id
+            // Optimization: Filter by date first
+            const allQuotesSnap = await db.collection('quotes')
+                .where('createdAt', '>=', startDate)
+                .where('createdAt', '<=', endDate)
+                .get();
+
+            allQuotesSnap.forEach(doc => {
+                const data = doc.data();
+
+                // Check if vendor responded
+                const hasResponded = data.responses && data.responses.some(r => r.vendorId === id);
+                if (hasResponded) {
+                    metrics.quotesResponded++;
+                }
+
+                // Check leads available (Status 'open' and typically matching category, but here just open)
+                if (data.status === 'open') {
+                    metrics.leadsAvailableInPeriod++;
+                }
+            });
+        }
+
+        res.status(200).json({
+            uid: id,
+            role: user.role,
+            metrics
+        });
+
+    } catch (error) {
+        console.error('Error fetching user stats:', error);
+        res.status(500).json({ error: 'Failed to fetch user stats' });
+    }
+};

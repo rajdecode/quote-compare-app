@@ -10,5 +10,6 @@ router.use(checkRole(['admin']));
 router.get('/users', adminController.getUsers);
 router.patch('/users/:id', adminController.updateUserStatus);
 router.get('/stats', adminController.getStats);
+router.get('/stats/:id', adminController.getUserStats);
 
 module.exports = router;
