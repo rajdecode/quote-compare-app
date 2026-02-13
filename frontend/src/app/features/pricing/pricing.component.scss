@@ -27,19 +27,19 @@
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     margin-bottom: 4rem;
-    align-items: stretch;
-    /* Ensures all cards in a row have equal height */
+    align-items: stretch !important;
+    /* Force equal height covering all bases */
 }
 
 .pricing-card {
     padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
     position: relative;
     transition: transform 0.3s ease;
     background: rgba(255, 255, 255, 0.75);
-    /* Explicit background to prevent transparency issues */
+    /* Explicit background */
     border: 1px solid rgba(255, 255, 255, 0.5);
 
     &:hover {
@@ -51,7 +51,6 @@
         box-shadow: 0 10px 25px rgba(79, 70, 229, 0.15);
         z-index: 10;
         transform: scale(1.02);
-        /* Slight scale up for emphasis */
 
         &:hover {
             transform: scale(1.02) translateY(-5px);
@@ -107,7 +106,6 @@
         color: var(--text-body);
         font-size: 0.9rem;
         min-height: 2.7em;
-        /* Helps roughly align description heights */
     }
 }
 
@@ -115,8 +113,8 @@
     list-style: none;
     padding: 0;
     margin: 0 0 2rem 0;
-    flex: 1;
-    /* Pushes footer to bottom */
+    flex: 1 1 auto !important;
+    /* Force grow to push footer down */
 
     li {
         display: flex;
@@ -127,14 +125,14 @@
 
         .material-icons {
             margin-right: 0.75rem;
-            color: var(--secondary); // Green checkmark equivalent
+            color: var(--secondary);
             font-size: 1.25rem;
         }
     }
 }
 
 .card-footer {
-    margin-top: auto;
+    margin-top: auto !important;
     /* Force alignment to bottom */
     padding-top: 1.5rem;
 
@@ -147,8 +145,10 @@
 
 .faq-section {
     padding: 3rem;
-    margin-top: 4rem;
-    /* Spacing from grid */
+    margin-top: 4rem !important;
+    /* Force spacing */
+    background: white;
+    border-radius: 16px;
 
     h3 {
         text-align: center;
