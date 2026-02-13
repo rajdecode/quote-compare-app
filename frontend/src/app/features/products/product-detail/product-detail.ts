@@ -56,7 +56,13 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
     .material-icons { color: var(--secondary); margin-right: 0.5rem; font-size: 1.2rem; }
     
     .cta-card { padding: 2rem; text-align: center; position: sticky; top: 100px; }
-    .btn-block { display: block; width: 100%; margin-top: 1rem; }
+    .btn-block { 
+        display: block; 
+        width: 100%; 
+        box-sizing: border-box; 
+        margin-top: 1.5rem; 
+        text-align: center;
+    }
   `]
 })
 export class ProductDetailComponent {

@@ -135,14 +135,21 @@
 
     .step-number {
         position: absolute;
-        top: -20px;
-        left: 20px;
-        font-size: 4rem;
-        font-weight: 700;
-        font-weight: 700;
-        color: rgba(0, 0, 0, 0.15);
-        /* Darker number */
-        z-index: 0;
+        top: 10px;
+        right: 20px;
+        left: auto;
+        font-size: 5rem;
+        font-weight: 800;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.08);
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    h3,
+    p {
+        position: relative;
+        z-index: 2;
     }
 
     h3 {
