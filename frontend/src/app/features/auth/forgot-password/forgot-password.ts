@@ -50,20 +50,29 @@ export class ForgotPassword {
     successMessage = signal('');
 
     async onSubmit() {
-        if (!this.email) return;
+        console.log('Forgot Password: Submit clicked. Email:', this.email);
+        if (!this.email) {
+            console.warn('Forgot Password: No email entered.');
+            return;
+        }
 
         this.loading.set(true);
         this.errorMessage.set('');
         this.successMessage.set('');
 
         try {
+            console.log('Forgot Password: Sending reset email to', this.email);
             await sendPasswordResetEmail(auth, this.email);
+            console.log('Forgot Password: Email sent successfully.');
             this.successMessage.set('Check your email for the password reset link.');
         } catch (error: any) {
-            console.error('Reset error:', error);
+            console.error('Forgot Password: Reset error:', error);
+            console.error('Error Code:', error.code);
+            console.error('Error Message:', error.message);
             this.errorMessage.set(this.getErrorMessage(error.code));
         } finally {
             this.loading.set(false);
+            console.log('Forgot Password: Loading set to false.');
         }
     }
 

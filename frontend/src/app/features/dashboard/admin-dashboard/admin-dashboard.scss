@@ -304,4 +304,13 @@ table {
             }
         }
     }
+
+    .no-data {
+        text-align: center;
+        padding: 2rem;
+        color: var(--text-dim);
+        background: #F8FAFC;
+        border-radius: 12px;
+        border: 1px dashed #E2E8F0;
+    }
 }

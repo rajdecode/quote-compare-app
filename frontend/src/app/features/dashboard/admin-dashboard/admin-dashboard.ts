@@ -69,6 +69,7 @@ export class AdminDashboard {
 
   // Stats Modal Methods
   openStatsModal(user: any) {
+    console.log('AdminDashboard: openStatsModal clicked for', user.uid);
     this.selectedUser.set(user);
     this.showStatsModal.set(true);
     this.fetchUserStats();

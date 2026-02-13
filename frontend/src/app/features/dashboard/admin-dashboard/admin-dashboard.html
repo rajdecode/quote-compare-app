@@ -108,4 +108,61 @@
     }
 
     }
+    <!-- Stats Modal -->
+    @if (showStatsModal()) {
+    <div class="modal-backdrop" (click)="closeStatsModal()">
+        <div class="modal glass-panel" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Stats for {{ selectedUser()?.displayName }}</h3>
+                <button class="close-btn" (click)="closeStatsModal()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="date-filters">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" [(ngModel)]="startDate" (change)="fetchUserStats()">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" [(ngModel)]="endDate" (change)="fetchUserStats()">
+                    </div>
+                </div>
+
+                @if (statsLoading()) {
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                </div>
+                } @else if (userStats()) {
+                <div class="stats-summary">
+                    @if (userStats().role === 'buyer') {
+                    <div class="stat-item">
+                        <span class="label">Requests Sent</span>
+                        <span class="value">{{ userStats().metrics.requestsSent }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">Responses Received</span>
+                        <span class="value">{{ userStats().metrics.quotesReceived }}</span>
+                    </div>
+                    } @else {
+                    <div class="stat-item">
+                        <span class="label">Quotes Responded</span>
+                        <span class="value">{{ userStats().metrics.quotesResponded }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">Leads Available</span>
+                        <span class="value">{{ userStats().metrics.leadsAvailableInPeriod }}</span>
+                    </div>
+                    }
+                </div>
+                } @else {
+                <div class="no-data">
+                    <p>No stats available or failed to load.</p>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    }
+
 </div>
