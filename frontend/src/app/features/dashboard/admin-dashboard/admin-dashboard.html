@@ -108,27 +108,66 @@
     }
 
     }
-    <!-- Stats Modal -->
+
+    <!-- Stats Modal (2-Step Flow) -->
     @if (showStatsModal()) {
     <div class="modal-backdrop" (click)="closeStatsModal()">
-        <div class="modal glass-panel" (click)="$event.stopPropagation()">
+        <div class="modal glass-panel" [class.wide-modal]="statsMode() === 'display'"
+            (click)="$event.stopPropagation()">
+
             <div class="modal-header">
-                <h3>Stats for {{ selectedUser()?.displayName }}</h3>
-                <button class="close-btn" (click)="closeStatsModal()">&times;</button>
+                <div class="header-left">
+                    <h3>Stats for {{ selectedUser()?.displayName }}</h3>
+                    <span class="role-badge">{{ selectedUser()?.role | titlecase }}</span>
+                </div>
+
+                <div class="header-right">
+                    <!-- Mini Date Filters (Only in Display Mode) -->
+                    @if (statsMode() === 'display') {
+                    <div class="mini-date-filters">
+                        <div class="filter-group">
+                            <label>From</label>
+                            <input type="date" [(ngModel)]="startDate" (change)="fetchUserStats()">
+                        </div>
+                        <div class="filter-group">
+                            <label>To</label>
+                            <input type="date" [(ngModel)]="endDate" (change)="fetchUserStats()">
+                        </div>
+                        <button class="btn btn-sm btn-secondary" (click)="fetchUserStats()" title="Refresh">
+                            <span class="material-icons" style="font-size: 16px;">refresh</span>
+                        </button>
+                    </div>
+                    }
+                    <button class="close-btn" (click)="closeStatsModal()">&times;</button>
+                </div>
             </div>
 
             <div class="modal-body">
-                <div class="date-filters">
-                    <div class="form-group">
-                        <label>Start Date</label>
-                        <input type="date" [(ngModel)]="startDate" (change)="fetchUserStats()">
-                    </div>
-                    <div class="form-group">
-                        <label>End Date</label>
-                        <input type="date" [(ngModel)]="endDate" (change)="fetchUserStats()">
-                    </div>
-                </div>
 
+                <!-- Selection Mode: Big Form -->
+                @if (statsMode() === 'selection') {
+                <div class="selection-form">
+                    <p class="instruction-text">Select a date range to view statistics.</p>
+
+                    <div class="date-range-picker">
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" [(ngModel)]="startDate">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="date" [(ngModel)]="endDate">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" (click)="showStats()">
+                        Show Stats
+                    </button>
+                </div>
+                }
+
+                <!-- Display Mode: Stats Grid -->
+                @if (statsMode() === 'display') {
                 @if (statsLoading()) {
                 <div class="loading-state">
                     <div class="spinner"></div>
@@ -159,6 +198,7 @@
                 <div class="no-data">
                     <p>No stats available or failed to load.</p>
                 </div>
+                }
                 }
             </div>
         </div>

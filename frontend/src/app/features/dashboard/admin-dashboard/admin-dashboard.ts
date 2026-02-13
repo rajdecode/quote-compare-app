@@ -23,6 +23,7 @@ export class AdminDashboard {
 
   // Stats Modal
   showStatsModal = signal(false);
+  statsMode = signal<'selection' | 'display'>('selection');
   selectedUser = signal<any>(null);
   userStats = signal<any>(null);
   statsLoading = signal(false);
@@ -71,7 +72,14 @@ export class AdminDashboard {
   openStatsModal(user: any) {
     console.log('AdminDashboard: openStatsModal clicked for', user.uid);
     this.selectedUser.set(user);
+    this.statsMode.set('selection');
     this.showStatsModal.set(true);
+    // Do not fetch stats yet, wait for user to click "Show Stats"
+  }
+
+  showStats() {
+    console.log('AdminDashboard: showStats clicked. Mode set to display.');
+    this.statsMode.set('display');
     this.fetchUserStats();
   }
 
@@ -79,6 +87,7 @@ export class AdminDashboard {
     this.showStatsModal.set(false);
     this.selectedUser.set(null);
     this.userStats.set(null);
+    this.statsMode.set('selection');
   }
 
   async fetchUserStats() {
