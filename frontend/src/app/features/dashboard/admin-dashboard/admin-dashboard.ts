@@ -23,10 +23,14 @@ export class AdminDashboard {
 
   // Stats Modal
   showStatsModal = signal(false);
-  statsMode = signal<'selection' | 'display'>('selection');
+  statsMode = signal<'selection' | 'display' | 'details'>('selection');
   selectedUser = signal<any>(null);
   userStats = signal<any>(null);
   statsLoading = signal(false);
+
+  // Drill Down State
+  selectedMetric = signal<string | null>(null);
+  metricDetails = signal<any[]>([]);
 
   // Date Range (Default: Last 30 days)
   startDate = new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split('T')[0];
@@ -74,7 +78,7 @@ export class AdminDashboard {
     this.selectedUser.set(user);
     this.statsMode.set('selection');
     this.showStatsModal.set(true);
-    // Do not fetch stats yet, wait for user to click "Show Stats"
+    this.selectedMetric.set(null);
   }
 
   showStats() {
@@ -83,11 +87,25 @@ export class AdminDashboard {
     this.fetchUserStats();
   }
 
+  viewMetricDetails(metricKey: string) {
+    if (!this.userStats() || !this.userStats().details) return;
+
+    this.selectedMetric.set(metricKey);
+    this.metricDetails.set(this.userStats().details[metricKey] || []);
+    this.statsMode.set('details');
+  }
+
+  backToStats() {
+    this.statsMode.set('display');
+    this.selectedMetric.set(null);
+  }
+
   closeStatsModal() {
     this.showStatsModal.set(false);
     this.selectedUser.set(null);
     this.userStats.set(null);
     this.statsMode.set('selection');
+    this.selectedMetric.set(null);
   }
 
   async fetchUserStats() {

@@ -135,12 +135,19 @@ exports.getUserStats = async (req, res) => {
         // End date should include the whole day
         endDate.setHours(23, 59, 59, 999);
 
-        // Metrics container
+        // Metrics & Details container
         let metrics = {
             requestsSent: 0,
             quotesReceived: 0,
             quotesResponded: 0,
             leadsAvailableInPeriod: 0
+        };
+
+        let details = {
+            requestsSent: [],
+            quotesReceived: [],
+            quotesResponded: [],
+            leadsAvailableInPeriod: []
         };
 
         if (user.role === 'buyer') {
@@ -155,18 +162,30 @@ exports.getUserStats = async (req, res) => {
 
             quotesSnap.forEach(doc => {
                 const data = doc.data();
+                const quoteSummary = {
+                    id: doc.id,
+                    productId: data.productId,
+                    createdAt: data.createdAt.toDate(),
+                    status: data.status
+                };
+
+                details.requestsSent.push(quoteSummary);
+
                 if (data.responses && data.responses.length > 0) {
                     metrics.quotesReceived += data.responses.length;
+                    // Add each response as a detail item
+                    data.responses.forEach(res => {
+                        details.quotesReceived.push({
+                            quoteId: doc.id,
+                            vendorId: res.vendorId,
+                            price: res.price,
+                            createdAt: res.date ? new Date(res.date) : new Date()
+                        });
+                    });
                 }
             });
 
         } else if (user.role === 'vendor') {
-            // For vendors, we have to scan quotes to see their responses
-            // Firestore doesn't support array-contains-any with object fields easily for complex queries
-            // So we fetch relevant quotes and filter in memory, or fetch all quotes in date range (if optimized)
-
-            // 1. Quotes Responded: Quotes where responses array contains object with vendorId == id
-            // Optimization: Filter by date first
             const allQuotesSnap = await db.collection('quotes')
                 .where('createdAt', '>=', startDate)
                 .where('createdAt', '<=', endDate)
@@ -176,14 +195,29 @@ exports.getUserStats = async (req, res) => {
                 const data = doc.data();
 
                 // Check if vendor responded
-                const hasResponded = data.responses && data.responses.some(r => r.vendorId === id);
-                if (hasResponded) {
+                const response = data.responses && data.responses.find(r => r.vendorId === id);
+                if (response) {
                     metrics.quotesResponded++;
+                    details.quotesResponded.push({
+                        id: doc.id,
+                        productId: data.productId,
+                        price: response.price,
+                        createdAt: response.date ? new Date(response.date) : new Date()
+                    });
                 }
 
                 // Check leads available (Status 'open' and typically matching category, but here just open)
                 if (data.status === 'open') {
                     metrics.leadsAvailableInPeriod++;
+                    // Only add if not already responded
+                    if (!response) {
+                        details.leadsAvailableInPeriod.push({
+                            id: doc.id,
+                            productId: data.productId,
+                            createdAt: data.createdAt.toDate(),
+                            status: data.status
+                        });
+                    }
                 }
             });
         }
@@ -191,7 +225,8 @@ exports.getUserStats = async (req, res) => {
         res.status(200).json({
             uid: id,
             role: user.role,
-            metrics
+            metrics,
+            details
         });
 
     } catch (error) {

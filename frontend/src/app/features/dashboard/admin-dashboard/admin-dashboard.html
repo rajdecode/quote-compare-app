@@ -109,10 +109,10 @@
 
     }
 
-    <!-- Stats Modal (2-Step Flow) -->
+    <!-- Stats Modal (3-Step Flow: Selection -> Display -> Details) -->
     @if (showStatsModal()) {
     <div class="modal-backdrop" (click)="closeStatsModal()">
-        <div class="modal glass-panel" [class.wide-modal]="statsMode() === 'display'"
+        <div class="modal glass-panel" [class.wide-modal]="statsMode() !== 'selection'"
             (click)="$event.stopPropagation()">
 
             <div class="modal-header">
@@ -175,22 +175,26 @@
                 } @else if (userStats()) {
                 <div class="stats-summary">
                     @if (userStats().role === 'buyer') {
-                    <div class="stat-item">
+                    <div class="stat-item clickable" (click)="viewMetricDetails('requestsSent')">
                         <span class="label">Requests Sent</span>
                         <span class="value">{{ userStats().metrics.requestsSent }}</span>
+                        <span class="hint">Click to view list</span>
                     </div>
-                    <div class="stat-item">
+                    <div class="stat-item clickable" (click)="viewMetricDetails('quotesReceived')">
                         <span class="label">Responses Received</span>
                         <span class="value">{{ userStats().metrics.quotesReceived }}</span>
+                        <span class="hint">Click to view list</span>
                     </div>
                     } @else {
-                    <div class="stat-item">
+                    <div class="stat-item clickable" (click)="viewMetricDetails('quotesResponded')">
                         <span class="label">Quotes Responded</span>
                         <span class="value">{{ userStats().metrics.quotesResponded }}</span>
+                        <span class="hint">Click to view list</span>
                     </div>
-                    <div class="stat-item">
+                    <div class="stat-item clickable" (click)="viewMetricDetails('leadsAvailableInPeriod')">
                         <span class="label">Leads Available</span>
                         <span class="value">{{ userStats().metrics.leadsAvailableInPeriod }}</span>
+                        <span class="hint">Click to view list</span>
                     </div>
                     }
                 </div>
@@ -199,6 +203,51 @@
                     <p>No stats available or failed to load.</p>
                 </div>
                 }
+                }
+
+                <!-- Details Mode: Table -->
+                @if (statsMode() === 'details') {
+                <div class="details-view">
+                    <div class="details-header">
+                        <button class="btn btn-sm btn-secondary" (click)="backToStats()">
+                            <span class="material-icons">arrow_back</span> Back
+                        </button>
+                        <h4>Details: {{ selectedMetric() | titlecase }}</h4>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="details-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Product</th>
+                                    <th>Status/Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (item of metricDetails(); track item.id || item.quoteId) {
+                                <tr>
+                                    <td class="mono">{{ (item.id || item.quoteId).slice(0,8) }}...</td>
+                                    <td>{{ item.createdAt | date:'short' }}</td>
+                                    <td>{{ item.productId || '-' }}</td>
+                                    <td>
+                                        @if (item.price) {
+                                        ${{ item.price }}
+                                        } @else {
+                                        {{ item.status || '-' }}
+                                        }
+                                    </td>
+                                </tr>
+                                } @empty {
+                                <tr>
+                                    <td colspan="4" class="text-center">No records found.</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 }
             </div>
         </div>
