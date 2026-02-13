@@ -1,13 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../core/services/auth.service';
+import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.scss']
 })
@@ -19,6 +20,16 @@ export class AdminDashboard {
   stats = signal<any>(null);
   loading = signal<boolean>(true);
   activeTab = signal<'users' | 'analytics'>('users');
+
+  // Stats Modal
+  showStatsModal = signal(false);
+  selectedUser = signal<any>(null);
+  userStats = signal<any>(null);
+  statsLoading = signal(false);
+
+  // Date Range (Default: Last 30 days)
+  startDate = new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split('T')[0];
+  endDate = new Date().toISOString().split('T')[0];
 
   constructor() {
     this.fetchData();
@@ -54,6 +65,46 @@ export class AdminDashboard {
 
   setActiveTab(tab: 'users' | 'analytics') {
     this.activeTab.set(tab);
+  }
+
+  // Stats Modal Methods
+  openStatsModal(user: any) {
+    this.selectedUser.set(user);
+    this.showStatsModal.set(true);
+    this.fetchUserStats();
+  }
+
+  closeStatsModal() {
+    this.showStatsModal.set(false);
+    this.selectedUser.set(null);
+    this.userStats.set(null);
+  }
+
+  async fetchUserStats() {
+    if (!this.selectedUser()) return;
+
+    this.statsLoading.set(true);
+    // Construct query params
+    const start = this.startDate ? new Date(this.startDate).toISOString() : '';
+    const end = this.endDate ? new Date(this.endDate).toISOString() : '';
+
+    try {
+      const user = this.authService.currentUser();
+      if (!user) return;
+      const token = await user.getIdToken();
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+      const url = `${environment.apiUrl}/admin/stats/${this.selectedUser().uid}?start=${start}&end=${end}`;
+
+      this.http.get<any>(url, { headers }).subscribe({
+        next: (data) => this.userStats.set(data),
+        error: (err) => console.error('Error fetching user stats:', err),
+        complete: () => this.statsLoading.set(false)
+      });
+    } catch (error) {
+      console.error('Error fetching user stats', error);
+      this.statsLoading.set(false);
+    }
   }
 
   async toggleUserStatus(userId: string, currentStatus: string) {

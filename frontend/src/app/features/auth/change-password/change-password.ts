@@ -16,13 +16,18 @@ import { updatePassword, EmailAuthProvider, reauthenticateWithCredential } from 
             
             <form (ngSubmit)="onSubmit()">
                 <div class="form-group">
-                    <label for="currentPassword">Current Password (Required for security)</label>
+                    <label for="currentPassword">Current Password (Required)</label>
                     <input type="password" id="currentPassword" [(ngModel)]="currentPassword" name="currentPassword" required>
                 </div>
 
                 <div class="form-group">
                     <label for="newPassword">New Password</label>
                     <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword" required minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" required minlength="6">
                 </div>
 
                 @if (errorMessage()) {
@@ -62,6 +67,7 @@ export class ChangePassword {
     authService = inject(AuthService);
     currentPassword = '';
     newPassword = '';
+    confirmPassword = '';
     loading = signal(false);
     errorMessage = signal('');
     successMessage = signal('');
@@ -70,6 +76,12 @@ export class ChangePassword {
         this.loading.set(true);
         this.errorMessage.set('');
         this.successMessage.set('');
+
+        if (this.newPassword !== this.confirmPassword) {
+            this.errorMessage.set('New passwords do not match.');
+            this.loading.set(false);
+            return;
+        }
 
         const user = this.authService.currentUser();
         if (!user || !user.email) {
@@ -89,6 +101,7 @@ export class ChangePassword {
             this.successMessage.set('Password updated successfully!');
             this.currentPassword = '';
             this.newPassword = '';
+            this.confirmPassword = '';
         } catch (error: any) {
             console.error('Update password error:', error);
             if (error.code === 'auth/wrong-password') {

@@ -52,6 +52,9 @@
                             {{ user.status | titlecase }}
                         </td>
                         <td>
+                            <button class="btn-icon" (click)="openStatsModal(user)" title="View Stats">
+                                <span class="material-icons">bar_chart</span>
+                            </button>
                             <button class="btn-icon" (click)="toggleUserStatus(user.uid, user.status)"
                                 [title]="user.status === 'active' ? 'Block User' : 'Unblock User'">
                                 <span class="material-icons">{{ user.status === 'active' ? 'block' : 'check_circle'

@@ -10,7 +10,7 @@ import { auth } from '../../../core/config/firebase.config';
     standalone: true,
     imports: [CommonModule, FormsModule, RouterLink],
     template: `
-    <div class="auth-container">
+    <div class="auth-page">
         <div class="auth-card glass-panel">
             <h2>Reset Password</h2>
             <p class="subtitle">Enter your email to receive a reset link</p>
