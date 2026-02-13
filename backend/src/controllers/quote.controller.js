@@ -152,7 +152,9 @@ exports.getQuotes = async (req, res) => {
                         responses: responses
                     });
                 });
-                return res.status(200).json(quotes);
+
+                const filteredQuotes = filterQuotesByPlan(quotes, req.user);
+                return res.status(200).json(filteredQuotes);
             }
         } catch (dbError) {
             console.error('❌ Firestore Query Failed:', dbError);
@@ -164,9 +166,19 @@ exports.getQuotes = async (req, res) => {
         const localQuotes = dbService.getQuotes();
 
         // Filter logic for Buyer/Vendor
-        const userQuotes = req.user.role === 'buyer'
+        let userQuotes = req.user.role === 'buyer'
             ? localQuotes.filter(q => q.buyerId === req.user.uid || q.buyerId.startsWith('mock-'))
             : localQuotes;
+
+        // Apply Plan-based filtering (for Firestore data too if we weren't just using local fallback in this snippet, 
+        // but current structure has mixed flows. Let's fix the return flow.)
+        // Note: The previous Firestore block returned early. I need to apply filter there too.
+
+        // ... (This replacing is tricky because of the early return in line 155. I should refactor slightly or duplicate filter)
+        // Let's assume the previous block is uncommented/active. 
+        // I will just modify the previous block's return and this block's return.
+
+        userQuotes = filterQuotesByPlan(userQuotes, req.user);
 
         // Sort by date desc
         userQuotes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -176,6 +188,29 @@ exports.getQuotes = async (req, res) => {
         console.error('Error fetching quotes:', error);
         res.status(500).json({ error: 'Failed to fetch quotes' });
     }
+};
+
+// Helper: Filter quotes based on Vendor Plan
+const filterQuotesByPlan = (quotes, user) => {
+    if (user.role !== 'vendor') return quotes;
+
+    const plan = user.plan || ''; // Default to free/none if field missing
+
+    // Trial: See all? Rules say "Trial closes... no additional access". 
+    // Interpretation: Trial can SEE all, but Response is limited. 
+    // OR: Trial acts like Pro until expired/limit reached.
+    // User said: "Trial closes... no additional access". 
+    // Let's hide specific ones if limit reached? No, probably blocking response is better UX + Blur/Lock UI.
+    // For now, Trial sees all.
+
+    if (plan === 'basic') {
+        // Basic: Heat Pumps and Batteries only
+        const allowedTypes = ['heat-pump', 'battery'];
+        return quotes.filter(q => allowedTypes.includes(q.serviceType));
+    }
+
+    // Pro: All access
+    return quotes;
 };
 
 // Get single quote by ID (Public/Protected mixed)
@@ -240,6 +275,16 @@ exports.respondToQuote = async (req, res) => {
             createdAt: new Date()
         };
 
+        // Enforce Trial Limits
+        if (req.user.plan === 'trial') {
+            const responsesCount = req.user.quotesResponded || 0;
+            if (responsesCount >= 3) {
+                return res.status(403).json({
+                    error: 'Trial limit reached. You can only respond to 3 quotes during the trial. Please upgrade to Pro.'
+                });
+            }
+        }
+
         // 1. Try Firestore (Real Sync)
         try {
             if (admin.apps.length) {
@@ -258,6 +303,12 @@ exports.respondToQuote = async (req, res) => {
                     t.update(quoteRef, {
                         responses: updatedResponses,
                         status: 'responded'
+                    });
+
+                    // Increment Vendor's response count
+                    const userRef = db.collection('users').doc(vendorId);
+                    t.update(userRef, {
+                        quotesResponded: admin.firestore.FieldValue.increment(1)
                     });
                 });
 

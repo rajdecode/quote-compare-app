@@ -1,0 +1,55 @@
+<div class="container page-content">
+    <div class="pricing-header">
+        <h1>Simple, Transparent Pricing</h1>
+        <p class="subtitle">Choose the plan that fits your business needs. No hidden fees.</p>
+    </div>
+
+    <div class="pricing-grid">
+        @for (plan of plans; track plan.name) {
+        <div class="pricing-card glass-panel" [class.highlight]="plan.highlight">
+            @if (plan.highlight) {
+            <div class="badge">Most Popular</div>
+            }
+            <div class="card-header">
+                <h3>{{ plan.name }}</h3>
+                <div class="price">
+                    <span class="currency">{{ plan.price }}</span>
+                    <span class="period" *ngIf="plan.period">{{ plan.period }}</span>
+                </div>
+                <p class="description">{{ plan.description }}</p>
+            </div>
+
+            <ul class="features-list">
+                @for (feature of plan.features; track feature) {
+                <li>
+                    <span class="material-icons">check_circle</span>
+                    {{ feature }}
+                </li>
+                }
+            </ul>
+
+            <div class="card-footer">
+                <a [routerLink]="[plan.link]" [queryParams]="{plan: plan.name.toLowerCase()}" class="btn btn-block"
+                    [class.btn-primary]="plan.highlight" [class.btn-secondary]="!plan.highlight">
+                    {{ plan.cta }}
+                </a>
+            </div>
+        </div>
+        }
+    </div>
+
+    <div class="faq-section glass-panel">
+        <h3>Frequently Asked Questions</h3>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h4>What happens after the trial?</h4>
+                <p>Your access to new quotes will be paused until you upgrade to a paid plan. You can still view quotes
+                    you've already responded to.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Can I switch plans?</h4>
+                <p>Yes, you can upgrade or downgrade at any time via your dashboard settings.</p>
+            </div>
+        </div>
+    </div>
+</div>

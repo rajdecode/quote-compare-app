@@ -1,1 +1,108 @@
-<p>admin-dashboard works!</p>
+<div class="dashboard-container">
+    <header class="dashboard-header glass-panel">
+        <div class="header-content">
+            <h1>Admin Dashboard</h1>
+            <p>Manage users and view system performance.</p>
+        </div>
+        <div class="user-profile">
+            <span class="avatar">A</span>
+            <span class="name">Admin</span>
+        </div>
+    </header>
+
+    <div class="dashboard-tabs">
+        <button [class.active]="activeTab() === 'users'" (click)="setActiveTab('users')">User Management</button>
+        <button [class.active]="activeTab() === 'analytics'" (click)="setActiveTab('analytics')">Analytics</button>
+    </div>
+
+    @if (loading()) {
+    <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading admin data...</p>
+    </div>
+    } @else {
+
+    <!-- Users Tab -->
+    @if (activeTab() === 'users') {
+    <div class="glass-panel content-card">
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Plan</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (user of users(); track user.uid) {
+                    <tr>
+                        <td>{{ user.displayName || 'N/A' }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <span class="badge" [class.vendor]="user.role === 'vendor'">{{ user.role }}</span>
+                        </td>
+                        <td>{{ user.plan || '-' }}</td>
+                        <td>
+                            <span class="status-dot" [class.active]="user.status === 'active'"
+                                [class.blocked]="user.status === 'blocked'"></span>
+                            {{ user.status | titlecase }}
+                        </td>
+                        <td>
+                            <button class="btn-icon" (click)="toggleUserStatus(user.uid, user.status)"
+                                [title]="user.status === 'active' ? 'Block User' : 'Unblock User'">
+                                <span class="material-icons">{{ user.status === 'active' ? 'block' : 'check_circle'
+                                    }}</span>
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    }
+
+    <!-- Analytics Tab -->
+    @if (activeTab() === 'analytics' && stats()) {
+    <div class="stats-grid">
+        <div class="stat-card glass-panel">
+            <div class="icon-box blue">
+                <span class="material-icons">people</span>
+            </div>
+            <div class="stat-info">
+                <span class="label">Total Users</span>
+                <span class="value">{{ stats().totalUsers }}</span>
+                <span class="sub-text">{{ stats().vendors }} Vendors, {{ stats().buyers }} Buyers</span>
+            </div>
+        </div>
+
+        <div class="stat-card glass-panel">
+            <div class="icon-box green">
+                <span class="material-icons">request_quote</span>
+            </div>
+            <div class="stat-info">
+                <span class="label">Total Quotes</span>
+                <span class="value">{{ stats().totalQuotes }}</span>
+                <span class="sub-text">{{ stats().completedQuotes }} Responded</span>
+            </div>
+        </div>
+
+        <div class="stat-card glass-panel">
+            <div class="icon-box purple">
+                <span class="material-icons">attach_money</span>
+            </div>
+            <div class="stat-info">
+                <span class="label">Est. Revenue</span>
+                <span class="value">${{ stats().revenue }}</span>
+                <span class="sub-text">Monthly recurring</span>
+            </div>
+        </div>
+    </div>
+    }
+
+    }
+</div>

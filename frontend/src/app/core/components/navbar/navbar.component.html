@@ -7,6 +7,7 @@
             <!-- Only show Home for guests -->
             @if (!currentUser()) {
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+            <a routerLink="/pricing" routerLinkActive="active">Pricing</a>
             <a href="#">Products</a>
             <a href="#">How it Works</a>
             }

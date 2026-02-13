@@ -45,10 +45,12 @@ app.get('/api/health', (req, res) => {
 });
 
 const quoteRoutes = require('./routes/quote.routes');
+const adminRoutes = require('./routes/admin.routes');
 
 // Routes
 // app.use('/api/auth', authRoutes);
 app.use('/api/quotes', quoteRoutes);
+app.use('/api/admin', adminRoutes);
 
 // --- SERVE FRONTEND (Production) ---
 const path = require('path');

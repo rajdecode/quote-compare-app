@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -16,10 +16,22 @@ export class Register {
   email = '';
   password = '';
   role = 'buyer'; // Default role
+  plan = '';
   loading = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService, private router: Router) { }
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  constructor() {
+    this.route.queryParams.subscribe(params => {
+      if (params['plan']) {
+        this.plan = params['plan'];
+        this.role = 'vendor'; // If coming from pricing, assume vendor
+      }
+    });
+  }
 
   async onSubmit() {
     console.log('Attempting registration with:', this.email);
@@ -27,7 +39,7 @@ export class Register {
     this.errorMessage = '';
 
     try {
-      await this.authService.register(this.email, this.password, this.name, this.role);
+      await this.authService.register(this.email, this.password, this.name, this.role, this.plan);
       console.log('Registration successful');
       if (this.role === 'buyer') {
         this.router.navigate(['/buyer']);

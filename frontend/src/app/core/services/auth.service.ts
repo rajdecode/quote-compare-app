@@ -51,11 +51,11 @@ export class AuthService {
 
     constructor(private router: Router) { }
 
-    async register(email: string, password: string, displayName: string, role: string) {
+    async register(email: string, password: string, displayName: string, role: string, plan: string = '') {
         try {
             const credential = await createUserWithEmailAndPassword(auth, email, password);
             await updateProfile(credential.user, { displayName });
-            await this.saveUserRole(credential.user.uid, role, displayName, email);
+            await this.saveUserRole(credential.user.uid, role, displayName, email, plan);
             this.userRole.set(role);
             return credential.user;
         } catch (error) {
@@ -98,15 +98,25 @@ export class AuthService {
         this.router.navigate(['/']);
     }
 
-    private async saveUserRole(uid: string, role: string, name: string, email: string) {
+    private async saveUserRole(uid: string, role: string, name: string, email: string, plan: string = '') {
         const userRef = doc(this.db, 'users', uid);
-        await setDoc(userRef, {
+        const userData: any = {
             uid,
             role,
             displayName: name,
             email,
             createdAt: new Date()
-        }, { merge: true });
+        };
+
+        if (plan) {
+            userData.plan = plan;
+            if (plan === 'trial') {
+                userData.trialStartDate = new Date();
+                userData.quotesResponded = 0;
+            }
+        }
+
+        await setDoc(userRef, userData, { merge: true });
     }
 
     private async getUserRole(uid: string): Promise<string | null> {

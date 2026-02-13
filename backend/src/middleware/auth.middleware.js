@@ -33,7 +33,10 @@ exports.verifyToken = async (req, res, next) => {
             const db = admin.firestore();
             const userDoc = await db.collection('users').doc(decodedToken.uid).get();
             if (userDoc.exists) {
-                decodedToken.role = userDoc.data().role;
+                const userData = userDoc.data();
+                decodedToken.role = userData.role;
+                decodedToken.plan = userData.plan;
+                decodedToken.quotesResponded = userData.quotesResponded || 0;
             }
         } catch (firestoreError) {
             console.warn('Firestore fetch failed in middleware (ignoring):', firestoreError.message);
