@@ -232,24 +232,94 @@ table {
     padding: 2rem;
     border-radius: 16px;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    transition: max-width 0.3s ease;
+
+    &.wide-modal {
+        max-width: 900px;
+    }
 
     .modal-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #E2E8F0;
 
-        h3 {
-            margin: 0;
-            font-size: 1.25rem;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            h3 {
+                margin: 0;
+                font-size: 1.25rem;
+                color: var(--text-heading);
+            }
+
+            .role-badge {
+                font-size: 0.75rem;
+                padding: 2px 8px;
+                background: #F1F5F9;
+                color: var(--text-dim);
+                border-radius: 99px;
+                text-transform: uppercase;
+                font-weight: 600;
+            }
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mini-date-filters {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #F8FAFC;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid #E2E8F0;
+
+            .filter-group {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                label {
+                    font-size: 0.75rem;
+                    color: var(--text-dim);
+                    font-weight: 600;
+                    margin: 0;
+                }
+
+                input {
+                    padding: 4px 8px;
+                    font-size: 0.85rem;
+                    border: 1px solid #CBD5E1;
+                    border-radius: 6px;
+                    color: var(--text-main);
+                    width: 130px;
+
+                    &:focus {
+                        border-color: var(--primary-color);
+                        outline: none;
+                    }
+                }
+            }
         }
 
         .close-btn {
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 2rem;
+            line-height: 1;
             cursor: pointer;
             color: var(--text-dim);
+            padding: 0;
+            margin-left: 8px;
 
             &:hover {
                 color: var(--text-heading);
@@ -257,60 +327,49 @@ table {
         }
     }
 
-    .date-filters {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 2rem;
-
-        .form-group {
-            flex: 1;
-            margin-bottom: 0;
-
-            label {
-                font-size: 0.8rem;
-                margin-bottom: 4px;
-            }
-
-            input {
-                padding: 8px;
-                font-size: 0.9rem;
-            }
-        }
-    }
-
     .stats-summary {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
 
         .stat-item {
-            background: #F8FAFC;
-            padding: 1.5rem;
+            background: #FAFAFA; // Slightly distinct from white modal
+            padding: 2rem;
             border-radius: 12px;
             text-align: center;
             border: 1px solid #E2E8F0;
+            transition: transform 0.2s;
+
+            &:hover {
+                transform: translateY(-2px);
+                border-color: #CBD5E1;
+            }
 
             .label {
                 display: block;
-                font-size: 0.85rem;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
                 color: var(--text-dim);
-                margin-bottom: 8px;
+                margin-bottom: 12px;
             }
 
             .value {
-                font-size: 2rem;
-                font-weight: 700;
+                font-size: 3rem;
+                font-weight: 800;
                 color: var(--primary-color);
+                line-height: 1;
             }
         }
     }
 
     .no-data {
         text-align: center;
-        padding: 2rem;
+        padding: 3rem;
         color: var(--text-dim);
         background: #F8FAFC;
         border-radius: 12px;
-        border: 1px dashed #E2E8F0;
+        border: 2px dashed #E2E8F0;
+        margin-top: 1rem;
     }
 }
