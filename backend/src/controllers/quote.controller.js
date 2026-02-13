@@ -85,8 +85,9 @@ exports.createQuote = async (req, res) => {
         const docRef = await db.collection('quotes').add(quoteToSave);
         console.log('Quote saved to Firestore:', docRef.id);
 
-        // Send Confirmation Email
-        await emailService.sendQuoteReceivedEmail(contactEmail, docRef.id, newQuote);
+        // Send Confirmation Email (Non-blocking)
+        emailService.sendQuoteReceivedEmail(contactEmail, docRef.id, newQuote)
+            .catch(err => console.error('Failed to send email in background:', err));
 
         res.status(201).json({ id: docRef.id, ...newQuote });
     } catch (error) {
