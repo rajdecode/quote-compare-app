@@ -156,8 +156,8 @@
 
 .faq-section {
     padding: 3rem;
-    margin-top: 4rem !important;
-    /* Force spacing */
+    margin-top: 0;
+    /* Handled by spacer div */
     background: white;
     border-radius: 16px;
 

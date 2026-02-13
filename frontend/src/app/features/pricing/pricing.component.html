@@ -29,14 +29,17 @@
             </ul>
 
             <div class="card-footer">
-                <a [routerLink]="[plan.link]" [queryParams]="{plan: plan.name.toLowerCase()}" class="btn btn-block"
-                    [class.btn-primary]="plan.highlight" [class.btn-secondary]="!plan.highlight">
+                <a [routerLink]="[plan.link]" [queryParams]="{plan: plan.name.toLowerCase()}"
+                    class="btn btn-block btn-primary">
                     {{ plan.cta }}
                 </a>
             </div>
         </div>
         }
     </div>
+
+    <!-- Explicit Spacer to prevent touching -->
+    <div style="height: 4rem; width: 100%;"></div>
 
     <div class="faq-section glass-panel">
         <h3>Frequently Asked Questions</h3>
