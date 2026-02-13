@@ -1,4 +1,6 @@
 const express = require('express');
+// Force IPv4 for DNS resolution to avoid IPv6 connectivity issues on some cloud providers (Node 17+)
+require('dns').setDefaultResultOrder('ipv4first');
 const admin = require('firebase-admin');
 const cors = require('cors');
 const bodyParser = require('body-parser');
