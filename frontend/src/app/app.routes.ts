@@ -14,6 +14,8 @@ export const routes: Routes = [
     { path: '', component: LandingComponent },
     { path: 'login', component: Login },
     { path: 'register', component: Register },
+    { path: 'forgot-password', loadComponent: () => import('./features/auth/forgot-password/forgot-password').then(m => m.ForgotPassword) },
+    { path: 'change-password', loadComponent: () => import('./features/auth/change-password/change-password').then(m => m.ChangePassword), canActivate: [authGuard] },
     { path: 'buyer', component: BuyerDashboard, canActivate: [authGuard] },
     { path: 'buyer/quote/:quoteId', loadComponent: () => import('./features/quotes/quote-details/quote-details').then(m => m.QuoteDetails), canActivate: [authGuard] },
     { path: 'request-quote', component: RequestQuote }, // Public access allowed

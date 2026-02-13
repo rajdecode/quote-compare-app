@@ -1,5 +1,15 @@
 
 --------------------------------------------------------------------------------
+Package: @firebase/webchannel-wrapper
+License: "Apache-2.0"
+
+
+--------------------------------------------------------------------------------
+Package: @firebase/firestore
+License: "Apache-2.0"
+
+
+--------------------------------------------------------------------------------
 Package: @firebase/util
 License: "Apache-2.0"
 
@@ -32,16 +42,6 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
 
 --------------------------------------------------------------------------------
 Package: @firebase/auth
-License: "Apache-2.0"
-
-
---------------------------------------------------------------------------------
-Package: @firebase/webchannel-wrapper
-License: "Apache-2.0"
-
-
---------------------------------------------------------------------------------
-Package: @firebase/firestore
 License: "Apache-2.0"
 
 

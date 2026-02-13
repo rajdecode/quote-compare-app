@@ -65,8 +65,12 @@ export class AuthService {
 
     async login(email: string, password: string) {
         try {
+            console.log('AuthService: Logging in...');
             const result = await signInWithEmailAndPassword(auth, email, password);
+            console.log('AuthService: Firebase SigIn Success. UID:', result.user.uid);
+
             let role = await this.getUserRole(result.user.uid);
+            console.log('AuthService: Role fetched:', role);
 
             // Auto-repair: If no role exists (legacy user), default to 'buyer' and save it
             if (!role) {
@@ -82,12 +86,15 @@ export class AuthService {
             } else if (role === 'vendor') {
                 this.router.navigate(['/vendor']);
             } else if (role === 'admin') {
+                console.log('AuthService: Redirecting to /admin');
                 this.router.navigate(['/admin']);
             } else {
+                console.warn('AuthService: Unknown role, redirecting home');
                 this.router.navigate(['/']);
             }
             return result.user;
         } catch (error) {
+            console.error('AuthService: Login failed', error);
             throw error;
         }
     }
