@@ -225,9 +225,17 @@ exports.getQuoteById = async (req, res) => {
                 const doc = await admin.firestore().collection('quotes').doc(id).get();
                 if (doc.exists) {
                     const data = doc.data();
+
+                    // Transform timestamps in responses array (CRITICAL FIX)
+                    const responses = data.responses ? data.responses.map(r => ({
+                        ...r,
+                        createdAt: r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() : r.createdAt
+                    })) : [];
+
                     quote = {
                         id: doc.id,
                         ...data,
+                        responses: responses, // Use transformed responses
                         createdAt: data.createdAt && data.createdAt.toDate ? data.createdAt.toDate() : data.createdAt
                     };
                 }

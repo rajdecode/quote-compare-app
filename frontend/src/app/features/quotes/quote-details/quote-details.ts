@@ -33,13 +33,12 @@ export class QuoteDetails implements OnInit {
 
                 if (response.ok) {
                     const found = await response.json();
-
-                    if (found) {
-                        if (found.responses) {
-                            found.responses.sort((a: any, b: any) => a.price - b.price);
-                        }
-                        this.quote.set(found);
+                    console.log('Quote Details fetched:', found);
+                    if (found && found.responses) {
+                        console.log('Offers/Responses:', found.responses);
+                        found.responses.sort((a: any, b: any) => a.price - b.price);
                     }
+                    this.quote.set(found);
                 }
             } catch (error) {
                 console.error('Error fetching quote:', error);
