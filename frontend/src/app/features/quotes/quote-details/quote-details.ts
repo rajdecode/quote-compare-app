@@ -12,7 +12,7 @@ import { environment } from '../../../../environments/environment';
     styleUrls: ['./quote-details.scss']
 })
 export class QuoteDetails implements OnInit {
-    quote: any = null;
+    quote = signal<any>(null);
     quoteId: string | null = null;
     loading = signal<boolean>(true);
     private route = inject(ActivatedRoute);
