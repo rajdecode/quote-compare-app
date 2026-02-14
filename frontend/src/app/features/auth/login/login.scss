@@ -1,9 +1,11 @@
 .auth-page {
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    /* Changed from center to prevent top overlap */
     justify-content: center;
-    padding: 20px;
+    padding: 120px 20px 40px;
+    /* Top padding clears navbar */
     background: radial-gradient(circle at top right, rgba(108, 99, 255, 0.1), transparent 40%),
         radial-gradient(circle at bottom left, rgba(255, 101, 132, 0.1), transparent 40%);
 }
