@@ -12,24 +12,28 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./buyer-dashboard.scss']
 })
 export class BuyerDashboard implements OnInit {
-  // Initialize signals with default values
-  quotes = signal<any[]>([]);
+  // Rename to bust cache/references
+  quotesList = signal<any[]>([]);
   loading = signal<boolean>(true);
   expandedQuotes = signal<Set<string>>(new Set());
 
   authService = inject(AuthService);
 
   constructor() {
-    // Defensive check: Ensure signals are initialized
-    if (!this.quotes) this.quotes = signal([]);
+    console.log('BuyerDashboard: CONSTRUCTOR Called');
+    // Defensive check
+    if (!this.quotesList) this.quotesList = signal([]);
     if (!this.loading) this.loading = signal(true);
     if (!this.expandedQuotes) this.expandedQuotes = signal(new Set());
+
+    console.log('BuyerDashboard: Signals initialized:', {
+      quotesList: !!this.quotesList,
+      loading: !!this.loading
+    });
   }
 
   toggleExpand(quoteId: string) {
-    // Safety check
     if (!this.expandedQuotes) this.expandedQuotes = signal(new Set());
-
     const current = this.expandedQuotes();
     const newSet = new Set(current);
     if (newSet.has(quoteId)) {
@@ -41,7 +45,9 @@ export class BuyerDashboard implements OnInit {
   }
 
   async ngOnInit() {
-    // User safety check
+    console.log('BuyerDashboard: ngOnInit Called');
+    console.log('BuyerDashboard: THIS keys:', Object.keys(this));
+
     const user = this.authService.currentUser();
 
     if (user) {
@@ -72,11 +78,12 @@ export class BuyerDashboard implements OnInit {
             });
 
             // Critical safety check before setting signal
-            if (this.quotes) {
-              this.quotes.set(data);
+            if (this.quotesList) {
+              console.log('Setting quotesList signal...');
+              this.quotesList.set(data);
             } else {
-              console.error('CRITICAL: this.quotes signal was null. Re-initializing.');
-              this.quotes = signal(data);
+              console.error('CRITICAL: this.quotesList signal is null! Re-initializing.');
+              this.quotesList = signal(data);
             }
           } else {
             console.error('Invalid quotes data format:', data);

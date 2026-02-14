@@ -12,7 +12,7 @@
         <div class="loading-state glass-panel">
             <p>Loading your requests...</p>
         </div>
-        } @else if (quotes().length === 0) {
+        } @else if (quotesList().length === 0) {
         <div class="empty-state glass-panel">
             <span class="material-icons">post_add</span>
             <p>No active quote requests found.</p>
@@ -20,7 +20,7 @@
         </div>
         } @else {
         <div class="quotes-grid">
-            @for (quote of quotes(); track quote.id) {
+            @for (quote of quotesList(); track quote.id) {
             <div class="quote-card glass-panel" [routerLink]="['/buyer/quote', quote.id]" style="cursor: pointer;">
                 <div class="quote-header">
                     <span class="service-type">{{ quote.serviceType | titlecase }}</span>
