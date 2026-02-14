@@ -47,10 +47,14 @@ export class BuyerDashboard implements OnInit {
           cache: 'no-store'
         });
 
+        console.log('Buyer Quote Fetch Status:', response.status);
+
         if (response.ok) {
           const data = await response.json();
-          // Sort responses by price (ascending) for each quote
+          console.log('Buyer Quote Data Received:', data);
+
           if (Array.isArray(data)) {
+            console.log('Sorting', data.length, 'quotes');
             data.forEach((quote: any) => {
               if (quote.responses && Array.isArray(quote.responses)) {
                 quote.responses.sort((a: any, b: any) => a.price - b.price);
@@ -58,10 +62,10 @@ export class BuyerDashboard implements OnInit {
             });
             this.quotes.set(data);
           } else {
-            console.error('Invalid quotes data format:', data);
+            console.error('Invalid quotes data format (not array):', data);
           }
         } else {
-          console.error('Failed to fetch quotes:', response.status, response.statusText);
+          console.error('Failed to fetch quotes. Status:', response.status, 'Text:', await response.text());
         }
       } catch (error) {
         console.error('Error fetching quotes:', error);
