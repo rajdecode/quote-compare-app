@@ -25,6 +25,6 @@ export const routes: Routes = [
     { path: 'vendor/respond/:quoteId', component: RespondQuote, canActivate: [authGuard] },
     { path: 'admin', component: AdminDashboard, canActivate: [authGuard] },
     { path: 'products/:type', loadComponent: () => import('./features/products/product-detail/product-detail').then(m => m.ProductDetailComponent) },
-    { path: 'pricing', loadComponent: () => import('./features/pricing/pricing.component').then(m => m.PricingComponent) },
+    { path: 'pricing', loadComponent: () => import('./features/pricing/pricing.component').then(m => m.PricingComponent), canActivate: [authGuard] },
     { path: '**', redirectTo: '' }
 ];

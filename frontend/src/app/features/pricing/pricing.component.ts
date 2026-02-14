@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
     selector: 'app-pricing',
@@ -9,7 +10,18 @@ import { RouterLink } from '@angular/router';
     templateUrl: './pricing.component.html',
     styleUrls: ['./pricing.component.scss']
 })
-export class PricingComponent {
+export class PricingComponent implements OnInit {
+    authService = inject(AuthService);
+    router = inject(Router);
+
+    ngOnInit() {
+        const role = this.authService.userRole();
+        if (role === 'buyer') {
+            this.router.navigate(['/buyer']);
+        }
+        // If not logged in, authGuard handles it.
+    }
+
     plans = [
         {
             name: 'Trial',

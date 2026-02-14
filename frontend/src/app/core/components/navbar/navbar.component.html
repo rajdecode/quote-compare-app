@@ -7,7 +7,7 @@
             <!-- Only show Home for guests -->
             @if (!currentUser()) {
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-            <a routerLink="/pricing" routerLinkActive="active">Pricing</a>
+            <!-- Pricing hidden for guests as per requirement -->
             <div class="dropdown">
                 <a href="#" class="dropbtn">Products</a>
                 <div class="dropdown-content glass-panel">
@@ -26,6 +26,8 @@
             <a routerLink="/register" class="btn btn-primary btn-sm">Sign Up</a>
             } @else {
             @if (userRole() === 'vendor') {
+            <a routerLink="/pricing" routerLinkActive="active" class="btn btn-text btn-sm"
+                style="margin-right: 1rem; color: var(--text-main);">Plans</a>
             <a routerLink="/vendor" class="btn btn-secondary btn-sm">Dashboard</a>
             } @else if (userRole() === 'admin') {
             <a routerLink="/admin" class="btn btn-secondary btn-sm">Dashboard</a>
