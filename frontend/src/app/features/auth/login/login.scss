@@ -8,6 +8,11 @@
     /* Top padding clears navbar */
     background: radial-gradient(circle at top right, rgba(108, 99, 255, 0.1), transparent 40%),
         radial-gradient(circle at bottom left, rgba(255, 101, 132, 0.1), transparent 40%);
+
+    @media (max-width: 768px) {
+        padding-top: 200px;
+        /* More space for stacked navbar */
+    }
 }
 
 .auth-card {

@@ -29,12 +29,15 @@ export class BuyerDashboard implements OnInit {
   }
 
   async ngOnInit() {
+    // Ensure we give auth a moment if it's just initializing (though guard should prevent this)
+    // But safely handle the null user case to avoid infinite loading
     const user = this.authService.currentUser();
+
     if (user) {
       try {
         const token = await user.getIdToken();
         const role = this.authService.userRole() || 'buyer';
-        console.log('Fetching quotes with Role:', role);
+        console.log('Fetching quotes for Buyer:', user.uid, 'Role:', role);
 
         const response = await fetch(`${environment.apiUrl}/quotes`, {
           headers: {
@@ -43,21 +46,31 @@ export class BuyerDashboard implements OnInit {
           },
           cache: 'no-store'
         });
+
         if (response.ok) {
           const data = await response.json();
           // Sort responses by price (ascending) for each quote
-          data.forEach((quote: any) => {
-            if (quote.responses && Array.isArray(quote.responses)) {
-              quote.responses.sort((a: any, b: any) => a.price - b.price);
-            }
-          });
-          this.quotes.set(data);
+          if (Array.isArray(data)) {
+            data.forEach((quote: any) => {
+              if (quote.responses && Array.isArray(quote.responses)) {
+                quote.responses.sort((a: any, b: any) => a.price - b.price);
+              }
+            });
+            this.quotes.set(data);
+          } else {
+            console.error('Invalid quotes data format:', data);
+          }
+        } else {
+          console.error('Failed to fetch quotes:', response.status, response.statusText);
         }
       } catch (error) {
         console.error('Error fetching quotes:', error);
       } finally {
         this.loading.set(false);
       }
+    } else {
+      console.warn('BuyerDashboard: No user found on init.');
+      this.loading.set(false);
     }
   }
 }
