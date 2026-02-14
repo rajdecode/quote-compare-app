@@ -12,12 +12,24 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./buyer-dashboard.scss']
 })
 export class BuyerDashboard implements OnInit {
+  // Initialize signals with default values
   quotes = signal<any[]>([]);
   loading = signal<boolean>(true);
   expandedQuotes = signal<Set<string>>(new Set());
+
   authService = inject(AuthService);
 
+  constructor() {
+    // Defensive check: Ensure signals are initialized
+    if (!this.quotes) this.quotes = signal([]);
+    if (!this.loading) this.loading = signal(true);
+    if (!this.expandedQuotes) this.expandedQuotes = signal(new Set());
+  }
+
   toggleExpand(quoteId: string) {
+    // Safety check
+    if (!this.expandedQuotes) this.expandedQuotes = signal(new Set());
+
     const current = this.expandedQuotes();
     const newSet = new Set(current);
     if (newSet.has(quoteId)) {
@@ -29,8 +41,7 @@ export class BuyerDashboard implements OnInit {
   }
 
   async ngOnInit() {
-    // Ensure we give auth a moment if it's just initializing (though guard should prevent this)
-    // But safely handle the null user case to avoid infinite loading
+    // User safety check
     const user = this.authService.currentUser();
 
     if (user) {
@@ -51,30 +62,36 @@ export class BuyerDashboard implements OnInit {
 
         if (response.ok) {
           const data = await response.json();
-          console.log('Buyer Quote Data Received:', data);
+          console.log('Buyer Quote Data Received:', Array.isArray(data) ? data.length : data);
 
           if (Array.isArray(data)) {
-            console.log('Sorting', data.length, 'quotes');
             data.forEach((quote: any) => {
               if (quote.responses && Array.isArray(quote.responses)) {
                 quote.responses.sort((a: any, b: any) => a.price - b.price);
               }
             });
-            this.quotes.set(data);
+
+            // Critical safety check before setting signal
+            if (this.quotes) {
+              this.quotes.set(data);
+            } else {
+              console.error('CRITICAL: this.quotes signal was null. Re-initializing.');
+              this.quotes = signal(data);
+            }
           } else {
-            console.error('Invalid quotes data format (not array):', data);
+            console.error('Invalid quotes data format:', data);
           }
         } else {
-          console.error('Failed to fetch quotes. Status:', response.status, 'Text:', await response.text());
+          console.error('Failed to fetch quotes:', response.status, await response.text());
         }
       } catch (error) {
         console.error('Error fetching quotes:', error);
       } finally {
-        this.loading.set(false);
+        if (this.loading) this.loading.set(false);
       }
     } else {
       console.warn('BuyerDashboard: No user found on init.');
-      this.loading.set(false);
+      if (this.loading) this.loading.set(false);
     }
   }
 }
