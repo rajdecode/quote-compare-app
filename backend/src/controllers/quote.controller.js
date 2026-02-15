@@ -320,18 +320,13 @@ exports.respondToQuote = async (req, res) => {
             vendorName,
             price: Number(price),
             message,
-            createdAt: new Date()
+            createdAt: new Date(),
+            status: 'responded' // default status
         };
 
-        // Enforce Trial Limits
-        if (req.user.plan === 'trial') {
-            const responsesCount = req.user.quotesResponded || 0;
-            if (responsesCount >= 3) {
-                return res.status(403).json({
-                    error: 'Trial limit reached. You can only respond to 3 quotes during the trial. Please upgrade to Pro.'
-                });
-            }
-        }
+        // Enforce Trial Limits (only for NEW responses)
+        // We need to check if this is an update or a new response first to enforce limits correctly
+        // But for simplicity, we'll check limits on "quotesResponded" counter which should be incremented only on new.
 
         // 1. Try Firestore (Real Sync)
         try {
@@ -344,45 +339,65 @@ exports.respondToQuote = async (req, res) => {
                     const doc = await t.get(quoteRef);
                     if (!doc.exists) throw new Error('Quote not found in Firestore');
 
-                    // We must use arrayUnion for cleaner updates, but manually appending is safer for transaction read/write consistency
-                    const currentResponses = doc.data().responses || [];
-                    const updatedResponses = [...currentResponses, response];
+                    const data = doc.data();
+                    let responses = data.responses || [];
+                    const existingIndex = responses.findIndex(r => r.vendorId === vendorId);
+
+                    if (existingIndex !== -1) {
+                        // UPDATE existing response
+                        const oldResponse = responses[existingIndex];
+
+                        // Archive old version if price changed
+                        const historyEntry = {
+                            price: oldResponse.price,
+                            message: oldResponse.message,
+                            status: oldResponse.status,
+                            updatedAt: new Date()
+                        };
+
+                        responses[existingIndex] = {
+                            ...oldResponse,
+                            price: Number(price),
+                            message: message,
+                            status: 'responded', // Reset status if it was 'negotiating'
+                            updatedAt: new Date(),
+                            history: [...(oldResponse.history || []), historyEntry]
+                        };
+
+                        // Don't increment user count for updates
+                    } else {
+                        // NEW response
+                        if (req.user.plan === 'trial') {
+                            const responsesCount = req.user.quotesResponded || 0;
+                            if (responsesCount >= 3) {
+                                throw new Error('Trial limit reached. You can only respond to 3 quotes during the trial. Please upgrade to Pro.');
+                            }
+                        }
+
+                        responses.push(response);
+
+                        // Increment Vendor's response count
+                        const userRef = db.collection('users').doc(vendorId);
+                        t.update(userRef, {
+                            quotesResponded: admin.firestore.FieldValue.increment(1)
+                        });
+                    }
 
                     t.update(quoteRef, {
-                        responses: updatedResponses,
+                        responses: responses,
                         status: 'responded'
-                    });
-
-                    // Increment Vendor's response count
-                    const userRef = db.collection('users').doc(vendorId);
-                    t.update(userRef, {
-                        quotesResponded: admin.firestore.FieldValue.increment(1)
                     });
                 });
 
-                console.log('✅ Response saved to Firestore:', quoteId);
-
-                // Try to notify buyer email
-                try {
-                    const quoteDoc = await quoteRef.get();
-                    if (quoteDoc.exists) {
-                        const quoteData = quoteDoc.data();
-                        if (quoteData.contactEmail) {
-                            await emailService.sendEmail(
-                                quoteData.contactEmail,
-                                'New Quote Response!',
-                                `You have received a new quote from ${vendorName} for $${response.price}. Log in to view details.`
-                            );
-                        }
-                    }
-                } catch (notifyError) {
-                    console.warn('Failed to send notification email:', notifyError.message);
-                }
+                console.log('✅ Response saved/updated in Firestore:', quoteId);
 
                 return res.status(200).json({ message: 'Quote response submitted (Firestore)', response });
             }
         } catch (dbError) {
-            console.warn('❌ Firestore write failed, trying local fallback:', dbError.message);
+            console.warn('❌ Firestore write failed/error:', dbError.message);
+            if (dbError.message.includes('Trial limit')) {
+                return res.status(403).json({ error: dbError.message });
+            }
         }
 
         // 2. Mock Store Fallback (Persistent)
@@ -393,9 +408,23 @@ exports.respondToQuote = async (req, res) => {
             const quote = localQuotes[quoteIndex];
             if (!quote.responses) quote.responses = [];
 
-            quote.responses.push(response);
-            quote.status = 'responded';
+            const existingIndex = quote.responses.findIndex(r => r.vendorId === vendorId);
 
+            if (existingIndex !== -1) {
+                // Update Local
+                quote.responses[existingIndex] = {
+                    ...quote.responses[existingIndex],
+                    price: Number(price),
+                    message: message,
+                    status: 'responded',
+                    updatedAt: new Date()
+                };
+            } else {
+                // Insert Local
+                quote.responses.push(response);
+            }
+
+            quote.status = 'responded';
             dbService.updateQuote(quote); // Save back to file
 
             console.log('Response saved to Local DB:', quoteId);

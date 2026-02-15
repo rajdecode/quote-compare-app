@@ -47,16 +47,18 @@
 /* Dropdown Styles - Global for Navbar */
 .dropdown {
     position: relative;
-    display: inline-block;
-    height: 100%;
+    /* Essential for absolute positioning of content */
     display: flex;
     align-items: center;
+    height: auto;
+    /* Allow it to fit content */
 
     &:hover .dropdown-content {
         display: block;
         visibility: visible;
         opacity: 1;
-        transform: translateX(-50%) translateY(0);
+        transform: translateY(0);
+        /* Simple drop down */
         transition: all 0.2s ease, visibility 0s linear 0s;
     }
 }
@@ -64,8 +66,12 @@
 .dropdown-content {
     position: absolute;
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
+    right: 0;
+    /* Align to right edge of parent (Avatar) */
+    left: auto;
+    /* Override any default left alignment */
+    transform: translateY(10px);
+    /* Only explicit vertical gap */
     background-color: white;
     min-width: 180px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1);

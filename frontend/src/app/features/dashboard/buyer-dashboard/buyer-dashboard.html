@@ -25,9 +25,9 @@
                     <tr>
                         <th>Service</th>
                         <th>Location</th>
-                        <th>Status</th>
                         <th>Offers</th>
                         <th>Posted</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -36,8 +36,6 @@
                     <tr [routerLink]="['/buyer/quote', quote.id]" style="cursor: pointer;" class="hover-row">
                         <td>{{ quote.serviceType | titlecase }}</td>
                         <td>{{ quote.postalCode }}</td>
-                        <td><span class="status-badge status-{{quote.status.toLowerCase()}}">{{ quote.status }}</span>
-                        </td>
                         <td>
                             @if (quote.responses?.length) {
                             <span class="badge response-count">{{ quote.responses.length }}</span>
@@ -46,6 +44,8 @@
                             }
                         </td>
                         <td>{{ quote.createdAt | date:'shortDate' }}</td>
+                        <td><span class="status-badge status-{{quote.status.toLowerCase()}}">{{ quote.status }}</span>
+                        </td>
                         <td>
                             <button class="btn btn-sm btn-secondary">View</button>
                         </td>

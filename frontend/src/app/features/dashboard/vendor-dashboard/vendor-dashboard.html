@@ -36,6 +36,11 @@
                 Quotes Sent
                 <span class="badge-count">{{ sentQuotes().length }}</span>
             </button>
+            <button class="tab-btn" [class.active]="activeTab() === 'completed'" (click)="setActiveTab('completed')">
+                Completed
+                <span class="badge-count" [class.highlight]="completedQuotes().length > 0">{{ completedQuotes().length
+                    }}</span>
+            </button>
         </div>
 
         @if (loading()) {
@@ -171,6 +176,44 @@
                                 }
                                 <button (click)="editQuote(quote.id)" class="btn btn-sm btn-secondary">Edit</button>
                             </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        }
+        }
+
+        <!-- COMPLETED TAB -->
+        @else if (activeTab() === 'completed') {
+        @if (completedQuotes().length === 0) {
+        <div class="empty-state glass-panel">
+            <span class="material-icons">task_alt</span>
+            <p>No completed jobs yet.</p>
+        </div>
+        } @else {
+        <div class="table-container glass-panel">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Location</th>
+                        <th>Details</th>
+                        <th>Completed On</th>
+                        <th>Invoice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (quote of completedQuotes(); track quote.id) {
+                    <tr>
+                        <td>{{ quote.serviceType | titlecase }}</td>
+                        <td>{{ quote.postalCode }}</td>
+                        <td class="truncate-cell">{{ quote.details }}</td>
+                        <td>{{ quote.responses[0]?.completedAt | date:'shortDate' }}</td>
+                        <td>
+                            <a [href]="quote.responses[0]?.invoiceUrl" target="_blank" class="btn btn-sm btn-text">View
+                                Invoice</a>
                         </td>
                     </tr>
                     }
