@@ -47,6 +47,7 @@
                         <th style="padding: 1rem; text-align: left;">Message</th>
                         <th style="padding: 1rem; text-align: right;">Date</th>
                         <th style="padding: 1rem; text-align: right;">Price</th>
+                        <th style="padding: 1rem; text-align: center;">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,12 +55,6 @@
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <td style="padding: 1rem; color: var(--primary-color); font-weight: 500;">
                             {{ response.vendorName }}
-                            @if(response.status) {
-                            <div [class]="'offer-status status-' + response.status"
-                                style="font-size: 0.8rem; margin-top: 4px; display: inline-block; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">
-                                {{ response.status }}
-                            </div>
-                            }
                         </td>
                         <td style="padding: 1rem; color: var(--text-dim);">
                             {{ response.message }}
@@ -83,6 +78,16 @@
                                 <button class="btn btn-sm btn-secondary"
                                     (click)="updateStatus(response, 'negotiating')">Renegotiate</button>
                             </div>
+                            }
+                        </td>
+                        <td style="padding: 1rem; text-align: center;">
+                            @if(response.status) {
+                            <div [class]="'offer-status status-' + response.status"
+                                style="font-size: 0.8rem; display: inline-block; padding: 4px 12px; border-radius: 4px; text-transform: uppercase; font-weight: bold;">
+                                {{ response.status }}
+                            </div>
+                            } @else {
+                            <span style="color: var(--text-dim);">-</span>
                             }
                         </td>
                     </tr>
