@@ -142,8 +142,14 @@ exports.getQuotes = async (req, res) => {
                     // Transform timestamps in responses array
                     const responses = data.responses ? data.responses.map(r => ({
                         ...r,
+                        status: r.status || 'responded',
                         // Convert Firestore Timestamp to JS Date if exists, or keep as is
-                        createdAt: r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() : r.createdAt
+                        createdAt: r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() : r.createdAt,
+                        history: r.history ? r.history.map(h => ({
+                            ...h,
+                            archivedAt: h.archivedAt && h.archivedAt.toDate ? h.archivedAt.toDate() : h.archivedAt,
+                            updatedAt: h.updatedAt && h.updatedAt.toDate ? h.updatedAt.toDate() : h.updatedAt
+                        })) : []
                     })) : [];
 
                     quotes.push({
@@ -269,7 +275,13 @@ exports.getQuoteById = async (req, res) => {
                     // Transform timestamps in responses array (CRITICAL FIX)
                     const responses = data.responses ? data.responses.map(r => ({
                         ...r,
-                        createdAt: r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() : r.createdAt
+                        status: r.status || 'responded', // Default status if undefined
+                        createdAt: r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() : r.createdAt,
+                        history: r.history ? r.history.map(h => ({
+                            ...h,
+                            archivedAt: h.archivedAt && h.archivedAt.toDate ? h.archivedAt.toDate() : h.archivedAt,
+                            updatedAt: h.updatedAt && h.updatedAt.toDate ? h.updatedAt.toDate() : h.updatedAt
+                        })) : []
                     })) : [];
 
                     quote = {

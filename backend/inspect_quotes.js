@@ -48,6 +48,9 @@ function printQuote(q) {
         q.responses.forEach((r, i) => {
             const date = r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() : r.createdAt;
             console.log(`  [${i}] Vendor: ${r.vendorName} | Status: ${r.status} | Price: ${r.price} | Date: ${date} | History: ${r.history?.length || 0}`);
+            if (r.history && r.history.length > 0) {
+                console.log(`    History Items:`, JSON.stringify(r.history, null, 2));
+            }
         });
     }
 }
