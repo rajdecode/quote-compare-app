@@ -70,6 +70,12 @@
         color: #10B981;
         box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.15);
     }
+
+    .stat-item.stat-action .value {
+        border-color: #e74c3c;
+        color: #e74c3c;
+        box-shadow: 0 4px 6px -1px rgba(231, 76, 60, 0.15);
+    }
 }
 
 /* Explicit text color overrides for inherited buyer-dashboard styles */
@@ -93,22 +99,101 @@
     }
 }
 
+/* Table Styles */
+.table-container {
+    overflow-x: auto;
+    padding: 0;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 800px;
+    margin-top: 1rem;
+
+    th,
+    td {
+        padding: 1.25rem 1.5rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    th {
+        font-weight: 600;
+        color: var(--text-dim);
+        background: rgba(0, 0, 0, 0.02);
+        white-space: nowrap;
+    }
+
+    th:first-child,
+    td:first-child {
+        padding-left: 2rem;
+    }
+
+    th:last-child,
+    td:last-child {
+        padding-right: 2rem;
+    }
+}
+
+.truncate-cell {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* Tab Styles */
+.tabs-container {
+    padding: 0.5rem !important;
+    border-radius: 100px !important;
+    background: white !important;
+    border: 1px solid #E2E8F0;
+    display: inline-flex !important;
+    gap: 0.5rem !important;
+    margin-bottom: 2rem;
+}
+
 .tab-btn {
-    transition: all 0.2s;
+    border: none;
+    background: transparent;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    border-radius: 50px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+    border-bottom: none !important;
 
     &:hover {
-        color: var(--primary-color) !important;
+        color: var(--text-main);
+        background: rgba(0, 0, 0, 0.03);
     }
 
     &.active {
-        color: var(--primary-color) !important;
-        border-bottom-color: var(--primary-color) !important;
+        background-color: var(--primary-color);
+        color: white !important;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
 
         .badge-count {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+
+            &.alert {
+                background-color: white !important;
+                color: #EF4444 !important;
+            }
+
+            &.highlight {
+                background-color: white !important;
+                color: var(--secondary-color) !important;
+            }
         }
     }
 }
@@ -124,7 +209,6 @@
     font-size: 0.8rem;
     font-weight: 700;
     border: 1px solid #CBD5E1;
-    /* Slate 300 */
     color: var(--text-dim);
     background-color: white;
     transition: all 0.2s;
@@ -132,5 +216,12 @@
     &.highlight {
         border-color: var(--secondary-color);
         color: var(--secondary-color);
+        background-color: white;
+    }
+
+    &.alert {
+        background-color: #EF4444;
+        color: white;
+        border-color: #EF4444;
     }
 }
