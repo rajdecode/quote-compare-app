@@ -57,11 +57,94 @@
 }
 
 /* Reusing global table styles, but ensuring overrides if needed */
-.comparison-table {
-    th {
+th {
+    color: var(--text-dim);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+/* History Tooltip */
+.history-icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: help;
+
+    .history-icon {
+        font-size: 1.2rem;
         color: var(--text-dim);
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
+        transition: color 0.2s;
+
+        &:hover {
+            color: var(--primary-color);
+        }
+    }
+
+    .history-tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        width: 300px;
+        padding: 1rem;
+        background: white;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+        z-index: 100;
+        pointer-events: none;
+
+        h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 0.5rem;
+        }
+
+        .history-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .history-price {
+                display: block;
+                font-weight: bold;
+                color: var(--text-heading);
+            }
+
+            .history-date {
+                font-size: 0.75rem;
+                color: var(--text-dim);
+            }
+
+            .history-msg {
+                margin: 0.25rem 0 0 0;
+                font-size: 0.85rem;
+                color: var(--text-body);
+                font-style: italic;
+            }
+        }
+    }
+
+    &:hover .history-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(-5px);
+        pointer-events: auto;
     }
 }

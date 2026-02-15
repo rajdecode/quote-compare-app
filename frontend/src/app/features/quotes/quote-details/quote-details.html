@@ -53,8 +53,29 @@
                 <tbody>
                     @for (response of quote().responses; track $index) {
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <td style="padding: 1rem; color: var(--primary-color); font-weight: 500;">
-                            {{ response.vendorName }}
+                        <td style="padding: 1rem; color: var(--primary-color); font-weight: 500; position: relative;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                {{ response.vendorName }}
+                                @if (response.history?.length) {
+                                <div class="history-icon-wrapper">
+                                    <span class="material-icons history-icon">info</span>
+                                    <div class="history-tooltip glass-panel">
+                                        <h4>Price History</h4>
+                                        <div class="history-list">
+                                            @for (item of response.history; track $index) {
+                                            <div class="history-item">
+                                                <span class="history-price">${{ item.price }}</span>
+                                                <span class="history-date">{{ item.archivedAt | date:'short' }}</span>
+                                                @if(item.message) {
+                                                <p class="history-msg">{{ item.message }}</p>
+                                                }
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                            </div>
                         </td>
                         <td style="padding: 1rem; color: var(--text-dim);">
                             {{ response.message }}
