@@ -61,17 +61,27 @@
                                     <span class="material-icons history-icon">info</span>
                                     <div class="history-tooltip glass-panel">
                                         <h4>Price History</h4>
-                                        <div class="history-list">
-                                            @for (item of response.history; track $index) {
-                                            <div class="history-item">
-                                                <span class="history-price">${{ item.price }}</span>
-                                                <span class="history-date">{{ (item.archivedAt || item.updatedAt) |
-                                                    date:'short' }}</span>
-                                                @if(item.message) {
-                                                <p class="history-msg">{{ item.message }}</p>
-                                                }
-                                            </div>
-                                            }
+                                        <div class="history-table-container">
+                                            <table class="history-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Price</th>
+                                                        <th>Date</th>
+                                                        <th>Note</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (item of response.history; track $index) {
+                                                    <tr>
+                                                        <td class="history-price">${{ item.price }}</td>
+                                                        <td class="history-date">{{ (item.archivedAt || item.updatedAt)
+                                                            | date:'shortDate' }}<br><small>{{ (item.archivedAt ||
+                                                                item.updatedAt) | date:'shortTime' }}</small></td>
+                                                        <td class="history-msg">{{ item.message || '-' }}</td>
+                                                    </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -93,7 +103,8 @@
                             <div style="font-weight: bold; color: #2ecc71; font-size: 1.1rem; margin-bottom: 0.5rem;">
                                 ${{ response.price }}</div>
 
-                            @if (!response.status || response.status === 'negotiating') {
+                            @if (!response.status || response.status === 'negotiating' || response.status ===
+                            'responded') {
                             <div class="offer-actions" style="display: flex; gap: 0.5rem; justify-content: flex-end;">
                                 <button class="btn btn-sm btn-primary"
                                     (click)="updateStatus(response, 'accepted')">Accept</button>

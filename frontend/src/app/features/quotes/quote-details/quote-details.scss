@@ -86,7 +86,7 @@ th {
         bottom: 100%;
         left: 50%;
         transform: translateX(-50%) translateY(10px);
-        width: 300px;
+        width: 400px;
         padding: 1rem;
         background: white;
         border: 1px solid rgba(0, 0, 0, 0.1);
@@ -108,35 +108,56 @@ th {
             padding-bottom: 0.5rem;
         }
 
-        .history-list {
-            max-height: 200px;
+        .history-table-container {
+            max-height: 250px;
             overflow-y: auto;
         }
 
-        .history-item {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
 
-            &:last-child {
+            th {
+                text-align: left;
+                padding: 0.5rem;
+                background: rgba(0, 0, 0, 0.02);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                color: var(--text-dim);
+                font-size: 0.75rem;
+            }
+
+            td {
+                padding: 0.5rem;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                vertical-align: top;
+            }
+
+            tr:last-child td {
                 border-bottom: none;
             }
 
             .history-price {
-                display: block;
                 font-weight: bold;
                 color: var(--text-heading);
+                white-space: nowrap;
             }
 
             .history-date {
-                font-size: 0.75rem;
                 color: var(--text-dim);
+                white-space: nowrap;
+                font-size: 0.75rem;
+
+                small {
+                    font-size: 0.7rem;
+                    opacity: 0.8;
+                }
             }
 
             .history-msg {
-                margin: 0.25rem 0 0 0;
-                font-size: 0.85rem;
                 color: var(--text-body);
                 font-style: italic;
+                min-width: 120px;
             }
         }
     }
