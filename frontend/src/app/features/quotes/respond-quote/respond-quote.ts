@@ -13,6 +13,8 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './respond-quote.scss',
 })
 export class RespondQuote {
+  quote: any = null;
+  currentResponse: any = null;
   quoteId = '';
   price: number | null = null;
   message = '';
@@ -38,16 +40,16 @@ export class RespondQuote {
     // Use an effect to load data once user is available
     effect(() => {
       const user = this.authService.currentUser();
-      if (user && this.isEditMode && !this.isLoadingData) {
-        // decouple execution to avoid signal error
+      if (user && !this.isLoadingData) {
+        // Load data regardless of edit mode to show context
         untracked(() => {
-          this.loadExistingResponse();
+          this.loadQuoteData();
         });
       }
     });
   }
 
-  async loadExistingResponse() {
+  async loadQuoteData() {
     this.isLoadingData = true;
     const user = this.authService.currentUser();
     if (!user) {
@@ -57,30 +59,28 @@ export class RespondQuote {
 
     try {
       const token = await user.getIdToken();
-      // Fetch quote to find our response
-      const response = await fetch(`${environment.apiUrl}/quotes`, {
+      // Fetch specific quote
+      const response = await fetch(`${environment.apiUrl}/quotes/${this.quoteId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
       if (response.ok) {
-        const quotes = await response.json();
-        const quote = quotes.find((q: any) => q.id === this.quoteId);
+        this.quote = await response.json();
 
-        if (quote) {
-          const myResponse = quote.responses?.find((r: any) => r.vendorId === user.uid);
+        if (this.quote) {
+          const myResponse = this.quote.responses?.find((r: any) => r.vendorId === user.uid);
 
           if (myResponse) {
+            this.currentResponse = myResponse;
             this.price = myResponse.price;
             this.message = myResponse.message;
-
-            // Force UI update
-            this.isLoadingData = false;
-            this.cdr.detectChanges();
+            // If we found a response, we are effectively in edit/negotiation mode
+            this.isEditMode = true;
           }
         }
       }
     } catch (e) {
-      console.error('Error loading existing response', e);
+      console.error('Error loading quote data', e);
     } finally {
       this.isLoadingData = false;
       this.cdr.markForCheck();

@@ -103,6 +103,7 @@
                         <th>Service</th>
                         <th>Location</th>
                         <th>Status</th>
+                        <th>Notes</th>
                         <th>Posted</th>
                         <th>Action</th>
                     </tr>
@@ -117,6 +118,16 @@
                             <span class="status-badge status-accepted">Accepted</span>
                             } @else {
                             <span class="status-badge status-negotiating">Negotiating</span>
+                            }
+                        </td>
+                        <td style="max-width: 200px;">
+                            @if (!hasAcceptedResponse(quote)) {
+                            <div
+                                style="font-size: 0.9rem; color: #D97706; background: #FFFBEB; padding: 6px; border-radius: 4px; border: 1px solid #FEF3C7; white-space: normal;">
+                                <strong>Buyer:</strong> {{ getMyResponse(quote)?.buyerMessage || 'No message' }}
+                            </div>
+                            } @else {
+                            <span style="color: var(--text-dim);">-</span>
                             }
                         </td>
                         <td>{{ quote.createdAt | date:'shortDate' }}</td>

@@ -31,6 +31,12 @@ export class VendorDashboard {
     return quote.responses.some((r: any) => r.vendorId === user.uid);
   }
 
+  getMyResponse(quote: any): any {
+    const user = this.authService.currentUser();
+    if (!user || !quote.responses) return null;
+    return quote.responses.find((r: any) => r.vendorId === user.uid);
+  }
+
   async ngOnInit() {
     this.loading.set(true);
     const user = this.authService.currentUser();

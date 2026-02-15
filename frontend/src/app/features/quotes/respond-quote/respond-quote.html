@@ -1,5 +1,33 @@
 <div class="request-quote-page">
     <div class="form-card glass-panel">
+        <div class="quote-summary">
+            <h5 style="margin: 0 0 10px 0; color: var(--text-dim); text-transform: uppercase; font-size: 0.85rem;">
+                Request
+                Details</h5>
+            @if(quote) {
+            <h3 style="margin: 0 0 5px 0;">{{ quote.serviceType | titlecase }}</h3>
+            <p style="margin: 0 0 15px 0;">{{ quote.details }}</p>
+            <div class="badges" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <span class="badge"
+                    style="background: #F3F4F6; color: #4B5563; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem;">{{
+                    quote.postalCode }}</span>
+                <span class="badge"
+                    style="background: #DBEAFE; color: #1E40AF; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem;">{{
+                    quote.status | titlecase }}</span>
+            </div>
+            } @else {
+            <p>Loading details...</p>
+            }
+        </div>
+
+        @if(currentResponse && currentResponse.status === 'negotiating') {
+        <div class="negotiation-alert"
+            style="background: #FFF7ED; border-left: 4px solid #F97316; padding: 15px; margin-bottom: 25px; border-radius: 4px;">
+            <strong style="color: #9A3412; display: block; margin-bottom: 5px;">Buyer is requesting changes:</strong>
+            <p style="margin: 0; color: #7C2D12;">"{{ currentResponse.buyerMessage || 'No message provided.' }}"</p>
+        </div>
+        }
+
         <h2>{{ isEditMode ? 'Update Your Quote' : 'Submit Your Quote' }}</h2>
         <p>Provide a competitive price and message for the buyer.</p>
 
