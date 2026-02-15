@@ -352,7 +352,7 @@ exports.respondToQuote = async (req, res) => {
                             price: oldResponse.price,
                             message: oldResponse.message,
                             status: oldResponse.status,
-                            updatedAt: new Date()
+                            archivedAt: new Date()
                         };
 
                         responses[existingIndex] = {

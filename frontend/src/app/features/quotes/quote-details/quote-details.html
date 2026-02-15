@@ -65,7 +65,8 @@
                                             @for (item of response.history; track $index) {
                                             <div class="history-item">
                                                 <span class="history-price">${{ item.price }}</span>
-                                                <span class="history-date">{{ item.archivedAt | date:'short' }}</span>
+                                                <span class="history-date">{{ (item.archivedAt || item.updatedAt) |
+                                                    date:'short' }}</span>
                                                 @if(item.message) {
                                                 <p class="history-msg">{{ item.message }}</p>
                                                 }
