@@ -19,28 +19,80 @@
             <button class="btn btn-secondary btn-sm" routerLink="/request-quote">Start a Request</button>
         </div>
         } @else {
-        <div class="quotes-grid">
-            @for (quote of quotesList(); track quote.id) {
-            <div class="quote-card glass-panel" [routerLink]="['/buyer/quote', quote.id]" style="cursor: pointer;">
-                <div class="quote-header">
-                    <span class="service-type">{{ quote.serviceType | titlecase }}</span>
-                    <div class="header-badges">
-                        <span class="status-badge status-{{quote.status.toLowerCase()}}">{{ quote.status }}</span>
-                        @if (quote.responses?.length) {
-                        <span class="badge response-count">{{ quote.responses.length }} Offers</span>
-                        }
-                    </div>
-                </div>
-                <p class="details">{{ quote.details }}</p>
-
-                <div class="quote-meta" style="display: flex; justify-content: space-between; margin-top: 1rem;">
-                    <span class="location" style="display: flex; align-items: center; gap: 5px;"><span
-                            class="material-icons" style="font-size: 1.1rem;">place</span> {{ quote.postalCode }}</span>
-                    <span class="date">Posted: {{ quote.createdAt | date }}</span>
-                </div>
-            </div>
-            }
+        <div class="table-container glass-panel">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Offers</th>
+                        <th>Posted</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (quote of quotesList(); track quote.id) {
+                    <tr [routerLink]="['/buyer/quote', quote.id]" style="cursor: pointer;" class="hover-row">
+                        <td>{{ quote.serviceType | titlecase }}</td>
+                        <td>{{ quote.postalCode }}</td>
+                        <td><span class="status-badge status-{{quote.status.toLowerCase()}}">{{ quote.status }}</span>
+                        </td>
+                        <td>
+                            @if (quote.responses?.length) {
+                            <span class="badge response-count">{{ quote.responses.length }}</span>
+                            } @else {
+                            <span style="color: var(--text-dim);">-</span>
+                            }
+                        </td>
+                        <td>{{ quote.createdAt | date:'shortDate' }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-secondary">View</button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
         </div>
         }
     </div>
 </div>
+
+<style>
+    /* Table Styles */
+    .table-container {
+        overflow-x: auto;
+        padding: 0;
+    }
+
+    .dashboard-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 600px;
+    }
+
+    .dashboard-table th,
+    .dashboard-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .dashboard-table th {
+        font-weight: 600;
+        color: var(--text-dim);
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+    .hover-row:hover {
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+    .badge.response-count {
+        background: var(--primary);
+        color: white;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+    }
+</style>

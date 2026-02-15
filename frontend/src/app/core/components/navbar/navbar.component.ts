@@ -25,4 +25,18 @@ export class NavbarComponent {
         if (role === 'admin') return '/admin';
         return '/buyer';
     }
+
+    getInitials(): string {
+        const user = this.currentUser();
+        if (!user || !user.displayName) return 'U';
+        return user.displayName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    }
+
+    getUserName(): string {
+        return this.currentUser()?.displayName || 'User';
+    }
+
+    getUserEmail(): string {
+        return this.currentUser()?.email || '';
+    }
 }

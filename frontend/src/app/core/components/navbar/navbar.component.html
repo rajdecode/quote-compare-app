@@ -25,20 +25,30 @@
             <a routerLink="/login" class="btn btn-secondary btn-sm">Sign In</a>
             <a routerLink="/register" class="btn btn-primary btn-sm">Sign Up</a>
             } @else {
-            @if (userRole() === 'vendor') {
-            <a routerLink="/pricing" routerLinkActive="active" class="btn btn-text btn-sm"
-                style="margin-right: 1rem; color: var(--text-main);">Plans</a>
-            <a routerLink="/vendor" class="btn btn-secondary btn-sm">Dashboard</a>
-            } @else if (userRole() === 'admin') {
-            <a routerLink="/admin" class="btn btn-secondary btn-sm">Dashboard</a>
-            } @else {
-            <a routerLink="/buyer" class="btn btn-secondary btn-sm">Dashboard</a>
-            }
-            <a routerLink="/change-password" class="btn btn-secondary btn-sm" style="margin-right: 0.5rem;"
-                title="Change Password">
-                <span class="material-icons" style="font-size: 1.1rem; vertical-align: middle;">lock_reset</span>
-            </a>
-            <button (click)="logout()" class="btn btn-primary btn-sm">Sign Out</button>
+            <div class="dropdown">
+                <button class="avatar-btn">
+                    {{ getInitials() }}
+                </button>
+                <div class="dropdown-content glass-panel profile-menu" style="right: 0; left: auto; min-width: 200px;">
+                    <div class="profile-header" style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <div style="font-weight: bold; color: var(--text-heading);">{{ getUserName() }}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-dim);">{{ getUserEmail() }}</div>
+                    </div>
+
+                    @if (userRole() === 'vendor') {
+                    <a routerLink="/vendor">Dashboard</a>
+                    <a routerLink="/pricing">Plans</a>
+                    <a routerLink="/settings">Settings</a>
+                    } @else if (userRole() === 'admin') {
+                    <a routerLink="/admin">Dashboard</a>
+                    } @else {
+                    <a routerLink="/buyer">Dashboard</a>
+                    }
+
+                    <a routerLink="/change-password">Change Password</a>
+                    <a (click)="logout()" style="cursor: pointer; color: #ef4444;">Sign Out</a>
+                </div>
+            </div>
             }
         </div>
     </div>

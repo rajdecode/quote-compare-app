@@ -23,6 +23,7 @@ export const routes: Routes = [
     { path: 'track/:id', loadComponent: () => import('./features/quotes/track-quote/track-quote').then(m => m.TrackQuote) },
     { path: 'vendor', component: VendorDashboard, canActivate: [authGuard] },
     { path: 'vendor/respond/:quoteId', component: RespondQuote, canActivate: [authGuard] },
+    { path: 'settings', loadComponent: () => import('./features/dashboard/vendor-dashboard/vendor-settings/vendor-settings').then(m => m.VendorSettings), canActivate: [authGuard] },
     { path: 'admin', component: AdminDashboard, canActivate: [authGuard] },
     { path: 'products/:type', loadComponent: () => import('./features/products/product-detail/product-detail').then(m => m.ProductDetailComponent) },
     { path: 'pricing', loadComponent: () => import('./features/pricing/pricing.component').then(m => m.PricingComponent), canActivate: [authGuard] },

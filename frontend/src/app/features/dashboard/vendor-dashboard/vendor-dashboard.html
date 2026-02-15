@@ -7,11 +7,15 @@
         <div class="stats-group">
             <div class="stat-item stat-new">
                 <span class="value">{{ newRequests().length }}</span>
-                <span class="label">New Requests</span>
+                <span class="label">New</span>
+            </div>
+            <div class="stat-item stat-action" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c;">
+                <span class="value">{{ actionRequiredQuotes().length }}</span>
+                <span class="label">Action</span>
             </div>
             <div class="stat-item stat-sent">
                 <span class="value">{{ quotesSentCount() }}</span>
-                <span class="label">Quotes Sent</span>
+                <span class="label">Sent</span>
             </div>
         </div>
     </div>
@@ -19,19 +23,18 @@
     <div class="dashboard-section">
         <!-- Tabs -->
         <div class="tabs-container glass-panel" style="display: flex; gap: 1rem; padding: 1rem; margin-bottom: 2rem;">
-            <button class="tab-btn" [class.active]="activeTab() === 'new'" (click)="setActiveTab('new')"
-                style="border: none; background: none; font-size: 1.1rem; font-weight: 600; padding: 0.5rem 1rem; cursor: pointer; border-bottom: 2px solid transparent; color: var(--text-dim); display: flex; align-items: center; gap: 8px;">
+            <button class="tab-btn" [class.active]="activeTab() === 'new'" (click)="setActiveTab('new')">
                 New Requests
                 <span class="badge-count" [class.highlight]="newRequests().length > 0">{{ newRequests().length }}</span>
             </button>
-            <button class="tab-btn" [class.active]="activeTab() === 'sent'" (click)="setActiveTab('sent')"
-                style="border: none; background: none; font-size: 1.1rem; font-weight: 600; padding: 0.5rem 1rem; cursor: pointer; border-bottom: 2px solid transparent; color: var(--text-dim); display: flex; align-items: center; gap: 8px;">
+            <button class="tab-btn" [class.active]="activeTab() === 'action'" (click)="setActiveTab('action')">
+                Action Required
+                <span class="badge-count" [class.alert]="actionRequiredQuotes().length > 0">{{
+                    actionRequiredQuotes().length }}</span>
+            </button>
+            <button class="tab-btn" [class.active]="activeTab() === 'sent'" (click)="setActiveTab('sent')">
                 Quotes Sent
                 <span class="badge-count">{{ sentQuotes().length }}</span>
-            </button>
-            <button class="tab-btn" [class.active]="activeTab() === 'settings'" (click)="setActiveTab('settings')"
-                style="border: none; background: none; font-size: 1.1rem; font-weight: 600; padding: 0.5rem 1rem; cursor: pointer; border-bottom: 2px solid transparent; color: var(--text-dim); display: flex; align-items: center; gap: 8px;">
-                Settings
             </button>
         </div>
 
@@ -50,21 +53,79 @@
             <button class="btn btn-secondary btn-sm" (click)="updateServiceArea()">Update Service Area</button>
         </div>
         } @else {
-        <div class="quotes-grid">
-            @for (quote of newRequests(); track quote.id) {
-            <div class="quote-card glass-panel">
-                <div class="quote-header">
-                    <span class="service-type">{{ quote.serviceType | titlecase }}</span>
-                    <span class="location"><span class="material-icons">place</span> {{ quote.postalCode }}</span>
-                </div>
-                <p class="details">{{ quote.details }}</p>
-                <div class="quote-footer"
-                    style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
-                    <span class="date" style="margin-right: 15px;">Posted: {{ quote.createdAt | date }}</span>
-                    <button (click)="respondToQuote(quote.id)" class="btn btn-sm btn-primary">Submit Quote</button>
-                </div>
-            </div>
-            }
+        <div class="table-container glass-panel">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Location</th>
+                        <th>Details</th>
+                        <th>Posted</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (quote of newRequests(); track quote.id) {
+                    <tr>
+                        <td>{{ quote.serviceType | titlecase }}</td>
+                        <td>{{ quote.postalCode }}</td>
+                        <td class="truncate-cell">{{ quote.details }}</td>
+                        <td>{{ quote.createdAt | date:'shortDate' }}</td>
+                        <td>
+                            <button (click)="respondToQuote(quote.id)" class="btn btn-sm btn-primary">Submit
+                                Quote</button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        }
+        }
+
+        <!-- ACTION REQUIRED TAB -->
+        @else if (activeTab() === 'action') {
+        @if (actionRequiredQuotes().length === 0) {
+        <div class="empty-state glass-panel">
+            <span class="material-icons">check_circle</span>
+            <p>No actions required at the moment.</p>
+        </div>
+        } @else {
+        <div class="table-container glass-panel">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Posted</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (quote of actionRequiredQuotes(); track quote.id) {
+                    <tr>
+                        <td>{{ quote.serviceType | titlecase }}</td>
+                        <td>{{ quote.postalCode }}</td>
+                        <td>
+                            @if (hasAcceptedResponse(quote)) {
+                            <span class="status-badge status-accepted">Accepted</span>
+                            } @else {
+                            <span class="status-badge status-negotiating">Negotiating</span>
+                            }
+                        </td>
+                        <td>{{ quote.createdAt | date:'shortDate' }}</td>
+                        <td>
+                            @if (hasAcceptedResponse(quote)) {
+                            <button (click)="completeJob(quote)" class="btn btn-sm btn-success">Complete Job</button>
+                            } @else {
+                            <button (click)="respondToQuote(quote.id)" class="btn btn-sm btn-primary">Respond</button>
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
         </div>
         }
         }
@@ -77,42 +138,118 @@
             <p>You haven't sent any quotes yet.</p>
         </div>
         } @else {
-        <div class="quotes-grid">
-            @for (quote of sentQuotes(); track quote.id) {
-            <div class="quote-card glass-panel responded">
-                <div class="quote-header">
-                    <span class="service-type">{{ quote.serviceType | titlecase }}</span>
-                    <span class="status-badge status-responded">Responded</span>
-                </div>
-                <p class="details">{{ quote.details }}</p>
-                <div class="quote-footer"
-                    style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
-                    <div class="sent-info" style="font-size: 0.9rem; color: var(--text-dim);">
-                        <span class="material-icons"
-                            style="font-size: 1rem; vertical-align: middle; color: #3498db;">check_circle</span>
-                        Sent on {{ quote.createdAt | date }}
-                    </div>
-                    <div class="actions">
-                        @if (hasAcceptedResponse(quote)) {
-                        <button (click)="completeJob(quote)" class="btn btn-sm btn-success"
-                            style="margin-right: 0.5rem;">Complete Job</button>
-                        } @else if (isCompleted(quote)) {
-                        <span class="status-badge status-completed">Completed</span>
-                        }
-                        <button (click)="editQuote(quote.id)" class="btn btn-sm btn-secondary">Edit Quote</button>
-                    </div>
-                </div>
-            </div>
-            }
+        <div class="table-container glass-panel">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Sent On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (quote of sentQuotes(); track quote.id) {
+                    <tr>
+                        <td>{{ quote.serviceType | titlecase }}</td>
+                        <td>{{ quote.postalCode }}</td>
+                        <td>
+                            @if (isCompleted(quote)) {
+                            <span class="status-badge status-completed">Completed</span>
+                            } @else if (hasAcceptedResponse(quote)) {
+                            <span class="status-badge status-accepted">Accepted</span>
+                            } @else {
+                            <span class="status-badge status-responded">Sent</span>
+                            }
+                        </td>
+                        <td>{{ quote.createdAt | date:'shortDate' }}</td>
+                        <td>
+                            <div class="action-buttons" style="display: flex; gap: 8px;">
+                                @if (hasAcceptedResponse(quote)) {
+                                <button (click)="completeJob(quote)" class="btn btn-sm btn-success">Complete</button>
+                                }
+                                <button (click)="editQuote(quote.id)" class="btn btn-sm btn-secondary">Edit</button>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
         </div>
         }
         }
-
-        <!-- SETTINGS TAB -->
-        @else if (activeTab() === 'settings') {
-        <app-vendor-settings></app-vendor-settings>
-        }
     </div>
-
-
 </div>
+
+<style>
+    /* Table Styles */
+    .table-container {
+        overflow-x: auto;
+        padding: 0;
+    }
+
+    .dashboard-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 600px;
+    }
+
+    .dashboard-table th,
+    .dashboard-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .dashboard-table th {
+        font-weight: 600;
+        color: var(--text-dim);
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+    .truncate-cell {
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .tab-btn {
+        border: none;
+        background: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        color: var(--text-dim);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+        color: var(--primary);
+        border-bottom-color: var(--primary);
+    }
+
+    .badge-count {
+        background: #eee;
+        color: #666;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+    }
+
+    .badge-count.highlight {
+        background: var(--primary);
+        color: white;
+    }
+
+    .badge-count.alert {
+        background: #e74c3c;
+        color: white;
+    }
+</style>

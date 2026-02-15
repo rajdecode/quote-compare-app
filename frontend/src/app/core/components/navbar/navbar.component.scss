@@ -134,3 +134,38 @@
         font-size: 0.9rem;
     }
 }
+
+/* Avatar & Dropdown */
+.avatar-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.avatar-btn:hover {
+    transform: scale(1.05);
+}
+
+.dropdown-content.profile-menu a {
+    padding: 12px 16px;
+    display: block;
+    color: var(--text-body);
+    text-decoration: none;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.dropdown-content.profile-menu a:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--primary);
+}

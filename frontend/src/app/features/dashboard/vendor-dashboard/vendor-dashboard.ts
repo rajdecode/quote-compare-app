@@ -20,9 +20,10 @@ export class VendorDashboard {
   private router = inject(Router);
 
   // Tabs & Computed Lists
-  activeTab = signal<'new' | 'sent' | 'settings'>('new');
+  activeTab = signal<'new' | 'sent' | 'action'>('new');
   newRequests = signal<any[]>([]);
   sentQuotes = signal<any[]>([]);
+  actionRequiredQuotes = signal<any[]>([]);
 
   hasResponded(quote: any): boolean {
     const user = this.authService.currentUser();
@@ -64,6 +65,11 @@ export class VendorDashboard {
             !q.responses?.some((r: any) => r.vendorId === vendorId)
           ));
 
+          // Action Required: Accepted or Negotiating
+          this.actionRequiredQuotes.set(data.filter((q: any) =>
+            q.responses?.some((r: any) => r.vendorId === vendorId && (r.status === 'accepted' || r.status === 'negotiating'))
+          ));
+
           this.quotesSentCount.set(this.sentQuotes().length);
 
         } else {
@@ -80,7 +86,7 @@ export class VendorDashboard {
     }
   }
 
-  setActiveTab(tab: 'new' | 'sent' | 'settings') {
+  setActiveTab(tab: 'new' | 'sent' | 'action') {
     this.activeTab.set(tab);
   }
 
