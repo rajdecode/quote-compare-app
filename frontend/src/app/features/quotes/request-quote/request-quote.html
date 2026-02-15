@@ -22,10 +22,17 @@
             </div>
             }
 
-            <div class="form-group">
-                <label for="postalCode">Postal Code</label>
-                <input type="text" id="postalCode" [(ngModel)]="postalCode" name="postalCode" required
-                    placeholder="e.g. 2000">
+            <div class="form-group-row" style="display: flex; gap: 1rem;">
+                <div class="form-group" style="flex: 1;">
+                    <label for="postalCode">Postal Code</label>
+                    <input type="text" id="postalCode" [(ngModel)]="postalCode" name="postalCode" required
+                        placeholder="e.g. 2000">
+                </div>
+                <div class="form-group" style="flex: 2;">
+                    <label for="suburb">Suburb</label>
+                    <input type="text" id="suburb" [(ngModel)]="suburb" name="suburb" required
+                        placeholder="e.g. Sydney">
+                </div>
             </div>
 
             <div class="form-group">

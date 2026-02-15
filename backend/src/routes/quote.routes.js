@@ -18,4 +18,10 @@ router.post('/:quoteId/respond', authMiddleware.verifyToken, authMiddleware.chec
 // Update existing response (Vendor only)
 router.put('/:quoteId/respond', authMiddleware.verifyToken, authMiddleware.checkRole(['vendor']), quoteController.updateResponse);
 
+// Update response status (Buyer only) - Accept/Negotiate
+router.patch('/:quoteId/responses/:vendorId/status', authMiddleware.verifyToken, authMiddleware.checkRole(['buyer']), quoteController.updateResponseStatus);
+
+// Complete Job / Upload Invoice (Vendor only)
+router.post('/:quoteId/complete', authMiddleware.verifyToken, authMiddleware.checkRole(['vendor']), quoteController.completeJob);
+
 module.exports = router;

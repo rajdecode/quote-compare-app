@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
+import { VendorSettings } from './vendor-settings/vendor-settings';
 
 @Component({
   selector: 'app-vendor-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, VendorSettings],
   templateUrl: './vendor-dashboard.html',
   styleUrls: ['./vendor-dashboard.scss']
 })
@@ -19,7 +20,7 @@ export class VendorDashboard {
   private router = inject(Router);
 
   // Tabs & Computed Lists
-  activeTab = signal<'new' | 'sent'>('new');
+  activeTab = signal<'new' | 'sent' | 'settings'>('new');
   newRequests = signal<any[]>([]);
   sentQuotes = signal<any[]>([]);
 
@@ -79,7 +80,7 @@ export class VendorDashboard {
     }
   }
 
-  setActiveTab(tab: 'new' | 'sent') {
+  setActiveTab(tab: 'new' | 'sent' | 'settings') {
     this.activeTab.set(tab);
   }
 
@@ -93,5 +94,48 @@ export class VendorDashboard {
 
   updateServiceArea() {
     alert('Service Area updates coming soon! For now, you will see all requests.');
+  }
+
+  hasAcceptedResponse(quote: any): boolean {
+    const user = this.authService.currentUser();
+    if (!user || !quote.responses) return false;
+    return quote.responses.some((r: any) => r.vendorId === user.uid && r.status === 'accepted');
+  }
+
+  isCompleted(quote: any): boolean {
+    const user = this.authService.currentUser();
+    if (!user || !quote.responses) return false;
+    return quote.responses.some((r: any) => r.vendorId === user.uid && r.status === 'completed');
+  }
+
+  async completeJob(quote: any) {
+    const invoiceUrl = prompt('Please enter the URL for the invoice (e.g., Google Drive link):');
+    if (!invoiceUrl) return;
+
+    try {
+      const user = this.authService.currentUser();
+      if (!user) return;
+      const token = await user.getIdToken();
+
+      const response = await fetch(`${environment.apiUrl}/quotes/${quote.id}/complete`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ invoiceUrl })
+      });
+
+      if (response.ok) {
+        alert('Job completed and invoice submitted!');
+        this.ngOnInit(); // Reload
+      } else {
+        const err = await response.json();
+        alert('Failed to complete job: ' + (err.error || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Error completing job:', error);
+      alert('Error completing job.');
+    }
   }
 }

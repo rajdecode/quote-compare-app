@@ -47,4 +47,40 @@ export class QuoteDetails implements OnInit {
             }
         }
     }
+
+    async updateStatus(response: any, status: 'accepted' | 'negotiating') {
+        let message = '';
+        if (status === 'negotiating') {
+            const result = prompt('Enter your message to the vendor (e.g., asking for a lower price or changes):');
+            if (result === null) return; // Cancelled
+            message = result;
+        } else if (status === 'accepted') {
+            if (!confirm(`Are you sure you want to accept this quote for $${response.price}?`)) return;
+        }
+
+        try {
+            const user = this.authService.currentUser();
+            if (!user) return;
+            const token = await user.getIdToken();
+
+            const res = await fetch(`${environment.apiUrl}/quotes/${this.quoteId}/responses/${response.vendorId}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ status, message })
+            });
+
+            if (res.ok) {
+                alert('Status updated successfully!');
+                this.ngOnInit(); // Reload
+            } else {
+                alert('Failed to update status.');
+            }
+        } catch (error) {
+            console.error('Error updating status:', error);
+            alert('Error updating status.');
+        }
+    }
 }

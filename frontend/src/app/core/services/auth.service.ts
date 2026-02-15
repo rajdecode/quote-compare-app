@@ -134,4 +134,18 @@ export class AuthService {
         }
         return null;
     }
+
+    async getUserProfile(uid: string): Promise<any> {
+        const userRef = doc(this.db, 'users', uid);
+        const docSnap = await getDoc(userRef);
+        if (docSnap.exists()) {
+            return docSnap.data();
+        }
+        return null;
+    }
+
+    async updateVendorProfile(uid: string, data: any) {
+        const userRef = doc(this.db, 'users', uid);
+        await setDoc(userRef, data, { merge: true });
+    }
 }

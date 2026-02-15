@@ -48,7 +48,7 @@ const getDb = () => {
 
 // Create a new quote request
 exports.createQuote = async (req, res) => {
-    const { serviceType, postalCode, details, email } = req.body;
+    const { serviceType, postalCode, suburb, details, email } = req.body;
 
     // Determine user or guest
     let buyerId = 'guest';
@@ -68,6 +68,7 @@ exports.createQuote = async (req, res) => {
         contactEmail,
         serviceType,
         postalCode,
+        suburb: suburb || '', // Optional/Safe default
         details,
         status: 'open',
         createdAt: new Date() // Use JS Date for compatibility
@@ -153,7 +154,22 @@ exports.getQuotes = async (req, res) => {
                     });
                 });
 
-                const filteredQuotes = filterQuotesByPlan(quotes, req.user);
+                // Fetch full User Profile for Vendor to get custom fields (serviceAreas etc)
+                // rq.user only has basic info from middleware usually. 
+                // We need to ensure we have the filtering fields. 
+                // Ideally middleware populates it, but if not, we might need to fetch it here or assume middleware does it.
+                // For now, assuming middleware or previous auth step passed it. 
+                // IF NOT, we should fetch it.
+                // Let's fetch it for safety if role is vendor.
+                let filterUser = req.user;
+                if (req.user.role === 'vendor') {
+                    const userDoc = await admin.firestore().collection('users').doc(req.user.uid).get();
+                    if (userDoc.exists) {
+                        filterUser = { ...req.user, ...userDoc.data() };
+                    }
+                }
+
+                const filteredQuotes = filterQuotesByPlan(quotes, filterUser);
                 return res.status(200).json(filteredQuotes);
             }
         } catch (dbError) {
@@ -190,27 +206,51 @@ exports.getQuotes = async (req, res) => {
     }
 };
 
-// Helper: Filter quotes based on Vendor Plan
+// Helper: Filter quotes based on Vendor Profile & Plan
 const filterQuotesByPlan = (quotes, user) => {
     if (user.role !== 'vendor') return quotes;
 
-    const plan = user.plan || ''; // Default to free/none if field missing
-
-    // Trial: See all? Rules say "Trial closes... no additional access". 
-    // Interpretation: Trial can SEE all, but Response is limited. 
-    // OR: Trial acts like Pro until expired/limit reached.
-    // User said: "Trial closes... no additional access". 
-    // Let's hide specific ones if limit reached? No, probably blocking response is better UX + Blur/Lock UI.
-    // For now, Trial sees all.
-
+    // 1. Plan Limits (Basic vs Pro)
+    // Basic: Heat Pumps and Batteries only
+    const plan = user.plan || '';
     if (plan === 'basic') {
-        // Basic: Heat Pumps and Batteries only
         const allowedTypes = ['heat-pump', 'battery'];
-        return quotes.filter(q => allowedTypes.includes(q.serviceType));
+        quotes = quotes.filter(q => allowedTypes.includes(q.serviceType));
     }
 
-    // Pro: All access
-    return quotes;
+    // 2. Profile Filtering (Location & Services)
+    // If vendor has configured settings, filter strictly.
+    // If NO settings (legacy/new vendor), maybe show all? 
+    // Decision: If settings exist, use them. If not, show all (or maybe show all matching plan).
+    // Let's assume emptiness means "Global/All" for now to avoid empty dashboards on start.
+
+    // Check if ANY filter is set
+    const hasLocationFilter = (user.servicePostcodes && user.servicePostcodes.length > 0) ||
+        (user.serviceSuburbs && user.serviceSuburbs.length > 0);
+    const hasServiceFilter = (user.servicesOffered && user.servicesOffered.length > 0);
+
+    if (!hasLocationFilter && !hasServiceFilter) {
+        return quotes; // No filters set, return plan-filtered quotes
+    }
+
+    return quotes.filter(q => {
+        // Location Match (OR logic: Postcode OR Suburb)
+        let locationMatch = true; // Default to true if no location filter set
+        if (hasLocationFilter) {
+            const postcodeMatch = user.servicePostcodes?.includes(q.postalCode);
+            // Case-insensitive suburb match
+            const suburbMatch = user.serviceSuburbs?.some(s => s.toLowerCase() === (q.suburb || '').toLowerCase());
+            locationMatch = postcodeMatch || suburbMatch;
+        }
+
+        // Service Match (AND logic with Location)
+        let serviceMatch = true; // Default to true if no service filter set
+        if (hasServiceFilter) {
+            serviceMatch = user.servicesOffered.includes(q.serviceType);
+        }
+
+        return locationMatch && serviceMatch;
+    });
 };
 
 // Get single quote by ID (Public/Protected mixed)
@@ -454,5 +494,173 @@ exports.updateResponse = async (req, res) => {
     } catch (error) {
         console.error('Error updating response:', error);
         res.status(500).json({ error: 'Failed to update response' });
+    }
+};
+
+// Update response status (Buyer only) - Accept/Negotiate/Reject
+exports.updateResponseStatus = async (req, res) => {
+    try {
+        const { quoteId, vendorId } = req.params;
+        const { status, message } = req.body; // status: 'accepted', 'negotiating', 'rejected'
+        const buyerId = req.user.uid;
+
+        if (!['accepted', 'negotiating', 'rejected'].includes(status)) {
+            return res.status(400).json({ error: 'Invalid status' });
+        }
+
+        // 1. Try Firestore
+        try {
+            if (admin.apps.length) {
+                const db = admin.firestore();
+                const quoteRef = db.collection('quotes').doc(quoteId);
+
+                await db.runTransaction(async (t) => {
+                    const doc = await t.get(quoteRef);
+                    if (!doc.exists) throw new Error('Quote not found');
+
+                    const data = doc.data();
+
+                    // Verify buyer ownership
+                    if (data.buyerId !== buyerId) throw new Error('Unauthorized');
+
+                    const responses = data.responses || [];
+                    const responseIndex = responses.findIndex(r => r.vendorId === vendorId);
+
+                    if (responseIndex === -1) throw new Error('Response not found');
+
+                    const oldResponse = responses[responseIndex];
+
+                    // Update response status
+                    const updatedResponse = {
+                        ...oldResponse,
+                        status: status,
+                        buyerMessage: message || '',
+                        statusUpdatedAt: new Date()
+                    };
+
+                    responses[responseIndex] = updatedResponse;
+
+                    t.update(quoteRef, { responses });
+                });
+
+                console.log(`✅ Response ${status} in Firestore:`, quoteId);
+                return res.status(200).json({ message: `Quote response ${status}` });
+            }
+        } catch (dbError) {
+            console.warn('❌ Firestore update status failed:', dbError.message);
+            if (dbError.message === 'Unauthorized') return res.status(403).json({ error: 'Unauthorized' });
+        }
+
+        // 2. Local Fallback
+        const localQuotes = dbService.getQuotes();
+        const quote = localQuotes.find(q => q.id === quoteId);
+
+        if (quote) {
+            if (quote.buyerId !== buyerId && !quote.buyerId.startsWith('mock-')) {
+                return res.status(403).json({ error: 'Unauthorized' });
+            }
+
+            const response = quote.responses?.find(r => r.vendorId === vendorId);
+            if (response) {
+                response.status = status;
+                response.buyerMessage = message || '';
+                response.statusUpdatedAt = new Date();
+
+                dbService.updateQuote(quote);
+                res.status(200).json({ message: `Quote response ${status} (Local)` });
+            } else {
+                res.status(404).json({ error: 'Response not found' });
+            }
+        } else {
+            res.status(404).json({ error: 'Quote not found' });
+        }
+
+    } catch (error) {
+        console.error('Error updating response status:', error);
+        res.status(500).json({ error: 'Failed to update response status' });
+    }
+};
+
+// Complete Job (Vendor only) - Upload Invoice URL
+exports.completeJob = async (req, res) => {
+    try {
+        const { quoteId } = req.params;
+        const { invoiceUrl } = req.body;
+        const vendorId = req.user.uid;
+
+        if (!invoiceUrl) {
+            return res.status(400).json({ error: 'Invoice URL is required' });
+        }
+
+        // 1. Try Firestore
+        try {
+            if (admin.apps.length) {
+                const db = admin.firestore();
+                const quoteRef = db.collection('quotes').doc(quoteId);
+
+                await db.runTransaction(async (t) => {
+                    const doc = await t.get(quoteRef);
+                    if (!doc.exists) throw new Error('Quote not found');
+
+                    const data = doc.data();
+                    const responses = data.responses || [];
+                    const responseIndex = responses.findIndex(r => r.vendorId === vendorId);
+
+                    if (responseIndex === -1) throw new Error('Response not found');
+
+                    const oldResponse = responses[responseIndex];
+
+                    if (oldResponse.status !== 'accepted') {
+                        throw new Error('Quote must be accepted before completing');
+                    }
+
+                    // Update response
+                    const updatedResponse = {
+                        ...oldResponse,
+                        status: 'completed',
+                        invoiceUrl: invoiceUrl,
+                        completedAt: new Date()
+                    };
+
+                    responses[responseIndex] = updatedResponse;
+
+                    t.update(quoteRef, { responses });
+                });
+
+                console.log(`✅ Job completed in Firestore:`, quoteId);
+                return res.status(200).json({ message: 'Job completed and invoice saved' });
+            }
+        } catch (dbError) {
+            console.warn('❌ Firestore complete job failed:', dbError.message);
+            if (dbError.message.includes('Quote must be accepted')) return res.status(400).json({ error: dbError.message });
+        }
+
+        // 2. Local Fallback
+        const localQuotes = dbService.getQuotes();
+        const quote = localQuotes.find(q => q.id === quoteId);
+
+        if (quote) {
+            const response = quote.responses?.find(r => r.vendorId === vendorId);
+            if (response) {
+                if (response.status !== 'accepted') {
+                    return res.status(400).json({ error: 'Quote must be accepted before completing' });
+                }
+
+                response.status = 'completed';
+                response.invoiceUrl = invoiceUrl;
+                response.completedAt = new Date();
+
+                dbService.updateQuote(quote);
+                res.status(200).json({ message: 'Job completed (Local)' });
+            } else {
+                res.status(404).json({ error: 'Response not found' });
+            }
+        } else {
+            res.status(404).json({ error: 'Quote not found' });
+        }
+
+    } catch (error) {
+        console.error('Error completing job:', error);
+        res.status(500).json({ error: 'Failed to complete job' });
     }
 };

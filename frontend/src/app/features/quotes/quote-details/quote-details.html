@@ -52,14 +52,39 @@
                 <tbody>
                     @for (response of quote().responses; track $index) {
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <td style="padding: 1rem; color: var(--primary-color); font-weight: 500;">{{ response.vendorName
-                            }}</td>
-                        <td style="padding: 1rem; color: var(--text-dim);">{{ response.message }}</td>
+                        <td style="padding: 1rem; color: var(--primary-color); font-weight: 500;">
+                            {{ response.vendorName }}
+                            @if(response.status) {
+                            <div [class]="'offer-status status-' + response.status"
+                                style="font-size: 0.8rem; margin-top: 4px; display: inline-block; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">
+                                {{ response.status }}
+                            </div>
+                            }
+                        </td>
+                        <td style="padding: 1rem; color: var(--text-dim);">
+                            {{ response.message }}
+                            @if(response.buyerMessage) {
+                            <div
+                                style="margin-top: 8px; padding: 8px; background: rgba(0,0,0,0.05); border-left: 3px solid var(--primary-color); font-size: 0.9rem;">
+                                <strong>Your Note:</strong> {{ response.buyerMessage }}
+                            </div>
+                            }
+                        </td>
                         <td style="padding: 1rem; text-align: right; color: var(--text-dim);">{{ response.createdAt |
                             date:'short' }}</td>
-                        <td
-                            style="padding: 1rem; text-align: right; font-weight: bold; color: #2ecc71; font-size: 1.1rem;">
-                            ${{ response.price }}</td>
+                        <td style="padding: 1rem; text-align: right;">
+                            <div style="font-weight: bold; color: #2ecc71; font-size: 1.1rem; margin-bottom: 0.5rem;">
+                                ${{ response.price }}</div>
+
+                            @if (!response.status || response.status === 'negotiating') {
+                            <div class="offer-actions" style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                                <button class="btn btn-sm btn-primary"
+                                    (click)="updateStatus(response, 'accepted')">Accept</button>
+                                <button class="btn btn-sm btn-secondary"
+                                    (click)="updateStatus(response, 'negotiating')">Renegotiate</button>
+                            </div>
+                            }
+                        </td>
                     </tr>
                     }
                 </tbody>

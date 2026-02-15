@@ -15,6 +15,7 @@ import { environment } from '../../../../environments/environment';
 export class RequestQuote {
     serviceType = 'heat-pump';
     postalCode = '';
+    suburb = '';
     details = '';
     email = '';
     loading = false;
@@ -49,6 +50,7 @@ export class RequestQuote {
                 body: JSON.stringify({
                     serviceType: this.serviceType,
                     postalCode: this.postalCode,
+                    suburb: this.suburb,
                     details: this.details,
                     email: this.email // Send email (backend will prefer auth email if present)
                 })

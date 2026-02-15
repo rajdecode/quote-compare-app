@@ -29,6 +29,10 @@
                 Quotes Sent
                 <span class="badge-count">{{ sentQuotes().length }}</span>
             </button>
+            <button class="tab-btn" [class.active]="activeTab() === 'settings'" (click)="setActiveTab('settings')"
+                style="border: none; background: none; font-size: 1.1rem; font-weight: 600; padding: 0.5rem 1rem; cursor: pointer; border-bottom: 2px solid transparent; color: var(--text-dim); display: flex; align-items: center; gap: 8px;">
+                Settings
+            </button>
         </div>
 
         @if (loading()) {
@@ -88,12 +92,25 @@
                             style="font-size: 1rem; vertical-align: middle; color: #3498db;">check_circle</span>
                         Sent on {{ quote.createdAt | date }}
                     </div>
-                    <button (click)="editQuote(quote.id)" class="btn btn-sm btn-secondary">Edit Quote</button>
+                    <div class="actions">
+                        @if (hasAcceptedResponse(quote)) {
+                        <button (click)="completeJob(quote)" class="btn btn-sm btn-success"
+                            style="margin-right: 0.5rem;">Complete Job</button>
+                        } @else if (isCompleted(quote)) {
+                        <span class="status-badge status-completed">Completed</span>
+                        }
+                        <button (click)="editQuote(quote.id)" class="btn btn-sm btn-secondary">Edit Quote</button>
+                    </div>
                 </div>
             </div>
             }
         </div>
         }
+        }
+
+        <!-- SETTINGS TAB -->
+        @else if (activeTab() === 'settings') {
+        <app-vendor-settings></app-vendor-settings>
         }
     </div>
 
