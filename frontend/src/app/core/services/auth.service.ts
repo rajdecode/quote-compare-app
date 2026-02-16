@@ -99,19 +99,30 @@ export class AuthService {
 
             console.log('AuthService: Supabase Login Success. UID:', data.user.id);
 
-            let role = await this.getUserRole(data.user.id);
+            // Fetch role securely, but fail gracefully if it takes too long or errors
+            let role: string | null = null;
+            try {
+                role = await this.getUserRole(data.user.id);
+            } catch (roleError) {
+                console.warn('AuthService: Error fetching role, will attempt repair or default.', roleError);
+            }
+
             console.log('AuthService: Role fetched:', role);
 
             // Auto-repair: If no profile exists (legacy user or race condition), default to 'buyer'
             if (!role) {
-                console.log('User has no role/profile, defaulting to buyer');
+                console.log('User has no role/profile, defaulting to buyer and attempting repair...');
                 role = 'buyer';
-                await this.saveUserRole(data.user.id, role, data.user.user_metadata['full_name'] || 'User', email);
+                // Fire and forget repair to not block login
+                this.saveUserRole(data.user.id, role, data.user.user_metadata['full_name'] || 'User', email).catch(err => {
+                    console.error('Auto-repair profile failed:', err);
+                });
             }
 
             this.userRole.set(role);
 
             // Navigation Logic
+            // Wrap navigation in timeout to ensure state settles? No, Angular router is fine.
             if (role === 'buyer') {
                 this.router.navigate(['/buyer']);
             } else if (role === 'vendor') {
