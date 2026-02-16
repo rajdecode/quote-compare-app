@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
@@ -13,19 +13,30 @@ export class AuthService {
 
     authInitialized: Promise<void>;
 
-    constructor(private router: Router) {
-        this.supabase = createClient(environment.supabase.url, environment.supabase.anonKey);
+    constructor(private router: Router, private ngZone: NgZone) {
+        // Disable persistence to rule out localStorage blocking, and autoRefreshToken
+        this.supabase = createClient(environment.supabase.url, environment.supabase.anonKey, {
+            auth: {
+                persistSession: false,
+                autoRefreshToken: false,
+                detectSessionInUrl: false
+            }
+        });
 
         // Initialize the promise AFTER supabase client is created
         this.authInitialized = new Promise<void>((resolve) => {
             // Check active session immediately
             this.supabase.auth.getSession().then(({ data: { session } }) => {
-                this.handleAuthChange(session?.user || null).then(() => resolve());
+                this.ngZone.run(() => {
+                    this.handleAuthChange(session?.user || null).then(() => resolve());
+                });
             });
 
             // Listen for changes
             this.supabase.auth.onAuthStateChange(async (_event, session) => {
-                await this.handleAuthChange(session?.user || null);
+                this.ngZone.run(async () => {
+                    await this.handleAuthChange(session?.user || null);
+                });
             });
         });
     }

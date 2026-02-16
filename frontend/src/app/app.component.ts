@@ -12,7 +12,7 @@ import { FooterComponent } from './core/components/footer/footer.component';
 })
 export class AppComponent {
     constructor() {
-        console.log('QuoteComparr App v1.3.1 - Supabase Auth Fixes (Timeouts Added)');
+        console.log('QuoteComparr App v1.3.5 - Zone.js Fix & No Persistence');
     }
     title = 'frontend';
 }
