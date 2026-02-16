@@ -120,6 +120,18 @@ export class AuthService {
         }
     }
 
+    async updatePassword(password: string) {
+        const { error } = await this.supabase.auth.updateUser({ password });
+        if (error) throw error;
+    }
+
+    async resetPassword(email: string) {
+        const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.origin}/auth/change-password`
+        });
+        if (error) throw error;
+    }
+
     async logout() {
         await this.supabase.auth.signOut();
         this.userRole.set(null);

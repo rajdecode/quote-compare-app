@@ -2,8 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../../../core/config/firebase.config';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
     selector: 'app-forgot-password',
@@ -44,6 +43,7 @@ import { auth } from '../../../core/config/firebase.config';
     styleUrls: ['../login/login.scss'] // Reuse login styles
 })
 export class ForgotPassword {
+    authService = inject(AuthService);
     email = '';
     loading = signal(false);
     errorMessage = signal('');
@@ -62,25 +62,16 @@ export class ForgotPassword {
 
         try {
             console.log('Forgot Password: Sending reset email to', this.email);
-            await sendPasswordResetEmail(auth, this.email);
+            // AuthService needs to have this method implemented for Supabase
+            await this.authService.resetPassword(this.email);
             console.log('Forgot Password: Email sent successfully.');
             this.successMessage.set('Check your email for the password reset link.');
         } catch (error: any) {
             console.error('Forgot Password: Reset error:', error);
-            console.error('Error Code:', error.code);
-            console.error('Error Message:', error.message);
-            this.errorMessage.set(this.getErrorMessage(error.code));
+            this.errorMessage.set(error.message || 'Failed to send reset email. Please try again.');
         } finally {
             this.loading.set(false);
             console.log('Forgot Password: Loading set to false.');
-        }
-    }
-
-    getErrorMessage(code: string): string {
-        switch (code) {
-            case 'auth/user-not-found': return 'No user found with this email.';
-            case 'auth/invalid-email': return 'Invalid email address.';
-            default: return 'Failed to send reset email. Please try again.';
         }
     }
 }

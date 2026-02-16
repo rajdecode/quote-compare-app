@@ -45,7 +45,7 @@ export class VendorSettings implements OnInit {
             // Best practice: AuthService should probably expose a way to get profile data.
             // But for speed, let's fetch it here using a helper or just assume we add a method to AuthService.
 
-            const profile = await this.authService.getUserProfile(user.uid);
+            const profile = await this.authService.getUserProfile(user.id);
 
             if (profile) {
                 this.servicePostcodes = (profile.servicePostcodes || []).join(', ');
@@ -110,7 +110,7 @@ export class VendorSettings implements OnInit {
             const services = Array.from(this.servicesOffered);
             const states = Array.from(this.serviceStates);
 
-            await this.authService.updateVendorProfile(user.uid, {
+            await this.authService.updateVendorProfile(user.id, {
                 servicePostcodes: postcodes,
                 serviceSuburbs: suburbs,
                 excludedPostcodes: exPostcodes,

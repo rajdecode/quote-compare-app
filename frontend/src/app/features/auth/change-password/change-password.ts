@@ -2,7 +2,6 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
-import { updatePassword, EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 
 @Component({
     selector: 'app-change-password',
@@ -15,11 +14,6 @@ import { updatePassword, EmailAuthProvider, reauthenticateWithCredential } from 
             <p class="subtitle">Secure your account with a new password.</p>
             
             <form (ngSubmit)="onSubmit()">
-                <div class="form-group">
-                    <label for="currentPassword">Current Password (Required)</label>
-                    <input type="password" id="currentPassword" [(ngModel)]="currentPassword" name="currentPassword" required>
-                </div>
-
                 <div class="form-group">
                     <label for="newPassword">New Password</label>
                     <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword" required minlength="6">
@@ -65,7 +59,6 @@ import { updatePassword, EmailAuthProvider, reauthenticateWithCredential } from 
 })
 export class ChangePassword {
     authService = inject(AuthService);
-    currentPassword = '';
     newPassword = '';
     confirmPassword = '';
     loading = signal(false);
@@ -83,32 +76,14 @@ export class ChangePassword {
             return;
         }
 
-        const user = this.authService.currentUser();
-        if (!user || !user.email) {
-            this.errorMessage.set('No user logged in.');
-            this.loading.set(false);
-            return;
-        }
-
         try {
-            // 1. Re-authenticate
-            const credential = EmailAuthProvider.credential(user.email, this.currentPassword);
-            await reauthenticateWithCredential(user, credential);
-
-            // 2. Update Password
-            await updatePassword(user, this.newPassword);
-
+            await this.authService.updatePassword(this.newPassword);
             this.successMessage.set('Password updated successfully!');
-            this.currentPassword = '';
             this.newPassword = '';
             this.confirmPassword = '';
         } catch (error: any) {
             console.error('Update password error:', error);
-            if (error.code === 'auth/wrong-password') {
-                this.errorMessage.set('Incorrect current password.');
-            } else {
-                this.errorMessage.set('Failed to update password. Please try again.');
-            }
+            this.errorMessage.set(error.message || 'Failed to update password. Please try again.');
         } finally {
             this.loading.set(false);
         }
