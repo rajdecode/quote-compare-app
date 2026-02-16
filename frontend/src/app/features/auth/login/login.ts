@@ -40,4 +40,15 @@ export class Login {
     this.loading = false;
     this.errorMessage = 'Login cancelled by user.';
   }
+
+  async testConnection() {
+    this.errorMessage = 'Testing Supabase Connection...';
+    try {
+      const { data, error } = await this.authService.getClient().from('profiles').select('count', { count: 'exact', head: true });
+      if (error) throw error;
+      this.errorMessage = 'Connection OK! Supabase is reachable.';
+    } catch (err: any) {
+      this.errorMessage = 'Connection Failed: ' + (err.message || JSON.stringify(err));
+    }
+  }
 }
