@@ -88,11 +88,12 @@ export class AuthService {
 
     async login(email: string, password: string) {
         try {
-            console.log('AuthService: Logging in...');
-            const { data, error } = await this.supabase.auth.signInWithPassword({
-                email,
-                password
-            });
+            console.log('AuthService: Logging in... (v2-timeout)');
+            // TIMEOUT WRAPPER: Force unblock after 10s if Supabase hangs
+            const { data, error } = await Promise.race([
+                this.supabase.auth.signInWithPassword({ email, password }),
+                new Promise<any>((_, reject) => setTimeout(() => reject(new Error('Login timed out. Please check your connection.')), 10000))
+            ]);
 
             if (error) throw error;
             if (!data.user) throw new Error('Login failed');
@@ -102,7 +103,11 @@ export class AuthService {
             // Fetch role securely, but fail gracefully if it takes too long or errors
             let role: string | null = null;
             try {
-                role = await this.getUserRole(data.user.id);
+                // Short timeout for role fetch (3s)
+                role = await Promise.race([
+                    this.getUserRole(data.user.id),
+                    new Promise<string | null>(resolve => setTimeout(() => resolve(null), 3000))
+                ]);
             } catch (roleError) {
                 console.warn('AuthService: Error fetching role, will attempt repair or default.', roleError);
             }
@@ -122,7 +127,6 @@ export class AuthService {
             this.userRole.set(role);
 
             // Navigation Logic
-            // Wrap navigation in timeout to ensure state settles? No, Angular router is fine.
             if (role === 'buyer') {
                 this.router.navigate(['/buyer']);
             } else if (role === 'vendor') {

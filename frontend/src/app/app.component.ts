@@ -11,5 +11,8 @@ import { FooterComponent } from './core/components/footer/footer.component';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+    constructor() {
+        console.log('QuoteComparr App v1.3.1 - Supabase Auth Fixes (Timeouts Added)');
+    }
     title = 'frontend';
 }
