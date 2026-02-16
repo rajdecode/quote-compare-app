@@ -3,12 +3,13 @@
     background: rgba(255, 255, 255, 0.5);
     border-radius: 12px;
     margin-bottom: 2rem;
+    margin-top: 100px; // Fix navbar overlap
 
     h3 {
         margin-bottom: 0.5rem;
         color: var(--text-color);
     }
-    
+
     .subtitle {
         margin-bottom: 1.5rem;
         color: var(--text-dim);
@@ -17,7 +18,7 @@
 
     .form-group {
         margin-bottom: 1.5rem;
-        
+
         label {
             display: block;
             margin-bottom: 0.25rem;
@@ -34,10 +35,10 @@
         .input-light {
             width: 100%;
             padding: 0.8rem;
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.8);
-            
+
             &:focus {
                 outline: none;
                 border-color: var(--primary-color);
@@ -57,10 +58,10 @@
             cursor: pointer;
             padding: 0.5rem;
             border-radius: 6px;
-            background: rgba(255,255,255,0.4);
-            
+            background: rgba(255, 255, 255, 0.4);
+
             &:hover {
-                background: rgba(255,255,255,0.6);
+                background: rgba(255, 255, 255, 0.6);
             }
         }
     }
@@ -70,7 +71,7 @@
         align-items: center;
         gap: 1rem;
         margin-top: 2rem;
-        
+
         .success-msg {
             color: #2ecc71; // Green
             font-weight: 500;
@@ -80,6 +81,13 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

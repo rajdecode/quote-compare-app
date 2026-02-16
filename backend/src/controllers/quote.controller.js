@@ -232,7 +232,8 @@ const filterQuotesByPlan = (quotes, user) => {
 
     // Check if ANY filter is set
     const hasLocationFilter = (user.servicePostcodes && user.servicePostcodes.length > 0) ||
-        (user.serviceSuburbs && user.serviceSuburbs.length > 0);
+        (user.serviceSuburbs && user.serviceSuburbs.length > 0) ||
+        (user.serviceStates && user.serviceStates.length > 0);
     const hasServiceFilter = (user.servicesOffered && user.servicesOffered.length > 0);
 
     if (!hasLocationFilter && !hasServiceFilter) {
@@ -240,13 +241,21 @@ const filterQuotesByPlan = (quotes, user) => {
     }
 
     return quotes.filter(q => {
-        // Location Match (OR logic: Postcode OR Suburb)
+        // Location Match (OR logic: Postcode OR Suburb OR State)
         let locationMatch = true; // Default to true if no location filter set
         if (hasLocationFilter) {
             const postcodeMatch = user.servicePostcodes?.includes(q.postalCode);
             // Case-insensitive suburb match
             const suburbMatch = user.serviceSuburbs?.some(s => s.toLowerCase() === (q.suburb || '').toLowerCase());
-            locationMatch = postcodeMatch || suburbMatch;
+
+            // State Match
+            let stateMatch = false;
+            if (user.serviceStates && user.serviceStates.length > 0) {
+                const quoteState = getStateFromPostcode(q.postalCode);
+                stateMatch = user.serviceStates.includes(quoteState);
+            }
+
+            locationMatch = postcodeMatch || suburbMatch || stateMatch;
         }
 
         // Service Match (AND logic with Location)
@@ -257,6 +266,23 @@ const filterQuotesByPlan = (quotes, user) => {
 
         return locationMatch && serviceMatch;
     });
+};
+
+// Helper: Get State from Postcode (AU Simple)
+const getStateFromPostcode = (postcode) => {
+    const pc = parseInt(postcode, 10);
+    if (!pc) return 'UNKNOWN';
+
+    if ((pc >= 1000 && pc <= 2599) || (pc >= 2619 && pc <= 2899) || (pc >= 2921 && pc <= 2999)) return 'NSW';
+    if ((pc >= 200 && pc <= 299) || (pc >= 2600 && pc <= 2618) || (pc >= 2900 && pc <= 2920)) return 'ACT';
+    if ((pc >= 3000 && pc <= 3999) || (pc >= 8000 && pc <= 8999)) return 'VIC';
+    if ((pc >= 4000 && pc <= 4999) || (pc >= 9000 && pc <= 9999)) return 'QLD';
+    if ((pc >= 5000 && pc <= 5799) || (pc >= 5800 && pc <= 5999)) return 'SA';
+    if ((pc >= 6000 && pc <= 6797) || (pc >= 6800 && pc <= 6999)) return 'WA';
+    if ((pc >= 7000 && pc <= 7799) || (pc >= 7800 && pc <= 7999)) return 'TAS';
+    if ((pc >= 800 && pc <= 899) || (pc >= 900 && pc <= 999)) return 'NT';
+
+    return 'UNKNOWN';
 };
 
 // Get single quote by ID (Public/Protected mixed)

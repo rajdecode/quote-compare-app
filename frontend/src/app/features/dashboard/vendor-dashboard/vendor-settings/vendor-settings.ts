@@ -24,6 +24,10 @@ export class VendorSettings implements OnInit {
         { id: 'battery', label: 'Batteries' }
     ];
 
+    // Available States
+    availableStates = ['NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT'];
+    serviceStates: Set<string> = new Set();
+
     servicesOffered: Set<string> = new Set();
     loading = signal<boolean>(false);
     successMessage = signal<string>('');
@@ -38,7 +42,6 @@ export class VendorSettings implements OnInit {
             // Best practice: AuthService should probably expose a way to get profile data.
             // But for speed, let's fetch it here using a helper or just assume we add a method to AuthService.
 
-            // Actually, let's add `getUserProfile` to AuthService to act as a single source of truth.
             const profile = await this.authService.getUserProfile(user.uid);
 
             if (profile) {
@@ -47,6 +50,9 @@ export class VendorSettings implements OnInit {
 
                 if (profile.servicesOffered) {
                     this.servicesOffered = new Set(profile.servicesOffered);
+                }
+                if (profile.serviceStates) {
+                    this.serviceStates = new Set(profile.serviceStates);
                 }
             }
         }
@@ -57,6 +63,14 @@ export class VendorSettings implements OnInit {
             this.servicesOffered.delete(serviceId);
         } else {
             this.servicesOffered.add(serviceId);
+        }
+    }
+
+    toggleState(state: string) {
+        if (this.serviceStates.has(state)) {
+            this.serviceStates.delete(state);
+        } else {
+            this.serviceStates.add(state);
         }
     }
 
@@ -72,11 +86,13 @@ export class VendorSettings implements OnInit {
             const postcodes = this.servicePostcodes.split(',').map(s => s.trim()).filter(s => s.length > 0);
             const suburbs = this.serviceSuburbs.split(',').map(s => s.trim()).filter(s => s.length > 0);
             const services = Array.from(this.servicesOffered);
+            const states = Array.from(this.serviceStates);
 
             await this.authService.updateVendorProfile(user.uid, {
                 servicePostcodes: postcodes,
                 serviceSuburbs: suburbs,
-                servicesOffered: services
+                servicesOffered: services,
+                serviceStates: states
             });
 
             this.successMessage.set('Settings saved successfully!');
