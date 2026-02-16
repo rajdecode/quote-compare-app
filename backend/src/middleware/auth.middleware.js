@@ -1,4 +1,24 @@
-const supabase = require('../config/supabase');
+const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+// Create a scoped client helper to avoid singleton state issues
+const getSupabase = () => {
+    return createClient(supabaseUrl, supabaseKey, {
+        auth: {
+            autoRefreshToken: false,
+            persistSession: false,
+            detectSessionInUrl: false
+        }
+    });
+};
+
+// Global client for other utils (profiles etc) - we can still use the singleton from config if we want, 
+// but for AUTH verification, we want a clean state.
+// Let's rely on the config one for non-auth stuff if we import it, BUT here we need fresh for auth checks.
+const globalSupabase = require('../config/supabase');
 
 // Middleware to verify Supabase ID Token (Optional for guests)
 exports.verifyTokenOptional = async (req, res, next) => {
@@ -12,18 +32,20 @@ exports.verifyTokenOptional = async (req, res, next) => {
     const token = authHeader.split('Bearer ')[1];
 
     try {
+        // Use fresh client
+        const supabase = getSupabase();
         const { data: { user }, error } = await supabase.auth.getUser(token);
 
         if (error || !user) {
-            req.user = null; // Treat invalid token as guest
+            req.user = null;
             return next();
         }
 
         req.user = user;
-        req.user.uid = user.id; // Map Supabase ID
+        req.user.uid = user.id;
 
         // Fetch user role from profiles
-        const { data: profile } = await supabase
+        const { data: profile } = await globalSupabase
             .from('profiles')
             .select('role')
             .eq('id', user.id)
@@ -32,11 +54,9 @@ exports.verifyTokenOptional = async (req, res, next) => {
         if (profile) {
             req.user.role = profile.role;
         } else {
-            // Fallback or guest logic
-            req.user.role = 'guest'; // or 'buyer' default?
+            req.user.role = 'guest';
         }
 
-        // Mock Role for Dev/Testing if passed in header (Optional)
         if (req.headers['x-mock-role']) {
             req.user.role = req.headers['x-mock-role'];
         }
@@ -59,19 +79,24 @@ exports.verifyToken = async (req, res, next) => {
     const token = authHeader.split('Bearer ')[1];
 
     try {
+        // Debug logging
+        // console.log('Verifying token:', token.substring(0, 20) + '...');
+
+        // Use fresh client for auth check
+        const supabase = getSupabase();
         const { data: { user }, error } = await supabase.auth.getUser(token);
 
         if (error || !user) {
             console.error('Token verification failed:', error);
-            if (token) console.error('Token length:', token.length);
+            console.error('Token start:', token.substring(0, 20));
             return res.status(403).json({ message: 'Unauthorized: Invalid token' });
         }
 
         req.user = user;
         req.user.uid = user.id;
 
-        // Fetch user role from profiles
-        const { data: profile, error: profileError } = await supabase
+        // Fetch user role
+        const { data: profile, error: profileError } = await globalSupabase
             .from('profiles')
             .select('role')
             .eq('id', user.id)
@@ -84,7 +109,6 @@ exports.verifyToken = async (req, res, next) => {
             req.user.role = 'buyer';
         }
 
-        // Mock Role (Dev Only - remove in strict prod if needed, but useful for now)
         if (req.headers['x-mock-role']) {
             req.user.role = req.headers['x-mock-role'];
         }
