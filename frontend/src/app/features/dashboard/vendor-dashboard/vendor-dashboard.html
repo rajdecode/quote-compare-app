@@ -27,14 +27,14 @@
                 New Requests
                 <span class="badge-count" [class.highlight]="newRequests().length > 0">{{ newRequests().length }}</span>
             </button>
+            <button class="tab-btn" [class.active]="activeTab() === 'sent'" (click)="setActiveTab('sent')">
+                Awaiting Response
+                <span class="badge-count">{{ sentQuotes().length }}</span>
+            </button>
             <button class="tab-btn" [class.active]="activeTab() === 'action'" (click)="setActiveTab('action')">
                 Action Required
                 <span class="badge-count" [class.alert]="actionRequiredQuotes().length > 0">{{
                     actionRequiredQuotes().length }}</span>
-            </button>
-            <button class="tab-btn" [class.active]="activeTab() === 'sent'" (click)="setActiveTab('sent')">
-                Awaiting Response
-                <span class="badge-count">{{ sentQuotes().length }}</span>
             </button>
             <button class="tab-btn" [class.active]="activeTab() === 'completed'" (click)="setActiveTab('completed')">
                 Completed

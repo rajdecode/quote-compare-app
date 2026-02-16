@@ -40,28 +40,4 @@ export class Login {
     this.loading = false;
     this.errorMessage = 'Login cancelled by user.';
   }
-
-  async testConnection() {
-    this.errorMessage = 'Testing (Raw Fetch)...';
-    try {
-      const supabaseUrl = 'https://ilichjxywepoedtzfvyj.supabase.co';
-      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsaWNoanh5d2Vwb2VkdHpmdnlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEyNTY0NDMsImV4cCI6MjA4NjgzMjQ0M30.6rKfV1C4MCbZEK0D0EeodkBildzVNZwlvhIZbmVEYps';
-
-      const response = await fetch(`${supabaseUrl}/rest/v1/profiles?select=count`, {
-        headers: {
-          'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`
-        }
-      });
-
-      if (!response.ok) throw new Error(`Status: ${response.status} ${response.statusText}`);
-
-      const text = await response.text();
-      console.log('Raw Fetch Result:', text);
-      this.errorMessage = `Connection OK! (Raw: ${text})`;
-    } catch (err: any) {
-      console.error('Raw Fetch Error:', err);
-      this.errorMessage = 'Connection Failed: ' + (err.message || JSON.stringify(err));
-    }
-  }
 }

@@ -14,12 +14,12 @@ export class AuthService {
     authInitialized: Promise<void>;
 
     constructor(private router: Router, private ngZone: NgZone) {
-        // Disable persistence to rule out localStorage blocking, and autoRefreshToken
+        // Re-enable persistence now that Zone.js issue is fixed
         this.supabase = createClient(environment.supabase.url, environment.supabase.anonKey, {
             auth: {
-                persistSession: false,
-                autoRefreshToken: false,
-                detectSessionInUrl: false
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
             }
         });
 
