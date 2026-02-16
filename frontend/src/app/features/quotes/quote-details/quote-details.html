@@ -17,18 +17,19 @@
     } @else {
     <div class="quote-detail-layout glass-panel" style="padding: 2rem;">
         <div class="detail-header">
-            <h1>{{ quote().serviceType | titlecase }} Quote</h1>
-            <span class="status-badge status-{{quote().status.toLowerCase()}}">{{ quote().status }}</span>
+            <h1>{{ quote().service_type | titlecase }} Quote</h1>
+            <span class="status-badge status-{{(quote().status || 'open').toLowerCase()}}">{{ quote().status || 'Open'
+                }}</span>
         </div>
 
         <div class="detail-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
             <div class="info-group">
                 <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Postal Code</label>
-                <span style="font-size: 1.1rem;">{{ quote().postalCode }}</span>
+                <span style="font-size: 1.1rem;">{{ quote().postal_code }}</span>
             </div>
             <div class="info-group">
                 <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Date Posted</label>
-                <span style="font-size: 1.1rem;">{{ quote().createdAt | date:'medium' }}</span>
+                <span style="font-size: 1.1rem;">{{ quote().created_at | date:'medium' }}</span>
             </div>
             <div class="info-group" style="grid-column: 1 / -1;">
                 <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Details</label>
@@ -55,7 +56,7 @@
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <td style="padding: 1rem; color: var(--primary-color); font-weight: 500; position: relative;">
                             <div style="display: flex; align-items: center; gap: 8px;">
-                                {{ response.vendorName }}
+                                {{ response.vendor_name }}
                                 @if (response.history?.length) {
                                 <div class="history-icon-wrapper">
                                     <span class="material-icons history-icon">info</span>
@@ -93,11 +94,11 @@
                             @if(response.buyerMessage) {
                             <div
                                 style="margin-top: 8px; padding: 8px; background: rgba(0,0,0,0.05); border-left: 3px solid var(--primary-color); font-size: 0.9rem;">
-                                <strong>Your Note:</strong> {{ response.buyerMessage }}
+                                <strong>Your Note:</strong> {{ response.buyer_message || response.buyerMessage }}
                             </div>
                             }
                         </td>
-                        <td style="padding: 1rem; text-align: right; color: var(--text-dim);">{{ response.createdAt |
+                        <td style="padding: 1rem; text-align: right; color: var(--text-dim);">{{ response.created_at |
                             date:'short' }}</td>
                         <td style="padding: 1rem; text-align: right;">
                             <div style="font-weight: bold; color: #2ecc71; font-size: 1.1rem; margin-bottom: 0.5rem;">

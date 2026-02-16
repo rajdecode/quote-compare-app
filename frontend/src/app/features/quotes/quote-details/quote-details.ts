@@ -60,7 +60,7 @@ export class QuoteDetails implements OnInit {
             const token = await this.authService.getToken();
             if (!token) return;
 
-            const res = await fetch(`${environment.apiUrl}/quotes/${this.quoteId}/responses/${response.vendorId}/status`, {
+            const res = await fetch(`${environment.apiUrl}/quotes/${this.quoteId}/responses/${response.vendor_id}/status`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

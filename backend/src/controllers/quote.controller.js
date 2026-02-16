@@ -178,7 +178,17 @@ exports.getQuoteById = async (req, res) => {
 
         const { data: quote, error } = await supabase
             .from('quotes')
-            .select('*, quote_responses(*)')
+            .select(`
+                *,
+                quote_responses (
+                    *,
+                    profiles (
+                        company_name,
+                        contact_name,
+                        email
+                    )
+                )
+            `)
             .eq('id', id)
             .single();
 
@@ -186,10 +196,14 @@ exports.getQuoteById = async (req, res) => {
             return res.status(404).json({ error: 'Quote not found' });
         }
 
-        // Map quote_responses to responses
+        // Map quote_responses to responses and flatten vendor info
         const responseData = {
             ...quote,
-            responses: quote.quote_responses || []
+            responses: (quote.quote_responses || []).map(r => ({
+                ...r,
+                vendor_name: r.profiles?.company_name || r.profiles?.contact_name || 'Unknown Vendor',
+                vendor_email: r.profiles?.email
+            }))
         };
 
         // Security/Privacy Filter would go here
@@ -313,7 +327,7 @@ exports.updateResponseStatus = async (req, res) => {
             .from('quote_responses')
             .update({
                 status: status,
-                // buyerMessage: message || '' // Note: Add buyer_message to schema if needed, simplified for now
+                buyer_message: message || ''
             })
             .eq('quote_id', quoteId)
             .eq('vendor_id', vendorId);
