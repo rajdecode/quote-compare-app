@@ -20,13 +20,22 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary btn-block" [disabled]="loading">
-                    {{ loading ? 'Signing In...' : 'Sign In' }}
+                <button type="submit" class="btn btn-primary btn-block" [disabled]="loading" *ngIf="!loading">
+                    Sign In
                 </button>
+                <div *ngIf="loading" class="loading-state">
+                    <button class="btn btn-primary btn-block" disabled>
+                        Signing In...
+                    </button>
+                    <button type="button" class="btn btn-link btn-sm cancel-btn" (click)="cancel()">
+                        Cancel
+                    </button>
+                </div>
             </div>
 
             <div class="auth-footer">
                 <p>Don't have an account? <a routerLink="/register">Register here</a></p>
+                <p class="version-text">v1.3.2</p>
             </div>
 
             <div *ngIf="errorMessage" class="error-message">

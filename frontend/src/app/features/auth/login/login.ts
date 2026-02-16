@@ -35,4 +35,9 @@ export class Login {
       this.loading = false;
     }
   }
+
+  cancel() {
+    this.loading = false;
+    this.errorMessage = 'Login cancelled by user.';
+  }
 }
