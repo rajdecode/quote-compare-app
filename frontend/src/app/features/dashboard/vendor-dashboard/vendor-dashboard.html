@@ -33,7 +33,7 @@
                     actionRequiredQuotes().length }}</span>
             </button>
             <button class="tab-btn" [class.active]="activeTab() === 'sent'" (click)="setActiveTab('sent')">
-                Quotes Sent
+                Awaiting Response
                 <span class="badge-count">{{ sentQuotes().length }}</span>
             </button>
             <button class="tab-btn" [class.active]="activeTab() === 'completed'" (click)="setActiveTab('completed')">
@@ -146,12 +146,12 @@
         }
         }
 
-        <!-- QUOTES SENT TAB -->
+        <!-- AWAITING RESPONSE TAB -->
         @else if (activeTab() === 'sent') {
         @if (sentQuotes().length === 0) {
         <div class="empty-state glass-panel">
-            <span class="material-icons">send</span>
-            <p>You haven't sent any quotes yet.</p>
+            <span class="material-icons">hourglass_empty</span>
+            <p>No quotes awaiting buyer response.</p>
         </div>
         } @else {
         <div class="table-container glass-panel">
@@ -171,20 +171,11 @@
                         <td>{{ quote.serviceType | titlecase }}</td>
                         <td>{{ quote.postalCode }}</td>
                         <td>
-                            @if (isCompleted(quote)) {
-                            <span class="status-badge status-completed">Completed</span>
-                            } @else if (hasAcceptedResponse(quote)) {
-                            <span class="status-badge status-accepted">Accepted</span>
-                            } @else {
                             <span class="status-badge status-responded">Sent</span>
-                            }
                         </td>
                         <td>{{ quote.createdAt | date:'shortDate' }}</td>
                         <td>
                             <div class="action-buttons" style="display: flex; gap: 8px;">
-                                @if (hasAcceptedResponse(quote)) {
-                                <button (click)="completeJob(quote)" class="btn btn-sm btn-success">Complete</button>
-                                }
                                 <button (click)="editQuote(quote.id)" class="btn btn-sm btn-secondary">Edit</button>
                             </div>
                         </td>

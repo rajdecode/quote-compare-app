@@ -63,8 +63,9 @@ export class VendorDashboard {
           // Calculate Quotes Sent & Filter Lists
           const vendorId = user.uid;
 
+          // Awaiting Response: Only 'responded' status (Mutually exclusive from Action Required)
           this.sentQuotes.set(data.filter((q: any) =>
-            q.responses?.some((r: any) => r.vendorId === vendorId)
+            q.responses?.some((r: any) => r.vendorId === vendorId && r.status === 'responded')
           ));
 
           this.newRequests.set(data.filter((q: any) =>
