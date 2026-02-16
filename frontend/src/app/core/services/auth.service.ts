@@ -11,22 +11,24 @@ export class AuthService {
     currentUser = signal<User | null>(null);
     userRole = signal<string | null>(null);
 
+    authInitialized: Promise<void>;
+
     constructor(private router: Router) {
         this.supabase = createClient(environment.supabase.url, environment.supabase.anonKey);
+
+        // Initialize the promise AFTER supabase client is created
+        this.authInitialized = new Promise<void>((resolve) => {
+            // Check active session immediately
+            this.supabase.auth.getSession().then(({ data: { session } }) => {
+                this.handleAuthChange(session?.user || null).then(() => resolve());
+            });
+
+            // Listen for changes
+            this.supabase.auth.onAuthStateChange(async (_event, session) => {
+                await this.handleAuthChange(session?.user || null);
+            });
+        });
     }
-
-    // Promise that resolves when auth state is first determined
-    authInitialized = new Promise<void>((resolve) => {
-        // Check active session immediately
-        this.supabase.auth.getSession().then(({ data: { session } }) => {
-            this.handleAuthChange(session?.user || null).then(() => resolve());
-        });
-
-        // Listen for changes
-        this.supabase.auth.onAuthStateChange(async (_event, session) => {
-            await this.handleAuthChange(session?.user || null);
-        });
-    });
 
     // Helper to get current session token for API calls
     async getToken(): Promise<string | null> {
