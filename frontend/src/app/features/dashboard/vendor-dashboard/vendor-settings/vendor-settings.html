@@ -2,39 +2,53 @@
     <h3>Service Settings</h3>
     <p class="subtitle">Control which leads you receive.</p>
 
-    <div class="form-group">
-        <label>Service Postcodes</label>
-        <p class="hint">Comma separated (e.g. 2000, 2001, 2010)</p>
-        <input type="text" [(ngModel)]="servicePostcodes" placeholder="2000, 2001..." class="input-light">
-    </div>
+    <div class="settings-group">
+        <h4><span class="material-icons">map</span> Location Coverage</h4>
 
-    <div class="form-group">
-        <label>Service Suburbs</label>
-        <p class="hint">Comma separated (e.g. Sydney, Surry Hills)</p>
-        <input type="text" [(ngModel)]="serviceSuburbs" placeholder="Sydney, Newtown..." class="input-light">
-    </div>
+        <div class="form-group">
+            <label>Service States (Broad Coverage)</label>
+            <div class="checkbox-grid">
+                <label class="checkbox-label special-option">
+                    <input type="checkbox" [checked]="isAllStatesSelected" (change)="toggleAllStates($event)">
+                    <strong>All Australia</strong>
+                </label>
+                @for (state of availableStates; track state) {
+                <label class="checkbox-label">
+                    <input type="checkbox" [checked]="serviceStates.has(state)" (change)="toggleState(state)">
+                    {{ state }}
+                </label>
+                }
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label>Service States (Covers all postcodes in state)</label>
-        <div class="checkbox-grid">
-            @for (state of availableStates; track state) {
-            <label class="checkbox-label">
-                <input type="checkbox" [checked]="serviceStates.has(state)" (change)="toggleState(state)">
-                {{ state }}
-            </label>
-            }
+        <div class="manual-entry-group">
+            <p class="section-hint">Or specify specific areas (optional additions):</p>
+            <div class="form-row">
+                <div class="form-group" style="flex: 1;">
+                    <label>Service Postcodes</label>
+                    <input type="text" [(ngModel)]="servicePostcodes" placeholder="e.g. 2000, 2001" class="input-light">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Service Suburbs</label>
+                    <input type="text" [(ngModel)]="serviceSuburbs" placeholder="e.g. Sydney, Newtown"
+                        class="input-light">
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="form-group">
-        <label>Services Offered</label>
-        <div class="checkbox-grid">
-            @for (service of availableServices; track service.id) {
-            <label class="checkbox-label">
-                <input type="checkbox" [checked]="servicesOffered.has(service.id)" (change)="toggleService(service.id)">
-                {{ service.label }}
-            </label>
-            }
+    <div class="settings-group">
+        <h4><span class="material-icons">build</span> Services Offered</h4>
+        <div class="form-group">
+            <div class="checkbox-grid">
+                @for (service of availableServices; track service.id) {
+                <label class="checkbox-label">
+                    <input type="checkbox" [checked]="servicesOffered.has(service.id)"
+                        (change)="toggleService(service.id)">
+                    {{ service.label }}
+                </label>
+                }
+            </div>
         </div>
     </div>
 

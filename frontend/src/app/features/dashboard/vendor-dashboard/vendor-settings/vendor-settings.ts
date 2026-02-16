@@ -74,6 +74,18 @@ export class VendorSettings implements OnInit {
         }
     }
 
+    toggleAllStates(event: any) {
+        if (event.target.checked) {
+            this.availableStates.forEach(s => this.serviceStates.add(s));
+        } else {
+            this.serviceStates.clear();
+        }
+    }
+
+    get isAllStatesSelected(): boolean {
+        return this.availableStates.every(s => this.serviceStates.has(s));
+    }
+
     async saveSettings() {
         this.loading.set(true);
         this.successMessage.set('');
