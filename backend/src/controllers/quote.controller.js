@@ -290,7 +290,8 @@ exports.updateResponse = async (req, res) => {
             .update({
                 price: Number(price),
                 message: message,
-                history: newHistory
+                history: newHistory,
+                status: 'responded' // Reset status to responded so it moves to "Awaiting Response"
             })
             .eq('id', existingResponse.id);
 
