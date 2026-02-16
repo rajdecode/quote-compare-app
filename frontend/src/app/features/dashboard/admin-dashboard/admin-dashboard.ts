@@ -46,7 +46,7 @@ export class AdminDashboard {
     if (!user) return;
 
     try {
-      const token = await user.getIdToken();
+      const token = await this.authService.getToken();
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
       // Fetch Users
@@ -74,7 +74,7 @@ export class AdminDashboard {
 
   // Stats Modal Methods
   openStatsModal(user: any) {
-    console.log('AdminDashboard: openStatsModal clicked for', user.uid);
+    console.log('AdminDashboard: openStatsModal clicked for', user.id);
     this.selectedUser.set(user);
     this.statsMode.set('selection');
     this.showStatsModal.set(true);
@@ -119,7 +119,7 @@ export class AdminDashboard {
     try {
       const user = this.authService.currentUser();
       if (!user) return;
-      const token = await user.getIdToken();
+      const token = await this.authService.getToken();
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
       const url = `${environment.apiUrl}/admin/stats/${this.selectedUser().uid}?start=${start}&end=${end}`;
@@ -140,7 +140,7 @@ export class AdminDashboard {
 
     const user = this.authService.currentUser();
     if (!user) return;
-    const token = await user.getIdToken();
+    const token = await this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     const newStatus = currentStatus === 'active' ? 'blocked' : 'active';

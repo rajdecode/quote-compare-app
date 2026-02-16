@@ -28,12 +28,12 @@ export class NavbarComponent {
 
     getInitials(): string {
         const user = this.currentUser();
-        if (!user || !user.displayName) return 'U';
-        return user.displayName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        const name = user?.user_metadata?.['full_name'] || user?.email || 'U';
+        return name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase();
     }
 
     getUserName(): string {
-        return this.currentUser()?.displayName || 'User';
+        return this.currentUser()?.user_metadata?.['full_name'] || this.currentUser()?.email || 'User';
     }
 
     getUserEmail(): string {

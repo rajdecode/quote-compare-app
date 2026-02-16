@@ -28,13 +28,13 @@ export class VendorDashboard {
   hasResponded(quote: any): boolean {
     const user = this.authService.currentUser();
     if (!user || !quote.responses) return false;
-    return quote.responses.some((r: any) => r.vendorId === user.uid);
+    return quote.responses.some((r: any) => r.vendorId === user.id);
   }
 
   getMyResponse(quote: any): any {
     const user = this.authService.currentUser();
     if (!user || !quote.responses) return null;
-    return quote.responses.find((r: any) => r.vendorId === user.uid);
+    return quote.responses.find((r: any) => r.vendorId === user.id);
   }
 
   async ngOnInit() {
@@ -44,7 +44,7 @@ export class VendorDashboard {
 
     if (user) {
       try {
-        const token = await user.getIdToken();
+        const token = await this.authService.getToken();
         const role = this.authService.userRole() || 'vendor';
         console.log('Fetching quotes with Role:', role);
 
@@ -61,7 +61,7 @@ export class VendorDashboard {
           this.quotes.set(data);
 
           // Calculate Quotes Sent & Filter Lists
-          const vendorId = user.uid;
+          const vendorId = user.id;
 
           // Awaiting Response: Only 'responded' status (Mutually exclusive from Action Required)
           this.sentQuotes.set(data.filter((q: any) =>
@@ -117,13 +117,13 @@ export class VendorDashboard {
   hasAcceptedResponse(quote: any): boolean {
     const user = this.authService.currentUser();
     if (!user || !quote.responses) return false;
-    return quote.responses.some((r: any) => r.vendorId === user.uid && r.status === 'accepted');
+    return quote.responses.some((r: any) => r.vendorId === user.id && r.status === 'accepted');
   }
 
   isCompleted(quote: any): boolean {
     const user = this.authService.currentUser();
     if (!user || !quote.responses) return false;
-    return quote.responses.some((r: any) => r.vendorId === user.uid && r.status === 'completed');
+    return quote.responses.some((r: any) => r.vendorId === user.id && r.status === 'completed');
   }
 
   async completeJob(quote: any) {
@@ -133,7 +133,7 @@ export class VendorDashboard {
     try {
       const user = this.authService.currentUser();
       if (!user) return;
-      const token = await user.getIdToken();
+      const token = await this.authService.getToken();
 
       const response = await fetch(`${environment.apiUrl}/quotes/${quote.id}/complete`, {
         method: 'POST',

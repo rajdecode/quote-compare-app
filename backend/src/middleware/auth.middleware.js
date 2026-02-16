@@ -14,29 +14,46 @@ exports.verifyTokenOptional = async (req, res, next) => {
     await exports.verifyToken(req, res, next);
 };
 
-// Middleware to verify Firebase ID Token
+// Middleware to verify Supabase ID Token
 exports.verifyToken = async (req, res, next) => {
-    const token = req.headers.authorization?.split('Bearer ')[1];
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
         // If we are already here from verifyTokenOptional, we shouldn't fail
         // But verifyingToken implies strict check unless called internally
-        if (req.user === null) return next(); // already handled
-        return res.status(401).json({ error: 'Unauthorized: No token provided' });
+        if (req.user === null) return next(); // already handled by verifyTokenOptional
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
 
-    try {
-        const decodedToken = await admin.auth().verifyIdToken(token);
+    const token = authHeader.split('Bearer ')[1];
 
-        // Fetch full user profile from Firestore to get role
+    try {
+        // Verify token using Supabase Auth
+        const { data: { user }, error } = await supabase.auth.getUser(token);
+
+        if (error || !user) {
+            console.error('Token verification failed:', error);
+            return res.status(403).json({ message: 'Unauthorized: Invalid token' });
+        }
+
+        req.user = user;
+        req.user.uid = user.id; // Map Supabase ID to existing req.uid pattern for consistency
+
+        // --- Start: Logic to fetch user role/plan from Firestore (if still needed) ---
+        // If user roles/plans are now managed directly in Supabase user metadata or a separate table,
+        // this Firestore fetching logic might need to be adapted or removed.
+        // Assuming for now that user roles/plans are still in Firestore, linked by Supabase user.id.
         try {
-            const db = admin.firestore();
-            const userDoc = await db.collection('users').doc(decodedToken.uid).get();
+            const db = admin.firestore(); // Assuming admin is still imported for Firestore
+            const userDoc = await db.collection('users').doc(req.user.uid).get();
             if (userDoc.exists) {
                 const userData = userDoc.data();
-                decodedToken.role = userData.role;
-                decodedToken.plan = userData.plan;
-                decodedToken.quotesResponded = userData.quotesResponded || 0;
+                req.user.role = userData.role;
+                req.user.plan = userData.plan;
+                req.user.quotesResponded = userData.quotesResponded || 0;
+            } else {
+                // Default role if not found in Firestore, or handle as an error
+                req.user.role = 'buyer'; // Default fallback
             }
         } catch (firestoreError) {
             console.warn('Firestore fetch failed in middleware (ignoring):', firestoreError.message);

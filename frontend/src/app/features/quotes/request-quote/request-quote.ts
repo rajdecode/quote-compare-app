@@ -31,7 +31,7 @@ export class RequestQuote {
             let token = '';
 
             if (user) {
-                token = await user.getIdToken();
+                token = await this.authService.getToken() || '';
             } else if (!this.email) {
                 alert('Please provide an email address for your quote.');
                 this.loading = false;

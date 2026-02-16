@@ -1,7 +1,7 @@
 const express = require('express');
 // Force IPv4 for DNS resolution to avoid IPv6 connectivity issues on some cloud providers (Node 17+)
 require('dns').setDefaultResultOrder('ipv4first');
-const admin = require('firebase-admin');
+// const admin = require('firebase-admin'); // Removed for Supabase migration
 const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
@@ -13,31 +13,9 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Firebase Admin SDK (Placeholder logic till credentials provided)
-// Firebase Admin SDK Initialization
-try {
-    const serviceAccountPath = require('path').join(__dirname, '../serviceAccountKey.json');
-    if (require('fs').existsSync(serviceAccountPath)) {
-        const serviceAccount = require(serviceAccountPath);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount)
-        });
-        console.log('✅ Firebase Admin initialized with serviceAccountKey.json');
-    } else if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
-        // Fallback to env var
-        const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount)
-        });
-        console.log('✅ Firebase Admin initialized via ENV variable');
-    } else {
-        console.log('\x1b[33m%s\x1b[0m', '⚠️  Firebase Credentials not found. Starting in MOCK MODE.');
-        console.log('\x1b[33m%s\x1b[0m', '    - Database: Local Persistent File (quotes.json)');
-        console.log('\x1b[33m%s\x1b[0m', '    - Auth: Bypassed (Dev only)');
-    }
-} catch (error) {
-    console.error('❌ Firebase Admin initialization failed:', error.message);
-}
+// Supabase Initialization
+const supabase = require('./config/supabase');
+console.log('✅ Supabase Client initialized.');
 
 // Health Check
 app.get('/api/health', (req, res) => {

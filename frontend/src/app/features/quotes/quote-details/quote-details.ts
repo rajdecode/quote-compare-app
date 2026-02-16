@@ -23,10 +23,9 @@ export class QuoteDetails implements OnInit {
         this.quoteId = this.route.snapshot.paramMap.get('quoteId');
         if (!this.quoteId) return;
 
-        const user = this.authService.currentUser();
-        if (user) {
+        const token = await this.authService.getToken();
+        if (token) {
             try {
-                const token = await user.getIdToken();
                 const response = await fetch(`${environment.apiUrl}/quotes/${this.quoteId}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -45,23 +44,21 @@ export class QuoteDetails implements OnInit {
             } finally {
                 this.loading.set(false);
             }
+        } else {
+            this.loading.set(false);
         }
     }
 
     async updateStatus(response: any, status: 'accepted' | 'negotiating') {
-        let message = '';
-        if (status === 'negotiating') {
-            const result = prompt('Enter your message to the vendor (e.g., asking for a lower price or changes):');
-            if (result === null) return; // Cancelled
-            message = result;
-        } else if (status === 'accepted') {
-            if (!confirm(`Are you sure you want to accept this quote for $${response.price}?`)) return;
-        }
+        const message = status === 'negotiating'
+            ? prompt('Enter your message for the vendor:')
+            : 'Quote accepted. Please proceed with the job.';
+
+        if (status === 'negotiating' && !message) return;
 
         try {
-            const user = this.authService.currentUser();
-            if (!user) return;
-            const token = await user.getIdToken();
+            const token = await this.authService.getToken();
+            if (!token) return;
 
             const res = await fetch(`${environment.apiUrl}/quotes/${this.quoteId}/responses/${response.vendorId}/status`, {
                 method: 'PATCH',
@@ -73,9 +70,12 @@ export class QuoteDetails implements OnInit {
             });
 
             if (res.ok) {
-                alert('Status updated successfully!');
-                this.ngOnInit(); // Reload
+                alert(`Quote ${status} successfully!`);
+                // Reload data
+                this.ngOnInit();
             } else {
+                const err = await res.text();
+                console.error('Failed to update status:', err);
                 alert('Failed to update status.');
             }
         } catch (error) {

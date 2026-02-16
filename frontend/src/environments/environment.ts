@@ -1,13 +1,8 @@
 export const environment = {
     production: false,
     apiUrl: 'http://localhost:3000/api',
-    firebase: {
-        apiKey: "AIzaSyDrqmeXhqloKwC8fqN3dRPMx_7naaKyRXM",
-        authDomain: "quotecompare-c48f1.firebaseapp.com",
-        projectId: "quotecompare-c48f1",
-        storageBucket: "quotecompare-c48f1.firebasestorage.app",
-        messagingSenderId: "350064803261",
-        appId: "1:350064803261:web:33efb57a4a3bd23e4466d4",
-        measurementId: "G-KN216XJYK5"
+    supabase: {
+        url: 'https://ilichjxywepoedtzfvyj.supabase.co',
+        anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsaWNoanh5d2Vwb2VkdHpmdnlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEyNTY0NDMsImV4cCI6MjA4NjgzMjQ0M30.6rKfV1C4MCbZEK0D0EeodkBildzVNZwlvhIZbmVEYps'
     }
 };

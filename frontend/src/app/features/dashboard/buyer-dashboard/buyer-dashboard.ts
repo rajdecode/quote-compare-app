@@ -52,9 +52,9 @@ export class BuyerDashboard implements OnInit {
 
     if (user) {
       try {
-        const token = await user.getIdToken();
+        const token = await this.authService.getToken();
         const role = this.authService.userRole() || 'buyer';
-        console.log('Fetching quotes for Buyer:', user.uid, 'Role:', role);
+        console.log('Fetching quotes for Buyer:', user.id, 'Role:', role);
 
         const response = await fetch(`${environment.apiUrl}/quotes`, {
           headers: {

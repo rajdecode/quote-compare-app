@@ -12,3 +12,6 @@ Thumbs.db
 
 # Dependency directories (just in case)
 node_modules/
+
+# Environment Variables
+.env
