@@ -68,7 +68,7 @@ export class RespondQuote {
         this.quote = await response.json();
 
         if (this.quote) {
-          const myResponse = this.quote.responses?.find((r: any) => r.vendorId === user.id);
+          const myResponse = this.quote.responses?.find((r: any) => r.vendor_id === user.id);
 
           if (myResponse) {
             this.currentResponse = myResponse;

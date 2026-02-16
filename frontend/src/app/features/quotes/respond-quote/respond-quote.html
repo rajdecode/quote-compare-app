@@ -5,12 +5,12 @@
                 Request
                 Details</h5>
             @if(quote) {
-            <h3 style="margin: 0 0 5px 0;">{{ quote.serviceType | titlecase }}</h3>
+            <h3 style="margin: 0 0 5px 0;">{{ quote.service_type | titlecase }}</h3>
             <p style="margin: 0 0 15px 0;">{{ quote.details }}</p>
             <div class="badges" style="display: flex; gap: 10px; margin-bottom: 20px;">
                 <span class="badge"
                     style="background: #F3F4F6; color: #4B5563; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem;">{{
-                    quote.postalCode }}</span>
+                    quote.postal_code }}</span>
                 <span class="badge"
                     style="background: #DBEAFE; color: #1E40AF; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem;">{{
                     quote.status | titlecase }}</span>
