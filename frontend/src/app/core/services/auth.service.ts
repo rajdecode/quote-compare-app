@@ -55,9 +55,6 @@ export class AuthService {
                 options: {
                     data: {
                         full_name: displayName,
-                        // We can store role in metadata, but best practice is a separate table (profiles)
-                        // However, we can put it here for easy access in JWT if we want custom claims later.
-                        // For now, we follow the Plan: save to profiles table.
                     }
                 }
             });
@@ -66,11 +63,24 @@ export class AuthService {
             if (!data.user) throw new Error('Registration failed: No user returned');
 
             // 2. Create Profile
-            // Supabase Trigger *could* do this, but we'll do it manually for explicit control in migration
-            await this.saveUserRole(data.user.id, role, displayName, email, plan);
+            // We only attempt this if we have a session (auto-login worked), 
+            // OR if we are okay with it potentially failing due to RLS if no session.
+            // If email confirmation is ON, data.session is null.
+            // We should try to create profile anyway (Supabase allows it if policies permit, or we might need service key on server properly).
+            // But since we are client-side only here, we try. 
+            // We use a try-catch block to ensure this doesn't block the UI response.
+            try {
+                if (data.session || data.user) {
+                    // Note: If no session, RLS 'auth.uid() = id' might fail if the user is not technically logged in yet.
+                    // But we attempt it. If it fails, the "auto-repair" on next login will fix it.
+                    await this.saveUserRole(data.user.id, role, displayName, email, plan);
+                    this.userRole.set(role);
+                }
+            } catch (err) {
+                console.warn('Profile creation non-critical error (will auto-repair on login):', err);
+            }
 
-            this.userRole.set(role);
-            return data.user;
+            return { user: data.user, session: data.session };
         } catch (error) {
             throw error;
         }

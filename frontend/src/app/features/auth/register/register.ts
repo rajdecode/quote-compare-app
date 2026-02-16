@@ -39,12 +39,20 @@ export class Register {
     this.errorMessage = '';
 
     try {
-      await this.authService.register(this.email, this.password, this.name, this.role, this.plan);
-      console.log('Registration successful');
-      if (this.role === 'buyer') {
-        this.router.navigate(['/buyer']);
+      const { user, session } = await this.authService.register(this.email, this.password, this.name, this.role, this.plan);
+      console.log('Registration successful', user);
+
+      // Check if session exists (Email confirmation might be required)
+      if (session) {
+        if (this.role === 'buyer') {
+          this.router.navigate(['/buyer']);
+        } else {
+          this.router.navigate(['/vendor']);
+        }
       } else {
-        this.router.navigate(['/vendor']);
+        // No session means email confirmation is required
+        this.errorMessage = 'Account created! Please check your email to confirm your account before logging in.';
+        this.loading = false; // Stop loading spinner
       }
     } catch (error: any) {
       console.error('Registration error:', error);
