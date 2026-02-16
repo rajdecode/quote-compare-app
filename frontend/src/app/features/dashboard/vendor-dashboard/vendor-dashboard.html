@@ -124,7 +124,8 @@
                             @if (!hasAcceptedResponse(quote)) {
                             <div
                                 style="font-size: 0.9rem; color: #D97706; background: #FFFBEB; padding: 6px; border-radius: 4px; border: 1px solid #FEF3C7; white-space: normal;">
-                                <strong>Buyer:</strong> {{ getMyResponse(quote)?.buyerMessage || 'No message' }}
+                                <strong>Buyer:</strong> {{ getMyResponse(quote)?.buyer_message ||
+                                getMyResponse(quote)?.buyerMessage || 'No message' }}
                             </div>
                             } @else {
                             <span style="color: var(--text-dim);">-</span>
