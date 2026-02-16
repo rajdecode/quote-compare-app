@@ -241,29 +241,6 @@ const filterQuotesByPlan = (quotes, user) => {
     }
 
     return quotes.filter(q => {
-        // Location Match (OR logic: Postcode OR Suburb OR State)
-        let locationMatch = true; // Default to true if no location filter set
-        if (hasLocationFilter) {
-            const postcodeMatch = user.servicePostcodes?.includes(q.postalCode);
-            // Case-insensitive suburb match
-            const suburbMatch = user.serviceSuburbs?.some(s => s.toLowerCase() === (q.suburb || '').toLowerCase());
-
-            // State Match
-            let stateMatch = false;
-            if (user.serviceStates && user.serviceStates.length > 0) {
-                const quoteState = getStateFromPostcode(q.postalCode);
-                stateMatch = user.serviceStates.includes(quoteState);
-            }
-
-            locationMatch = postcodeMatch || suburbMatch || stateMatch;
-        }
-
-        // Service Match (AND logic with Location)
-        let serviceMatch = true; // Default to true if no service filter set
-        if (hasServiceFilter) {
-            serviceMatch = user.servicesOffered.includes(q.serviceType);
-        }
-
         return locationMatch && serviceMatch;
     });
 };

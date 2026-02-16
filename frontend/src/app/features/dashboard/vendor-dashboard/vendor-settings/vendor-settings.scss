@@ -41,30 +41,36 @@
 
     .form-row {
         display: flex;
-        gap: 1.5rem;
+        gap: 2rem; // Increased gap to prevent touching
 
         @media (max-width: 768px) {
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.5rem;
         }
     }
 
     .manual-entry-group {
         background: rgba(255, 255, 255, 0.3);
-        padding: 1rem;
+        padding: 1.2rem;
         border-radius: 8px;
-        margin-top: 1rem;
+        margin-top: 1.5rem;
+
+        &.exclusion-mode {
+            background: rgba(231, 76, 60, 0.05);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
 
         .section-hint {
             margin: 0 0 1rem 0;
             font-size: 0.85rem;
             color: var(--text-dim);
+            font-weight: 500;
             font-style: italic;
         }
     }
 
     .form-group {
-        margin-bottom: 1rem;
+        margin-bottom: 0; // Use container gap instead
 
         label {
             display: block;
@@ -88,12 +94,22 @@
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.8);
             transition: all 0.2s ease;
+            box-sizing: border-box; // Ensure padding doesn't affect width calculations
 
             &:focus {
                 outline: none;
                 border-color: var(--primary-color);
                 background: white;
                 box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+            }
+
+            &.input-exclude {
+                border-color: rgba(231, 76, 60, 0.3);
+
+                &:focus {
+                    border-color: #e74c3c;
+                    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+                }
             }
         }
     }

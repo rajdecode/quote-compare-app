@@ -16,6 +16,9 @@ export class VendorSettings implements OnInit {
     servicePostcodes = '';
     serviceSuburbs = '';
 
+    excludedPostcodes = '';
+    excludedSuburbs = '';
+
     // Available services
     availableServices = [
         { id: 'heat-pump', label: 'Heat Pumps' },
@@ -47,6 +50,9 @@ export class VendorSettings implements OnInit {
             if (profile) {
                 this.servicePostcodes = (profile.servicePostcodes || []).join(', ');
                 this.serviceSuburbs = (profile.serviceSuburbs || []).join(', ');
+
+                this.excludedPostcodes = (profile.excludedPostcodes || []).join(', ');
+                this.excludedSuburbs = (profile.excludedSuburbs || []).join(', ');
 
                 if (profile.servicesOffered) {
                     this.servicesOffered = new Set(profile.servicesOffered);
@@ -97,12 +103,18 @@ export class VendorSettings implements OnInit {
             // Parse inputs
             const postcodes = this.servicePostcodes.split(',').map(s => s.trim()).filter(s => s.length > 0);
             const suburbs = this.serviceSuburbs.split(',').map(s => s.trim()).filter(s => s.length > 0);
+
+            const exPostcodes = this.excludedPostcodes.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            const exSuburbs = this.excludedSuburbs.split(',').map(s => s.trim()).filter(s => s.length > 0);
+
             const services = Array.from(this.servicesOffered);
             const states = Array.from(this.serviceStates);
 
             await this.authService.updateVendorProfile(user.uid, {
                 servicePostcodes: postcodes,
                 serviceSuburbs: suburbs,
+                excludedPostcodes: exPostcodes,
+                excludedSuburbs: exSuburbs,
                 servicesOffered: services,
                 serviceStates: states
             });
