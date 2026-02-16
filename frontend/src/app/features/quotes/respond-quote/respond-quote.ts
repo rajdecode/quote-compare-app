@@ -58,107 +58,83 @@ export class RespondQuote {
     }
 
     try {
-      try {
-        const token = await this.authService.getToken();
-        // Fetch specific quote
-        const response = await fetch(`${environment.apiUrl}/quotes/${this.quoteId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+      const token = await this.authService.getToken();
+      // Fetch specific quote
+      const response = await fetch(`${environment.apiUrl}/quotes/${this.quoteId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
 
-        if (response.ok) {
-          this.quote = await response.json();
+      if (response.ok) {
+        this.quote = await response.json();
 
-          if (this.quote) {
-            const myResponse = this.quote.responses?.find((r: any) => r.vendorId === user.id);
+        if (this.quote) {
+          const myResponse = this.quote.responses?.find((r: any) => r.vendorId === user.id);
 
-            if (myResponse) {
-              this.currentResponse = myResponse;
-              this.price = myResponse.price;
-              this.message = myResponse.message;
-              // If we found a response, we are effectively in edit/negotiation mode
-              this.isEditMode = true;
-            }
+          if (myResponse) {
+            this.currentResponse = myResponse;
+            this.price = myResponse.price;
+            this.message = myResponse.message;
+            // If we found a response, we are effectively in edit/negotiation mode
+            this.isEditMode = true;
           }
         }
-      } catch (e) {
-        console.error('Error loading quote data', e);
-        const token = await this.authService.getToken();
-        // Fetch specific quote
-        const response = await fetch(`${environment.apiUrl}/quotes/${this.quoteId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (response.ok) {
-          this.quote = await response.json();
-
-          if (this.quote) {
-            const myResponse = this.quote.responses?.find((r: any) => r.vendorId === user.id);
-
-            if (myResponse) {
-              this.currentResponse = myResponse;
-              this.price = myResponse.price;
-              this.message = myResponse.message;
-              // If we found a response, we are effectively in edit/negotiation mode
-              this.isEditMode = true;
-            }
-          }
-        }
-      } catch (e) {
-        console.error('Error loading quote data', e);
-      } finally {
-        this.isLoadingData = false;
-        this.cdr.markForCheck();
       }
-    }
-
-  async onSubmit() {
-      if (!this.price || !this.message) return;
-
-      this.isSubmitting = true;
-      const user = this.authService.currentUser();
-
-      if (!user) {
-        this.isSubmitting = false;
-        return;
-      }
-
-      try {
-        const token = await this.authService.getToken();
-        const role = this.authService.userRole() || 'vendor';
-
-        const method = this.isEditMode ? 'PUT' : 'POST';
-        const url = `${environment.apiUrl}/quotes/${this.quoteId}/respond`;
-
-        const response = await fetch(url, {
-          method: method,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-            'X-Mock-Role': role
-          },
-          body: JSON.stringify({
-            price: this.price,
-            message: this.message
-          })
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error('Submission failed. Status:', response.status, 'Body:', errorText);
-          throw new Error(`Failed to submit: ${response.status} ${response.statusText}`);
-        }
-
-        alert(this.isEditMode ? 'Quote updated successfully!' : 'Quote submitted successfully!');
-        this.router.navigate(['/vendor']);
-      } catch (error) {
-        console.error('Error submitting response:', error);
-        alert('Error submitting response.');
-      } finally {
-        this.isSubmitting = false;
-      }
-    }
-
-    cancel() {
-      this.router.navigate(['/vendor']);
+    } catch (e) {
+      console.error('Error loading quote data', e);
+    } finally {
+      this.isLoadingData = false;
+      this.cdr.markForCheck();
     }
   }
+
+  async onSubmit() {
+    if (!this.price || !this.message) return;
+
+    this.isSubmitting = true;
+    const user = this.authService.currentUser();
+
+    if (!user) {
+      this.isSubmitting = false;
+      return;
+    }
+
+    try {
+      const token = await this.authService.getToken();
+      const role = this.authService.userRole() || 'vendor';
+
+      const method = this.isEditMode ? 'PUT' : 'POST';
+      const url = `${environment.apiUrl}/quotes/${this.quoteId}/respond`;
+
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'X-Mock-Role': role
+        },
+        body: JSON.stringify({
+          price: this.price,
+          message: this.message
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Submission failed. Status:', response.status, 'Body:', errorText);
+        throw new Error(`Failed to submit: ${response.status} ${response.statusText}`);
+      }
+
+      alert(this.isEditMode ? 'Quote updated successfully!' : 'Quote submitted successfully!');
+      this.router.navigate(['/vendor']);
+    } catch (error) {
+      console.error('Error submitting response:', error);
+      alert('Error submitting response.');
+    } finally {
+      this.isSubmitting = false;
+    }
+  }
+
+  cancel() {
+    this.router.navigate(['/vendor']);
+  }
+}
