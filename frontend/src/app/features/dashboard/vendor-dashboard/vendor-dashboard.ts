@@ -28,13 +28,13 @@ export class VendorDashboard {
   hasResponded(quote: any): boolean {
     const user = this.authService.currentUser();
     if (!user || !quote.responses) return false;
-    return quote.responses.some((r: any) => r.vendorId === user.id);
+    return quote.responses.some((r: any) => r.vendor_id === user.id);
   }
 
   getMyResponse(quote: any): any {
     const user = this.authService.currentUser();
     if (!user || !quote.responses) return null;
-    return quote.responses.find((r: any) => r.vendorId === user.id);
+    return quote.responses.find((r: any) => r.vendor_id === user.id);
   }
 
   async ngOnInit() {
@@ -65,21 +65,21 @@ export class VendorDashboard {
 
           // Awaiting Response: Only 'responded' status (Mutually exclusive from Action Required)
           this.sentQuotes.set(data.filter((q: any) =>
-            q.responses?.some((r: any) => r.vendorId === vendorId && r.status === 'responded')
+            q.responses?.some((r: any) => r.vendor_id === vendorId && r.status === 'responded')
           ));
 
           this.newRequests.set(data.filter((q: any) =>
-            !q.responses?.some((r: any) => r.vendorId === vendorId)
+            !q.responses?.some((r: any) => r.vendor_id === vendorId)
           ));
 
           // Action Required: Accepted or Negotiating
           this.actionRequiredQuotes.set(data.filter((q: any) =>
-            q.responses?.some((r: any) => r.vendorId === vendorId && (r.status === 'accepted' || r.status === 'negotiating'))
+            q.responses?.some((r: any) => r.vendor_id === vendorId && (r.status === 'accepted' || r.status === 'negotiating'))
           ));
 
           // Completed Quotes
           this.completedQuotes.set(data.filter((q: any) =>
-            q.responses?.some((r: any) => r.vendorId === vendorId && r.status === 'completed')
+            q.responses?.some((r: any) => r.vendor_id === vendorId && r.status === 'completed')
           ));
 
           this.quotesSentCount.set(this.sentQuotes().length);
@@ -117,13 +117,13 @@ export class VendorDashboard {
   hasAcceptedResponse(quote: any): boolean {
     const user = this.authService.currentUser();
     if (!user || !quote.responses) return false;
-    return quote.responses.some((r: any) => r.vendorId === user.id && r.status === 'accepted');
+    return quote.responses.some((r: any) => r.vendor_id === user.id && r.status === 'accepted');
   }
 
   isCompleted(quote: any): boolean {
     const user = this.authService.currentUser();
     if (!user || !quote.responses) return false;
-    return quote.responses.some((r: any) => r.vendorId === user.id && r.status === 'completed');
+    return quote.responses.some((r: any) => r.vendor_id === user.id && r.status === 'completed');
   }
 
   async completeJob(quote: any) {

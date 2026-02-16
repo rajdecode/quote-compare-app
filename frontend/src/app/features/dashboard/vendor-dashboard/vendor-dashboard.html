@@ -72,10 +72,10 @@
                 <tbody>
                     @for (quote of newRequests(); track quote.id) {
                     <tr>
-                        <td>{{ quote.serviceType | titlecase }}</td>
-                        <td>{{ quote.postalCode }}</td>
+                        <td>{{ quote.service_type | titlecase }}</td>
+                        <td>{{ quote.postal_code }}</td>
                         <td class="truncate-cell">{{ quote.details }}</td>
-                        <td>{{ quote.createdAt | date:'shortDate' }}</td>
+                        <td>{{ quote.created_at | date:'shortDate' }}</td>
                         <td>
                             <button (click)="respondToQuote(quote.id)" class="btn btn-sm btn-primary">Submit
                                 Quote</button>
@@ -111,8 +111,8 @@
                 <tbody>
                     @for (quote of actionRequiredQuotes(); track quote.id) {
                     <tr>
-                        <td>{{ quote.serviceType | titlecase }}</td>
-                        <td>{{ quote.postalCode }}</td>
+                        <td>{{ quote.service_type | titlecase }}</td>
+                        <td>{{ quote.postal_code }}</td>
                         <td>
                             @if (hasAcceptedResponse(quote)) {
                             <span class="status-badge status-accepted">Accepted</span>
@@ -130,7 +130,7 @@
                             <span style="color: var(--text-dim);">-</span>
                             }
                         </td>
-                        <td>{{ quote.createdAt | date:'shortDate' }}</td>
+                        <td>{{ quote.created_at | date:'shortDate' }}</td>
                         <td>
                             @if (hasAcceptedResponse(quote)) {
                             <button (click)="completeJob(quote)" class="btn btn-sm btn-success">Complete Job</button>
@@ -168,12 +168,12 @@
                 <tbody>
                     @for (quote of sentQuotes(); track quote.id) {
                     <tr>
-                        <td>{{ quote.serviceType | titlecase }}</td>
-                        <td>{{ quote.postalCode }}</td>
+                        <td>{{ quote.service_type | titlecase }}</td>
+                        <td>{{ quote.postal_code }}</td>
                         <td>
                             <span class="status-badge status-responded">Sent</span>
                         </td>
-                        <td>{{ quote.createdAt | date:'shortDate' }}</td>
+                        <td>{{ quote.created_at | date:'shortDate' }}</td>
                         <td>
                             <div class="action-buttons" style="display: flex; gap: 8px;">
                                 <button (click)="editQuote(quote.id)" class="btn btn-sm btn-secondary">Edit</button>
@@ -209,10 +209,10 @@
                 <tbody>
                     @for (quote of completedQuotes(); track quote.id) {
                     <tr>
-                        <td>{{ quote.serviceType | titlecase }}</td>
-                        <td>{{ quote.postalCode }}</td>
+                        <td>{{ quote.service_type | titlecase }}</td>
+                        <td>{{ quote.postal_code }}</td>
                         <td class="truncate-cell">{{ quote.details }}</td>
-                        <td>{{ quote.responses[0]?.completedAt | date:'shortDate' }}</td>
+                        <td>{{ quote.responses[0]?.created_at | date:'shortDate' }}</td>
                         <td>
                             <a [href]="quote.responses[0]?.invoiceUrl" target="_blank" class="btn btn-sm btn-text">View
                                 Invoice</a>
