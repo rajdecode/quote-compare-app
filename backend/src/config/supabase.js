@@ -9,6 +9,12 @@ if (!supabaseUrl || !supabaseServiceKey) {
 }
 
 // Create a single supabase client for interacting with your database
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+    auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+        detectSessionInUrl: false
+    }
+});
 
 module.exports = supabase;

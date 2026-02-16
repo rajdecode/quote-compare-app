@@ -63,6 +63,7 @@ exports.verifyToken = async (req, res, next) => {
 
         if (error || !user) {
             console.error('Token verification failed:', error);
+            if (token) console.error('Token length:', token.length);
             return res.status(403).json({ message: 'Unauthorized: Invalid token' });
         }
 
