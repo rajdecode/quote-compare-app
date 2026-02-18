@@ -15,6 +15,7 @@
         <button [class.active]="activeTab() === 'analytics'" (click)="setActiveTab('analytics')">Analytics</button>
     </div>
 
+    @if (loading()) {
     <div class="loading-state">
         <div class="spinner"></div>
         <p>Loading admin data...</p>
@@ -85,7 +86,8 @@
             <div class="stat-info">
                 <span class="label">Total Users</span>
                 <span class="value">{{ stats().totalUsers }}</span>
-                <span class="sub-text">{{ stats().vendors }} Vendors, {{ stats().buyers }} Buyers</span>
+                <span class="sub-text">{{ stats().vendors }} Vendors, {{ stats().buyers }} Buyers, {{ stats().admins }}
+                    Admins</span>
             </div>
         </div>
 
@@ -96,7 +98,7 @@
             <div class="stat-info">
                 <span class="label">Total Quotes</span>
                 <span class="value">{{ stats().totalQuotes }}</span>
-                <span class="sub-text">{{ stats().completedQuotes }} Responded</span>
+                <span class="sub-text">{{ stats().completedQuotes }} Total Responses</span>
             </div>
         </div>
 

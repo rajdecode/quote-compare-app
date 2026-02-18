@@ -68,7 +68,7 @@ exports.getStats = async (req, res) => {
             .from('quotes')
             .select('*', { count: 'exact', head: true });
 
-        // Vendor/Buyer counts
+        // Vendor/Buyer/Admin counts
         const { count: vendors } = await supabase
             .from('profiles')
             .select('*', { count: 'exact', head: true })
@@ -79,11 +79,17 @@ exports.getStats = async (req, res) => {
             .select('*', { count: 'exact', head: true })
             .eq('role', 'buyer');
 
-        // Completed quotes (status = responded or accepted or completed)
-        const { count: completedQuotes } = await supabase
-            .from('quotes')
+        const { count: admins } = await supabase
+            .from('profiles')
             .select('*', { count: 'exact', head: true })
-            .in('status', ['responded', 'accepted', 'completed']);
+            .eq('role', 'admin');
+
+        // Completed quotes (status = responded or accepted or completed)
+        // Better: Count distinct QUOTES that have at least one response
+        // But for "Total Responses", let's count rows in quote_responses
+        const { count: totalResponses } = await supabase
+            .from('quote_responses')
+            .select('*', { count: 'exact', head: true });
 
         // Revenue Mock
         // In a real app, query payments or sum subscription costs based on 'vendors' count
@@ -95,8 +101,9 @@ exports.getStats = async (req, res) => {
             totalUsers: totalUsers || 0,
             vendors: vendors || 0,
             buyers: buyers || 0,
+            admins: admins || 0,
             totalQuotes: totalQuotes || 0,
-            completedQuotes: completedQuotes || 0,
+            completedQuotes: totalResponses || 0, // Using totalResponses as the metric
             revenue
         });
 
