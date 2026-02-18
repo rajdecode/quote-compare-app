@@ -200,61 +200,110 @@
     }
 }
 
-.table-responsive {
-    overflow-x: auto;
-    margin-top: 12px;
+/* Modern & Flashy Table Styles */
+.table-container {
+    overflow: visible;
+    /* Allow hover effects to pop out */
+    padding: 10px;
+    /* Space for shadows */
+    background: transparent;
+    box-shadow: none;
+    border: none;
 }
 
-.comparison-table {
+.dashboard-table {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+    /* Gap between rows */
+    min-width: 800px;
+    margin-top: 0;
 
-    th,
-    td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    th {
-        font-weight: 600;
-        color: var(--text-dim);
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    td {
-        color: var(--text-light);
-
-        &.vendor-name {
-            font-weight: 500;
-            color: var(--primary-color);
+    thead {
+        tr {
+            background: transparent;
+            box-shadow: none;
         }
 
-        &.message {
-            max-width: 300px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        th {
+            padding: 1rem 1.5rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
             color: var(--text-dim);
-        }
-
-        &.price {
-            font-weight: 600;
-            color: #2ecc71;
-            /* Green for price */
-            font-size: 1rem;
+            border-bottom: none;
+            background: transparent;
         }
     }
 
-    tr:last-child td {
-        border-bottom: none;
+    tbody {
+        tr {
+            background: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border-radius: 16px;
+            /* Rounded rows */
+            cursor: pointer;
+
+            /* Apply border radius to first and last cells */
+            td:first-child {
+                border-top-left-radius: 12px;
+                border-bottom-left-radius: 12px;
+            }
+
+            td:last-child {
+                border-top-right-radius: 12px;
+                border-bottom-right-radius: 12px;
+            }
+
+            &:hover {
+                transform: translateY(-3px) scale(1.01);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                z-index: 10;
+                background: linear-gradient(to right, #ffffff, #f8fafc);
+                border-left: 4px solid var(--primary-color);
+            }
+
+            /* Border transition fix */
+            border-left: 4px solid transparent;
+        }
+
+        td {
+            padding: 1.5rem;
+            vertical-align: middle;
+            color: var(--text-main);
+            border-bottom: none;
+            font-size: 0.95rem;
+        }
+    }
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.status-open {
+        background: #DBEAFE;
+        color: #1E40AF;
     }
 
-    .text-right {
-        text-align: right;
+    &.status-responded {
+        background: #D1FAE5;
+        color: #065F46;
+    }
+
+    &.status-pending {
+        /* For just created quotes maybe */
+        background: #F3F4F6;
+        color: #4B5563;
     }
 }
 
