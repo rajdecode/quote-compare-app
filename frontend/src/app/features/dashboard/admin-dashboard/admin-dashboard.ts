@@ -40,19 +40,39 @@ export class AdminDashboard {
     this.fetchData();
   }
 
+  errorMessage = signal<string>('');
+
   async fetchData() {
     this.loading.set(true);
+    this.errorMessage.set('');
+
     const user = this.authService.currentUser();
-    if (!user) return;
+    if (!user) {
+      this.loading.set(false);
+      return;
+    }
 
     try {
       const token = await this.authService.getToken();
+
+      if (!token) {
+        throw new Error('No auth token available. Please login again.');
+      }
+
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
       // Fetch Users
       this.http.get<any[]>(`${environment.apiUrl}/admin/users`, { headers }).subscribe({
-        next: (data) => this.users.set(data),
-        error: (err) => console.error('Error fetching users:', err)
+        next: (data) => {
+          console.log('Admin Users Fetched:', data);
+          this.users.set(data);
+          this.loading.set(false); // Stop loading when at least one request succeeds (optimistic)
+        },
+        error: (err) => {
+          console.error('Error fetching users:', err);
+          this.errorMessage.set(`Failed to load users: ${err.message || 'Unknown Error'}`);
+          this.loading.set(false);
+        }
       });
 
       // Fetch Stats
@@ -61,9 +81,9 @@ export class AdminDashboard {
         error: (err) => console.error('Error fetching stats:', err)
       });
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error initializing admin data:', error);
-    } finally {
+      this.errorMessage.set(error.message);
       this.loading.set(false);
     }
   }

@@ -15,10 +15,16 @@
         <button [class.active]="activeTab() === 'analytics'" (click)="setActiveTab('analytics')">Analytics</button>
     </div>
 
-    @if (loading()) {
     <div class="loading-state">
         <div class="spinner"></div>
         <p>Loading admin data...</p>
+    </div>
+    } @else if (errorMessage()) {
+    <div class="error-state glass-panel" style="text-align: center; padding: 2rem; color: #dc2626;">
+        <span class="material-icons" style="font-size: 3rem; margin-bottom: 1rem;">error_outline</span>
+        <h3>Failed to load dashboard</h3>
+        <p>{{ errorMessage() }}</p>
+        <button class="btn btn-primary" (click)="fetchData()" style="margin-top: 1rem;">Retry</button>
     </div>
     } @else {
 
