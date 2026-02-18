@@ -34,6 +34,19 @@
             <div class="info-group" style="grid-column: 1 / -1;">
                 <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Details</label>
                 <p style="font-size: 1.1rem; line-height: 1.6;">{{ quote().details }}</p>
+
+                @if (quote().attachments?.length) {
+                <div class="attachments" style="margin-top: 1rem;">
+                    <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Attachments</label>
+                    @for (file of quote().attachments; track $index) {
+                    <a [href]="file" target="_blank" class="btn btn-sm btn-secondary"
+                        style="display: inline-flex; align-items: center; gap: 5px;">
+                        <span class="material-icons" style="font-size: 1rem;">description</span>
+                        View Request PDF
+                    </a>
+                    }
+                </div>
+                }
             </div>
         </div>
 

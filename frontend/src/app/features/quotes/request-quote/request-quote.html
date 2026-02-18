@@ -41,6 +41,30 @@
                     placeholder="Describe your home type, current heating system, etc."></textarea>
             </div>
 
+            <div class="form-group">
+                <label for="attachment">Attachment (PDF only, Optional)</label>
+                <div class="file-upload-wrapper"
+                    style="border: 2px dashed #e5e7eb; padding: 20px; text-align: center; border-radius: 8px;">
+                    <input type="file" id="attachment" (change)="onFileSelected($event)" accept=".pdf"
+                        [disabled]="isUploading" style="display: block; margin: 0 auto;">
+                    @if (isUploading) {
+                    <p style="color: var(--primary-color); margin-top: 10px;">Uploading...</p>
+                    }
+                    @if (attachments.length > 0) {
+                    <div class="file-preview"
+                        style="margin-top: 10px; color: #059669; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                        <span class="material-icons" style="font-size: 1.2rem;">check_circle</span>
+                        <span>File attached successfully</span>
+                        <button type="button" class="btn btn-sm btn-text text-danger" (click)="attachments=[]"
+                            style="margin-left: 10px; color: #dc2626;">Remove</button>
+                    </div>
+                    }
+                    @if (uploadError) {
+                    <p style="color: #dc2626; margin-top: 10px;">{{ uploadError }}</p>
+                    }
+                </div>
+            </div>
+
             <div class="form-actions">
                 <button type="button" class="btn btn-secondary" routerLink="/buyer">Cancel</button>
                 <button type="submit" class="btn btn-primary" [disabled]="loading">

@@ -34,7 +34,9 @@ exports.createQuote = async (req, res) => {
         postal_code: postalCode,
         suburb: suburb || '',
         details,
-        status: 'open'
+        email: contactEmail, // Store email for guest reference if needed, though usually in profile
+        status: 'open',
+        attachments: req.body.attachments || []
     };
 
     try {

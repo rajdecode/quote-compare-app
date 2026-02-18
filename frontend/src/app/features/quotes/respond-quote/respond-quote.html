@@ -7,6 +7,19 @@
             @if(quote) {
             <h3 style="margin: 0 0 5px 0;">{{ quote.service_type | titlecase }}</h3>
             <p style="margin: 0 0 15px 0;">{{ quote.details }}</p>
+
+            @if (quote.attachments?.length) {
+            <div class="attachments" style="margin-bottom: 15px;">
+                @for (file of quote.attachments; track $index) {
+                <a [href]="file" target="_blank" class="btn btn-sm btn-outline"
+                    style="display: inline-flex; align-items: center; gap: 5px; border: 1px solid #d1d5db; padding: 4px 10px; border-radius: 4px; text-decoration: none; color: #374151; font-size: 0.9rem;">
+                    <span class="material-icons" style="font-size: 1rem;">attach_file</span>
+                    View Requirements PDF
+                </a>
+                }
+            </div>
+            }
+
             <div class="badges" style="display: flex; gap: 10px; margin-bottom: 20px;">
                 <span class="badge"
                     style="background: #F3F4F6; color: #4B5563; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem;">{{
