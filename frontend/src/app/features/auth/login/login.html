@@ -1,48 +1,131 @@
-<div class="auth-page">
-    <div class="auth-card glass-panel">
-        <h2>Welcome Back to <span class="highlight">Quote</span>Compare</h2>
-        <p class="subtitle">Sign in to manage your quotes and requests.</p>
+<div class="login-page">
 
-        <form (ngSubmit)="onSubmit()">
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" [(ngModel)]="email" name="email" required placeholder="name@example.com">
+    <!-- LEFT PANEL — Branding -->
+    <div class="login-left" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+
+        <div class="brand-content">
+            <div class="brand-logo">
+                <span class="material-icons">compare_arrows</span>
             </div>
+            <h1 class="brand-name"><span>Quote</span>Compare</h1>
+            <p class="brand-tagline">Get the best price from vetted professionals — instantly.</p>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" [(ngModel)]="password" name="password" required
-                    placeholder="••••••••">
-            </div>
-
-            <div class="form-group" style="text-align: right; margin-top: -10px;">
-                <a routerLink="/forgot-password" style="font-size: 0.9rem; color: var(--primary);">Forgot Password?</a>
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary btn-block" [disabled]="loading" *ngIf="!loading">
-                    Sign In
-                </button>
-                <div *ngIf="loading" class="loading-state">
-                    <button class="btn btn-primary btn-block" disabled>
-                        Signing In...
-                    </button>
-                    <button type="button" class="btn btn-link btn-sm cancel-btn" (click)="cancel()">
-                        Cancel
-                    </button>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <span class="material-icons">verified</span>
+                    <span>Verified vendors only</span>
+                </div>
+                <div class="feature-item">
+                    <span class="material-icons">bolt</span>
+                    <span>Compare quotes in seconds</span>
+                </div>
+                <div class="feature-item">
+                    <span class="material-icons">shield</span>
+                    <span>100% secure &amp; private</span>
                 </div>
             </div>
+        </div>
 
-            <div class="auth-footer">
-                <p>Don't have an account? <a routerLink="/register">Register here</a></p>
-                <div class="debug-actions" style="margin-top: 10px; opacity: 0.7;">
-                    <p class="version-text">v1.4.0 (Stable)</p>
+        <div class="testimonial-card">
+            <p class="testimonial-text">"Saved over $800 on my solar install — took me 5 minutes!"</p>
+            <div class="testimonial-author">
+                <div class="avatar">S</div>
+                <div>
+                    <strong>Sarah M.</strong>
+                    <span>Homeowner · Sydney</span>
                 </div>
             </div>
-
-            <div *ngIf="errorMessage" class="error-message">
-                {{ errorMessage }}
-            </div>
-        </form>
+        </div>
     </div>
+
+    <!-- RIGHT PANEL — Form -->
+    <div class="login-right">
+        <div class="form-container">
+
+            <div class="form-header">
+                <h2>Welcome back</h2>
+                <p>Sign in to your account to continue</p>
+            </div>
+
+            <form (ngSubmit)="onSubmit()" class="login-form" autocomplete="on">
+
+                <!-- Email -->
+                <div class="field-group">
+                    <div class="input-wrapper" [class.has-value]="email">
+                        <span class="field-icon material-icons">mail_outline</span>
+                        <input
+                            type="email"
+                            id="email"
+                            [(ngModel)]="email"
+                            name="email"
+                            required
+                            placeholder=" "
+                            autocomplete="email"
+                        />
+                        <label for="email">Email address</label>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="field-group">
+                    <div class="input-wrapper" [class.has-value]="password">
+                        <span class="field-icon material-icons">lock_outline</span>
+                        <input
+                            [type]="showPassword ? 'text' : 'password'"
+                            id="password"
+                            [(ngModel)]="password"
+                            name="password"
+                            required
+                            placeholder=" "
+                            autocomplete="current-password"
+                        />
+                        <label for="password">Password</label>
+                        <button type="button" class="toggle-pw" (click)="showPassword = !showPassword" tabindex="-1">
+                            <span class="material-icons">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Forgot password -->
+                <div class="form-extras">
+                    <a routerLink="/forgot-password" class="forgot-link">Forgot password?</a>
+                </div>
+
+                <!-- Error -->
+                <div *ngIf="errorMessage" class="error-banner">
+                    <span class="material-icons">error_outline</span>
+                    {{ errorMessage }}
+                </div>
+
+                <!-- Submit -->
+                <button
+                    type="submit"
+                    class="btn-signin"
+                    [class.loading]="loading"
+                    [disabled]="loading"
+                >
+                    <span *ngIf="!loading">Sign In <span class="material-icons">arrow_forward</span></span>
+                    <span *ngIf="loading" class="spinner-wrap">
+                        <span class="spinner"></span> Signing in…
+                    </span>
+                </button>
+
+                <div *ngIf="loading" class="cancel-row">
+                    <button type="button" class="cancel-link" (click)="cancel()">Cancel</button>
+                </div>
+
+            </form>
+
+            <div class="form-footer">
+                <span>Don't have an account?</span>
+                <a routerLink="/register">Create one free</a>
+            </div>
+
+            <p class="version-tag">v1.5.11</p>
+        </div>
+    </div>
+
 </div>
