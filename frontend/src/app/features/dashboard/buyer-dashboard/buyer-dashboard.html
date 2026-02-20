@@ -19,75 +19,52 @@
             <button class="btn btn-secondary btn-sm" routerLink="/request-quote">Start a Request</button>
         </div>
         } @else {
-        <div class="table-container glass-panel">
-            <table class="dashboard-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Location</th>
-                        <th>Offers</th>
-                        <th>Posted</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (quote of quotesList(); track quote.id) {
-                    <tr [routerLink]="['/buyer/quote', quote.id]" style="cursor: pointer;" class="hover-row">
-                        <td>{{ quote.service_type | titlecase }}</td>
-                        <td>{{ quote.postal_code || quote.postalCode }}</td>
-                        <td>{{ quote.city || quote.suburb }}</td>
-                        <td>{{ quote.created_at || quote.createdAt | date:'shortDate' }}</td>
-                        <td><span class="status-badge status-{{(quote.status || 'open').toLowerCase()}}">{{ quote.status
-                                || 'open' }}</span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-secondary">View</button>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="request-list">
+            @for (quote of quotesList(); track quote.id) {
+            <div class="request-row glass-panel" [routerLink]="['/buyer/quote', quote.id]" style="cursor: pointer;">
+                <div class="row-icon icon-{{ getStatusColor(quote.status) }}">
+                    <span class="material-icons">{{ getServiceIcon(quote.service_type) }}</span>
+                </div>
+                <div class="row-body">
+                    <div class="row-top">
+                        <span
+                            class="service-tag service-{{ (quote.service_type || '').toLowerCase().replace(' ', '-') }}">
+                            {{ quote.service_type | titlecase }}
+                        </span>
+                        <span class="location-chip">
+                            <span class="material-icons">location_on</span>
+                            {{ quote.postal_code || quote.postalCode }}
+                            @if (quote.city || quote.suburb) {
+                            · {{ quote.city || quote.suburb }}
+                            }
+                        </span>
+                        <span class="date-chip">
+                            <span class="material-icons">schedule</span>
+                            {{ quote.created_at || quote.createdAt | date:'d MMM yyyy' }}
+                        </span>
+                    </div>
+                    <div class="row-bottom">
+                        <span class="status-badge status-{{ (quote.status || 'open').toLowerCase() }}">
+                            {{ quote.status || 'open' | titlecase }}
+                        </span>
+                        @if ((quote.responses?.length || 0) > 0) {
+                        <span class="offers-chip">
+                            <span class="material-icons">local_offer</span>
+                            {{ quote.responses?.length }} offer{{ (quote.responses?.length || 0) > 1 ? 's' : '' }}
+                            received
+                        </span>
+                        }
+                    </div>
+                </div>
+                <div class="row-action">
+                    <button class="btn btn-secondary" (click)="$event.stopPropagation();"
+                        [routerLink]="['/buyer/quote', quote.id]">
+                        <span class="material-icons">chevron_right</span> View
+                    </button>
+                </div>
+            </div>
+            }
         </div>
         }
     </div>
 </div>
-
-<style>
-    /* Table Styles */
-    .table-container {
-        overflow-x: auto;
-        padding: 0;
-    }
-
-    .dashboard-table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 600px;
-    }
-
-    .dashboard-table th,
-    .dashboard-table td {
-        padding: 1rem;
-        text-align: left;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .dashboard-table th {
-        font-weight: 600;
-        color: var(--text-dim);
-        background: rgba(0, 0, 0, 0.02);
-    }
-
-    .hover-row:hover {
-        background: rgba(0, 0, 0, 0.02);
-    }
-
-    .badge.response-count {
-        background: var(--primary);
-        color: white;
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 0.8rem;
-    }
-</style>

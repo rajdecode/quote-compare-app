@@ -156,4 +156,17 @@ export class VendorDashboard {
       alert('Error completing job.');
     }
   }
+
+  getServiceIcon(serviceType: string): string {
+    const map: Record<string, string> = {
+      'solar': 'wb_sunny',
+      'heat-pump': 'heat_pump',
+      'battery': 'battery_charging_full',
+      'ev-charger': 'ev_station',
+      'insulation': 'thermostat',
+      'air-conditioning': 'ac_unit',
+    };
+    const key = (serviceType || '').toLowerCase().replace(/\s+/g, '-');
+    return map[key] || 'build';
+  }
 }

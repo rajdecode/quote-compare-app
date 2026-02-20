@@ -58,32 +58,33 @@
             <button class="btn btn-secondary btn-sm" (click)="updateServiceArea()">Update Service Area</button>
         </div>
         } @else {
-        <div class="table-container glass-panel">
-            <table class="dashboard-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Location</th>
-                        <th>Details</th>
-                        <th>Posted</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (quote of newRequests(); track quote.id) {
-                    <tr>
-                        <td>{{ quote.service_type | titlecase }}</td>
-                        <td>{{ quote.postal_code }}</td>
-                        <td class="truncate-cell">{{ quote.details }}</td>
-                        <td>{{ quote.created_at | date:'shortDate' }}</td>
-                        <td>
-                            <button (click)="respondToQuote(quote.id)" class="btn btn-sm btn-primary">Submit
-                                Quote</button>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="request-list">
+            @for (quote of newRequests(); track quote.id) {
+            <div class="request-row glass-panel">
+                <div class="row-icon">
+                    <span class="material-icons">{{ getServiceIcon(quote.service_type) }}</span>
+                </div>
+                <div class="row-body">
+                    <div class="row-top">
+                        <span class="service-tag service-{{ quote.service_type?.toLowerCase().replace(' ', '-') }}">
+                            {{ quote.service_type | titlecase }}
+                        </span>
+                        <span class="location-chip">
+                            <span class="material-icons">location_on</span>{{ quote.postal_code }}
+                        </span>
+                        <span class="date-chip">
+                            <span class="material-icons">schedule</span>{{ quote.created_at | date:'d MMM yyyy' }}
+                        </span>
+                    </div>
+                    <p class="row-detail">{{ quote.details }}</p>
+                </div>
+                <div class="row-action">
+                    <button (click)="respondToQuote(quote.id)" class="btn btn-primary">
+                        <span class="material-icons">send</span> Submit Quote
+                    </button>
+                </div>
+            </div>
+            }
         </div>
         }
         }
@@ -96,53 +97,49 @@
             <p>No actions required at the moment.</p>
         </div>
         } @else {
-        <div class="table-container glass-panel">
-            <table class="dashboard-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Location</th>
-                        <th>Status</th>
-                        <th>Notes</th>
-                        <th>Posted</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (quote of actionRequiredQuotes(); track quote.id) {
-                    <tr>
-                        <td>{{ quote.service_type | titlecase }}</td>
-                        <td>{{ quote.postal_code }}</td>
-                        <td>
-                            @if (hasAcceptedResponse(quote)) {
-                            <span class="status-badge status-accepted">Accepted</span>
-                            } @else {
-                            <span class="status-badge status-negotiating">Negotiating</span>
-                            }
-                        </td>
-                        <td style="max-width: 200px;">
-                            @if (!hasAcceptedResponse(quote)) {
-                            <div
-                                style="font-size: 0.9rem; color: #D97706; background: #FFFBEB; padding: 6px; border-radius: 4px; border: 1px solid #FEF3C7; white-space: normal;">
-                                <strong>Buyer:</strong> {{ getMyResponse(quote)?.buyer_message ||
-                                getMyResponse(quote)?.buyerMessage || 'No message' }}
-                            </div>
-                            } @else {
-                            <span style="color: var(--text-dim);">-</span>
-                            }
-                        </td>
-                        <td>{{ quote.created_at | date:'shortDate' }}</td>
-                        <td>
-                            @if (hasAcceptedResponse(quote)) {
-                            <button (click)="completeJob(quote)" class="btn btn-sm btn-success">Complete Job</button>
-                            } @else {
-                            <button (click)="respondToQuote(quote.id)" class="btn btn-sm btn-primary">Respond</button>
-                            }
-                        </td>
-                    </tr>
+        <div class="request-list">
+            @for (quote of actionRequiredQuotes(); track quote.id) {
+            <div class="request-row glass-panel" [class.row-urgent]="!hasAcceptedResponse(quote)">
+                <div class="row-icon" [class.icon-green]="hasAcceptedResponse(quote)" [class.icon-amber]="!hasAcceptedResponse(quote)">
+                    <span class="material-icons">{{ hasAcceptedResponse(quote) ? 'task_alt' : 'pending_actions' }}</span>
+                </div>
+                <div class="row-body">
+                    <div class="row-top">
+                        <span class="service-tag service-{{ quote.service_type?.toLowerCase().replace(' ', '-') }}">
+                            {{ quote.service_type | titlecase }}
+                        </span>
+                        <span class="location-chip">
+                            <span class="material-icons">location_on</span>{{ quote.postal_code }}
+                        </span>
+                        @if (hasAcceptedResponse(quote)) {
+                        <span class="status-badge status-accepted">Accepted</span>
+                        } @else {
+                        <span class="status-badge status-negotiating">Negotiating</span>
+                        }
+                        <span class="date-chip">
+                            <span class="material-icons">schedule</span>{{ quote.created_at | date:'d MMM yyyy' }}
+                        </span>
+                    </div>
+                    @if (!hasAcceptedResponse(quote)) {
+                    <div class="buyer-note">
+                        <span class="material-icons">chat_bubble_outline</span>
+                        <span>{{ getMyResponse(quote)?.buyer_message || getMyResponse(quote)?.buyerMessage || 'No message from buyer' }}</span>
+                    </div>
                     }
-                </tbody>
-            </table>
+                </div>
+                <div class="row-action">
+                    @if (hasAcceptedResponse(quote)) {
+                    <button (click)="completeJob(quote)" class="btn btn-success">
+                        <span class="material-icons">check_circle</span> Complete
+                    </button>
+                    } @else {
+                    <button (click)="respondToQuote(quote.id)" class="btn btn-primary">
+                        <span class="material-icons">reply</span> Respond
+                    </button>
+                    }
+                </div>
+            </div>
+            }
         </div>
         }
         }
@@ -155,35 +152,33 @@
             <p>No quotes awaiting buyer response.</p>
         </div>
         } @else {
-        <div class="table-container glass-panel">
-            <table class="dashboard-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Location</th>
-                        <th>Status</th>
-                        <th>Sent On</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (quote of sentQuotes(); track quote.id) {
-                    <tr>
-                        <td>{{ quote.service_type | titlecase }}</td>
-                        <td>{{ quote.postal_code }}</td>
-                        <td>
-                            <span class="status-badge status-responded">Sent</span>
-                        </td>
-                        <td>{{ quote.created_at | date:'shortDate' }}</td>
-                        <td>
-                            <div class="action-buttons" style="display: flex; gap: 8px;">
-                                <button (click)="editQuote(quote.id)" class="btn btn-sm btn-secondary">Edit</button>
-                            </div>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="request-list">
+            @for (quote of sentQuotes(); track quote.id) {
+            <div class="request-row glass-panel">
+                <div class="row-icon icon-blue">
+                    <span class="material-icons">hourglass_top</span>
+                </div>
+                <div class="row-body">
+                    <div class="row-top">
+                        <span class="service-tag service-{{ quote.service_type?.toLowerCase().replace(' ', '-') }}">
+                            {{ quote.service_type | titlecase }}
+                        </span>
+                        <span class="location-chip">
+                            <span class="material-icons">location_on</span>{{ quote.postal_code }}
+                        </span>
+                        <span class="status-badge status-responded">Awaiting Buyer</span>
+                        <span class="date-chip">
+                            <span class="material-icons">schedule</span>{{ quote.created_at | date:'d MMM yyyy' }}
+                        </span>
+                    </div>
+                </div>
+                <div class="row-action">
+                    <button (click)="editQuote(quote.id)" class="btn btn-secondary">
+                        <span class="material-icons">edit</span> Edit Quote
+                    </button>
+                </div>
+            </div>
+            }
         </div>
         }
         }
@@ -196,34 +191,37 @@
             <p>No completed jobs yet.</p>
         </div>
         } @else {
-        <div class="table-container glass-panel">
-            <table class="dashboard-table">
-                <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Location</th>
-                        <th>Details</th>
-                        <th>Completed On</th>
-                        <th>Invoice</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (quote of completedQuotes(); track quote.id) {
-                    <tr>
-                        <td>{{ quote.service_type | titlecase }}</td>
-                        <td>{{ quote.postal_code }}</td>
-                        <td class="truncate-cell">{{ quote.details }}</td>
-                        <td>{{ quote.responses[0]?.created_at | date:'shortDate' }}</td>
-                        <td>
-                            <a [href]="quote.responses[0]?.invoiceUrl" target="_blank" class="btn btn-sm btn-text">View
-                                Invoice</a>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="request-list">
+            @for (quote of completedQuotes(); track quote.id) {
+            <div class="request-row glass-panel">
+                <div class="row-icon icon-green">
+                    <span class="material-icons">verified</span>
+                </div>
+                <div class="row-body">
+                    <div class="row-top">
+                        <span class="service-tag service-{{ quote.service_type?.toLowerCase().replace(' ', '-') }}">
+                            {{ quote.service_type | titlecase }}
+                        </span>
+                        <span class="location-chip">
+                            <span class="material-icons">location_on</span>{{ quote.postal_code }}
+                        </span>
+                        <span class="status-badge status-accepted">Completed</span>
+                        <span class="date-chip">
+                            <span class="material-icons">event_available</span>{{ quote.responses[0]?.created_at | date:'d MMM yyyy' }}
+                        </span>
+                    </div>
+                    <p class="row-detail">{{ quote.details }}</p>
+                </div>
+                <div class="row-action">
+                    <a [href]="quote.responses[0]?.invoiceUrl" target="_blank" class="btn btn-secondary">
+                        <span class="material-icons">receipt_long</span> Invoice
+                    </a>
+                </div>
+            </div>
+            }
         </div>
         }
         }
+
     </div>
 </div>
