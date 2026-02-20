@@ -57,10 +57,6 @@ exports.verifyTokenOptional = async (req, res, next) => {
             req.user.role = 'guest';
         }
 
-        if (req.headers['x-mock-role']) {
-            req.user.role = req.headers['x-mock-role'];
-        }
-
         next();
     } catch (err) {
         req.user = null;
@@ -107,10 +103,6 @@ exports.verifyToken = async (req, res, next) => {
         } else {
             console.warn('User has no profile/role, defaulting to buyer');
             req.user.role = 'buyer';
-        }
-
-        if (req.headers['x-mock-role']) {
-            req.user.role = req.headers['x-mock-role'];
         }
 
         next();

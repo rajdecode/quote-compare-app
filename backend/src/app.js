@@ -9,8 +9,19 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
+// Middleware - restrict CORS to known frontend origin
+const allowedOrigin = process.env.ALLOWED_ORIGIN || 'http://localhost:4200';
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (e.g. mobile apps, Postman, server-to-server)
+        if (!origin || allowedOrigin === '*' || origin === allowedOrigin) {
+            callback(null, true);
+        } else {
+            callback(new Error(`CORS policy: origin ${origin} not allowed`));
+        }
+    },
+    credentials: true
+}));
 app.use(bodyParser.json());
 
 // Supabase Initialization

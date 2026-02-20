@@ -199,16 +199,21 @@ exports.getQuoteById = async (req, res) => {
         }
 
         // Map quote_responses to responses and flatten vendor info
+        const isOwner = req.user && quote.buyer_id === req.user.uid;
+        const isAdmin = req.user && req.user.role === 'admin';
+
         const responseData = {
             ...quote,
             responses: (quote.quote_responses || []).map(r => ({
                 ...r,
                 vendor_name: r.profiles?.company_name || r.profiles?.contact_name || 'Unknown Vendor',
-                vendor_email: r.profiles?.email
+                // Only expose vendor email to the quote owner (buyer) or admin
+                vendor_email: (isOwner || isAdmin) ? r.profiles?.email : undefined
             }))
         };
 
-        // Security/Privacy Filter would go here
+        // Remove raw profiles join data from response
+        responseData.responses.forEach(r => delete r.profiles);
 
         res.status(200).json(responseData);
 
@@ -224,6 +229,12 @@ exports.respondToQuote = async (req, res) => {
         const { quoteId } = req.params;
         const { price, message } = req.body;
         const vendorId = req.user.uid;
+
+        // Validate price
+        const parsedPrice = Number(price);
+        if (isNaN(parsedPrice) || parsedPrice < 0 || parsedPrice > 10_000_000) {
+            return res.status(400).json({ error: 'Invalid price value. Must be a positive number under 10,000,000.' });
+        }
 
         // Ensure vendor profile exists or name is set (not critical for logic but nice)
 
@@ -313,6 +324,12 @@ exports.updateResponseStatus = async (req, res) => {
         const { quoteId, vendorId } = req.params;
         const { status, message } = req.body;
         const buyerId = req.user.uid;
+
+        // Whitelist allowed status values
+        const ALLOWED_STATUSES = ['accepted', 'negotiating', 'rejected'];
+        if (!status || !ALLOWED_STATUSES.includes(status)) {
+            return res.status(400).json({ error: `Invalid status. Must be one of: ${ALLOWED_STATUSES.join(', ')}` });
+        }
 
         // Verify Buyer owns the Quote first
         const { data: quote, error: quoteError } = await supabase
