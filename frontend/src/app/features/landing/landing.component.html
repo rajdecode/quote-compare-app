@@ -1,5 +1,30 @@
 <div class="landing-page">
 
+    <!-- ═══ TRACK QUOTE — Top Bar ════════════════════ -->
+    <section class="track-section">
+        <div class="container">
+            <div class="track-full">
+                <div class="track-full-left">
+                    <div class="track-icon-wrap">
+                        <span class="material-icons">manage_search</span>
+                    </div>
+                    <div class="track-text">
+                        <h2>Track My Quote</h2>
+                        <p>Enter your Quote ID to view all vendor responses instantly</p>
+                    </div>
+                </div>
+                <div class="track-input-row">
+                    <input type="text" #quoteIdInput placeholder="e.g. QR-2024-XXXX" class="track-input-lg">
+                    <button class="btn-track-lg"
+                        (click)="quoteIdInput.value ? router.navigate(['/track', quoteIdInput.value]) : null">
+                        <span class="material-icons">search</span>
+                        Track My Quote
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ═══ HERO ══════════════════════════════════════ -->
     <section class="hero">
         <!-- Floating background blobs -->
@@ -87,31 +112,6 @@
         </div>
     </section>
 
-
-    <!-- ═══ TRACK QUOTE — Prominent Banner ══════════════ -->
-    <section class="track-section">
-        <div class="container">
-            <div class="track-full">
-                <div class="track-full-left">
-                    <div class="track-icon-wrap">
-                        <span class="material-icons">manage_search</span>
-                    </div>
-                    <div class="track-text">
-                        <h2>Already requested a quote?</h2>
-                        <p>Enter your Quote ID to track all vendor offers in real time</p>
-                    </div>
-                </div>
-                <div class="track-input-row">
-                    <input type="text" #quoteIdInput placeholder="e.g. QR-2024-XXXX" class="track-input-lg">
-                    <button class="btn-track-lg"
-                        (click)="quoteIdInput.value ? router.navigate(['/track', quoteIdInput.value]) : null">
-                        <span class="material-icons">search</span>
-                        Track My Quote
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- ═══ PRODUCTS ════════════════════════════════════ -->
     <section class="products-section container">
