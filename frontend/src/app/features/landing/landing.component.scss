@@ -421,25 +421,31 @@
 /* ── HERO VISUAL ─────────────────────────────── */
 .hero-visual {
     flex: 0 0 420px;
-    height: 420px;
+    height: 500px;
+    /* extra height for card + rings */
     position: relative;
     display: flex;
+    flex-direction: column;
+    /* stack card then rings top-to-bottom */
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
     @media (max-width: 900px) {
         flex: none;
         width: 300px;
-        height: 300px;
+        height: auto;
     }
 }
 
 /* Pulsing rings */
 .hero-icon-ring {
     position: relative;
+    width: 300px;
+    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .ring {
