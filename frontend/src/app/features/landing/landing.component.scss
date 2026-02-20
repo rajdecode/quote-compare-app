@@ -12,12 +12,80 @@
 /* ── TRACK SECTION — first thing below the navbar ─ */
 .track-section {
     background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-    padding: 40px 0;
+    padding: 28px 24px;
     margin: 0;
+}
 
-    .container {
-        max-width: 1100px;
+/* Compact centred layout */
+.track-compact {
+    max-width: 520px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.track-row {
+    display: flex;
+    gap: 10px;
+
+    @media (max-width: 560px) {
+        flex-direction: column;
     }
+}
+
+.track-input-lg {
+    flex: 1;
+    padding: 13px 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: white;
+    background: rgba(255, 255, 255, 0.12);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    &:focus {
+        border-color: white;
+        background: rgba(255, 255, 255, 0.2);
+    }
+}
+
+.btn-track-lg {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 13px 20px;
+    background: white;
+    color: #4F46E5;
+    border: none;
+    border-radius: 12px;
+    font-weight: 800;
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    transition: all 0.2s;
+
+    .material-icons {
+        font-size: 1rem;
+    }
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        background: #F0F4FF;
+    }
+}
+
+.track-hint {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 /* ── SHARED ─────────────────────────────────── */
