@@ -9,6 +9,79 @@
     overflow: hidden;
 }
 
+/* ── HERO LEFT-COLUMN TRACK WIDGET ─────────── */
+.hero-track {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(79, 70, 229, 0.12);
+}
+
+.hero-track-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748B;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+}
+
+.hero-track-row {
+    display: flex;
+    gap: 8px;
+
+    @media (max-width: 520px) {
+        flex-direction: column;
+    }
+}
+
+.hero-track-input {
+    flex: 1;
+    padding: 10px 13px;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    color: #0F172A;
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+
+    &::placeholder {
+        color: #94A3B8;
+    }
+
+    &:focus {
+        border-color: #4F46E5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+}
+
+.hero-track-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #4F46E5, #6366F1);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    box-shadow: 0 3px 10px rgba(79, 70, 229, 0.25);
+
+    .material-icons {
+        font-size: 0.9rem;
+    }
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 14px rgba(79, 70, 229, 0.4);
+    }
+}
+
 /* ── HERO RIGHT-PANEL TRACK CARD ─────────────── */
 .visual-track-card {
     background: rgba(255, 255, 255, 0.85);
@@ -421,31 +494,26 @@
 /* ── HERO VISUAL ─────────────────────────────── */
 .hero-visual {
     flex: 0 0 420px;
-    height: 500px;
+    height: 420px;
     /* extra height for card + rings */
     position: relative;
     display: flex;
-    flex-direction: column;
-    /* stack card then rings top-to-bottom */
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 
     @media (max-width: 900px) {
         flex: none;
         width: 300px;
-        height: auto;
+        height: 300px;
     }
 }
 
 /* Pulsing rings */
 .hero-icon-ring {
     position: relative;
-    width: 300px;
-    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
 }
 
 .ring {
