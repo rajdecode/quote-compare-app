@@ -104,15 +104,39 @@ export class BuyerDashboard implements OnInit {
 
   getServiceIcon(serviceType: string): string {
     const map: Record<string, string> = {
+      // Solar
       'solar': 'wb_sunny',
-      'heat-pump': 'heat_pump',
+      'solar-panels': 'wb_sunny',
+      // Batteries
       'battery': 'battery_charging_full',
+      'battery-storage': 'battery_charging_full',
+      // Heat pumps
+      'heat-pump': 'heat_pump',
+      'heat-pumps': 'heat_pump',
+      // EV
       'ev-charger': 'ev_station',
+      'ev-charging': 'ev_station',
+      // Insulation
       'insulation': 'thermostat',
+      // Air conditioning — match 'aircon', 'air con', 'air conditioning', 'air-conditioning'
       'air-conditioning': 'ac_unit',
+      'air-con': 'ac_unit',
+      'aircon': 'ac_unit',
+      // Water filter
+      'water-filter': 'water_drop',
+      'water-filters': 'water_drop',
+      'water': 'water_drop',
+      'water-purifier': 'water_drop',
+      // Plumbing
+      'plumbing': 'plumbing',
+      // Electrical
+      'electrical': 'bolt',
+      // Gas
+      'gas': 'local_fire_department',
+      'gas-heating': 'local_fire_department',
     };
-    const key = (serviceType || '').toLowerCase().replace(/\s+/g, '-');
-    return map[key] || 'build';
+    const key = (serviceType || '').toLowerCase().replace(/[\s_]+/g, '-');
+    return map[key] || 'home_repair_service';
   }
 
   getStatusColor(status: string): string {
