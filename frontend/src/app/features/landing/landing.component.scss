@@ -9,44 +9,44 @@
     overflow: hidden;
 }
 
-/* ── TRACK SECTION styles kept for potential reuse ─ */
-
-/* ── HERO INLINE TRACK WIDGET ────────────────── */
-.hero-track {
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(79, 70, 229, 0.12);
+/* ── HERO RIGHT-PANEL TRACK CARD ─────────────── */
+.visual-track-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(14px);
+    border: 1.5px solid rgba(79, 70, 229, 0.18);
+    border-radius: 18px;
+    padding: 16px 18px;
+    box-shadow: 0 6px 24px rgba(79, 70, 229, 0.1);
+    margin-bottom: 24px;
+    width: 100%;
 }
 
-.hero-track-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #64748B;
-    margin-bottom: 8px;
+.visual-track-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #4F46E5;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
+    margin-bottom: 10px;
 }
 
-.hero-track-row {
+.visual-track-row {
     display: flex;
     gap: 8px;
-
-    @media (max-width: 520px) {
-        flex-direction: column;
-    }
 }
 
-.hero-track-input {
+.visual-track-input {
     flex: 1;
-    padding: 11px 14px;
+    padding: 10px 12px;
     border: 1.5px solid #E2E8F0;
     border-radius: 10px;
-    font-size: 0.88rem;
+    font-size: 0.84rem;
     font-family: inherit;
     color: #0F172A;
     background: white;
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    min-width: 0;
+    transition: border-color 0.2s;
 
     &::placeholder {
         color: #94A3B8;
@@ -54,34 +54,34 @@
 
     &:focus {
         border-color: #4F46E5;
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     }
 }
 
-.hero-track-btn {
+.visual-track-btn {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 11px 18px;
+    gap: 5px;
+    padding: 10px 14px;
     background: linear-gradient(135deg, #4F46E5, #6366F1);
     color: white;
     border: none;
     border-radius: 10px;
     font-weight: 700;
     font-family: inherit;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     cursor: pointer;
     white-space: nowrap;
+    flex-shrink: 0;
     transition: all 0.2s;
     box-shadow: 0 3px 10px rgba(79, 70, 229, 0.3);
 
     .material-icons {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
     }
 
     &:hover {
         transform: translateY(-1px);
-        box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+        box-shadow: 0 5px 14px rgba(79, 70, 229, 0.4);
     }
 }
 
