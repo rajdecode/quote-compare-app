@@ -1,76 +1,219 @@
 <div class="landing-page">
-    <!-- Hero Section -->
+
+    <!-- ═══ HERO ══════════════════════════════════════ -->
     <section class="hero">
+        <!-- Floating background blobs -->
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+
         <div class="container hero-content">
             <div class="hero-text">
-                <h1>Sustainable Comfort for Your Home</h1>
-                <p class="subtitle">Compare quotes for top-rated Heat Pumps from trusted local vendors. Save money and
-                    energy with ease.</p>
+                <div class="hero-badge">
+                    <span class="material-icons">verified</span>
+                    Trusted by 5,000+ homeowners
+                </div>
+                <h1>
+                    Get the Best Quote<br>
+                    <span class="gradient-text">In Minutes</span>
+                </h1>
+                <p class="subtitle">
+                    Compare competitive quotes from vetted local vendors for solar, heat pumps,
+                    EV chargers, air conditioning &amp; more — all in one place.
+                </p>
                 <div class="cta-group">
-                    <div class="cta-group">
-                        @if (currentUser()) {
-                        <a routerLink="/request-quote" class="btn btn-primary">Get Free Quotes</a>
-                        } @else {
-                        <a routerLink="/request-quote" class="btn btn-primary">Get Free Quotes</a>
-                        }
-                        <a href="#how-it-works" class="btn btn-secondary">Learn More</a>
+                    <a routerLink="/request-quote" class="btn-hero-primary">
+                        <span class="material-icons">flash_on</span>
+                        Get Free Quotes
+                    </a>
+                    <a href="#how-it-works" class="btn-hero-secondary">
+                        See How It Works
+                    </a>
+                </div>
+
+                <!-- Social proof row -->
+                <div class="social-proof">
+                    <div class="avatar-stack">
+                        <div class="av av1">S</div>
+                        <div class="av av2">M</div>
+                        <div class="av av3">R</div>
+                        <div class="av av4">J</div>
+                    </div>
+                    <span>Join <strong>5,000+</strong> happy homeowners saving money</span>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <!-- Central icon -->
+                <div class="hero-icon-ring">
+                    <div class="ring ring-outer"></div>
+                    <div class="ring ring-mid"></div>
+                    <div class="icon-center">
+                        <span class="material-icons">compare_arrows</span>
+                    </div>
+                </div>
+
+                <!-- Floating service badges -->
+                <div class="service-badge badge-solar">
+                    <span class="material-icons">wb_sunny</span> Solar
+                </div>
+                <div class="service-badge badge-ev">
+                    <span class="material-icons">ev_station</span> EV Charger
+                </div>
+                <div class="service-badge badge-heat">
+                    <span class="material-icons">heat_pump</span> Heat Pump
+                </div>
+                <div class="service-badge badge-ac">
+                    <span class="material-icons">ac_unit</span> Air Con
+                </div>
+
+                <!-- Floating stat cards -->
+                <div class="float-stat stat-top">
+                    <div class="stat-icon">💰</div>
+                    <div>
+                        <div class="stat-val">$1,200</div>
+                        <div class="stat-lbl">Avg. savings</div>
+                    </div>
+                </div>
+                <div class="float-stat stat-bottom">
+                    <div class="stat-icon">⚡</div>
+                    <div>
+                        <div class="stat-val">2 min</div>
+                        <div class="stat-lbl">To get quotes</div>
                     </div>
                 </div>
             </div>
-            <div class="hero-visual glass-panel">
-                <!-- Placeholder for valid image or 3D element -->
-                <div class="product-showcase">
-                    <span class="material-icons icon-large">ac_unit</span>
-                    <div class="stat-card glass-panel" style="top: 20%; right: -20px;">
-                        <span class="label">Energy Savings</span>
-                        <span class="value">Up to 50%</span>
+        </div>
+    </section>
+
+    <!-- ═══ TRACK QUOTE BANNER ═════════════════════════ -->
+    <section class="track-banner container">
+        <div class="track-inner glass-panel">
+            <div class="track-left">
+                <span class="material-icons">search</span>
+                <div>
+                    <h3>Already requested a quote?</h3>
+                    <p>Track all vendor offers in one place</p>
+                </div>
+            </div>
+            <div class="track-right">
+                <input type="text" #quoteIdInput placeholder="Enter Quote ID…" class="track-input">
+                <button class="btn-track"
+                    (click)="quoteIdInput.value ? router.navigate(['/track', quoteIdInput.value]) : null">
+                    <span class="material-icons">arrow_forward</span>
+                    Track
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ SERVICES ════════════════════════════════════ -->
+    <section class="services-section container">
+        <div class="section-header">
+            <h2>Services We Cover</h2>
+            <p>One platform. Every home upgrade.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-chip">
+                <span class="material-icons">wb_sunny</span> Solar Panels
+            </div>
+            <div class="service-chip">
+                <span class="material-icons">heat_pump</span> Heat Pumps
+            </div>
+            <div class="service-chip">
+                <span class="material-icons">battery_charging_full</span> Battery Storage
+            </div>
+            <div class="service-chip">
+                <span class="material-icons">ev_station</span> EV Chargers
+            </div>
+            <div class="service-chip">
+                <span class="material-icons">ac_unit</span> Air Conditioning
+            </div>
+            <div class="service-chip">
+                <span class="material-icons">water_drop</span> Water Filters
+            </div>
+            <div class="service-chip">
+                <span class="material-icons">thermostat</span> Insulation
+            </div>
+            <div class="service-chip">
+                <span class="material-icons">bolt</span> Electrical
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ HOW IT WORKS ═══════════════════════════════ -->
+    <section id="how-it-works" class="how-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Three simple steps to a better deal</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">01</div>
+                    <div class="step-icon-wrap">
+                        <span class="material-icons">edit_note</span>
                     </div>
-                    <div class="stat-card glass-panel" style="bottom: 20%; left: -20px;">
-                        <span class="label">Rebates</span>
-                        <span class="value">Available</span>
+                    <h3>Request a Quote</h3>
+                    <p>Tell us what you need and your postcode. Takes under 2 minutes.</p>
+                    <div class="step-connector"></div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">02</div>
+                    <div class="step-icon-wrap">
+                        <span class="material-icons">groups</span>
                     </div>
+                    <h3>Vendors Respond</h3>
+                    <p>Verified local vendors send competitive quotes directly to you.</p>
+                    <div class="step-connector"></div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">03</div>
+                    <div class="step-icon-wrap">
+                        <span class="material-icons">savings</span>
+                    </div>
+                    <h3>Compare &amp; Save</h3>
+                    <p>Choose the best price and terms. Save hundreds, effortlessly.</p>
                 </div>
             </div>
         </div>
-        <div class="hero-glow"></div>
     </section>
 
-    <!-- Track Quote Section -->
-    <section class="container" style="margin-top: -3rem; position: relative; z-index: 20;">
-        <div class="glass-panel"
-            style="padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-            <div>
-                <h3 style="margin: 0; font-size: 1.25rem;">Already requested?</h3>
-                <p style="margin: 0.5rem 0 0; color: var(--text-dim);">Track best quotes from local vendors.</p>
+    <!-- ═══ SOCIAL PROOF STATS ══════════════════════════ -->
+    <section class="stats-section container">
+        <div class="stats-row glass-panel">
+            <div class="stat-block">
+                <div class="stat-number">5,000+</div>
+                <div class="stat-desc">Homeowners served</div>
             </div>
-            <div style="display: flex; gap: 1rem; flex: 1; max-width: 400px;">
-                <input type="text" #quoteIdInput placeholder="Enter Quote ID"
-                    style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #E2E8F0;">
-                <button class="btn btn-primary"
-                    (click)="quoteIdInput.value ? router.navigate(['/track', quoteIdInput.value]) : null">Track</button>
+            <div class="stat-divider"></div>
+            <div class="stat-block">
+                <div class="stat-number">$1,200</div>
+                <div class="stat-desc">Average savings</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-block">
+                <div class="stat-number">200+</div>
+                <div class="stat-desc">Verified vendors</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-block">
+                <div class="stat-number">4.9 ★</div>
+                <div class="stat-desc">Average rating</div>
             </div>
         </div>
     </section>
 
-    <!-- How It Works -->
-    <section id="how-it-works" class="how-it-works container">
-        <h2>How It Works</h2>
-        <div class="steps-grid">
-            <div class="step-card glass-panel">
-                <span class="step-number">01</span>
-                <h3>Request Quote</h3>
-                <p>Enter your postal code and requirements. It takes less than 2 minutes.</p>
-            </div>
-            <div class="step-card glass-panel">
-                <span class="step-number">02</span>
-                <h3>Vendors Respond</h3>
-                <p>Verified local vendors review your request and send competitive quotes.</p>
-            </div>
-            <div class="step-card glass-panel">
-                <span class="step-number">03</span>
-                <h3>Compare & Save</h3>
-                <p>Compare prices, ratings, and models on your dashboard. Choose the best fit.</p>
-            </div>
+    <!-- ═══ CTA BANNER ══════════════════════════════════ -->
+    <section class="cta-section">
+        <div class="container cta-inner">
+            <h2>Ready to save on your next home upgrade?</h2>
+            <p>It's free, takes 2 minutes, and there's no obligation.</p>
+            <a routerLink="/request-quote" class="btn-hero-primary">
+                <span class="material-icons">flash_on</span>
+                Get My Free Quotes
+            </a>
         </div>
     </section>
+
 </div>
