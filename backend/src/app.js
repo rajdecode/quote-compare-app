@@ -9,12 +9,17 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware - restrict CORS to known frontend origin
-const allowedOrigin = process.env.ALLOWED_ORIGIN || 'http://localhost:4200';
+// Middleware - restrict CORS to known frontend origins
+// ALLOWED_ORIGINS can be comma-separated, e.g. "http://localhost:4200,https://myapp.onrender.com"
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:4200,https://quote-compare-app.onrender.com')
+    .split(',')
+    .map(o => o.trim())
+    .filter(Boolean);
+
 app.use(cors({
     origin: (origin, callback) => {
-        // Allow requests with no origin (e.g. mobile apps, Postman, server-to-server)
-        if (!origin || allowedOrigin === '*' || origin === allowedOrigin) {
+        // Allow requests with no origin (Postman, server-to-server, same-origin browser requests)
+        if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error(`CORS policy: origin ${origin} not allowed`));
