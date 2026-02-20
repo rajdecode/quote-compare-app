@@ -57,8 +57,7 @@
         display: block;
         visibility: visible;
         opacity: 1;
-        transform: translateY(0);
-        /* Simple drop down */
+        transform: translateX(-50%) translateY(0);
         transition: all 0.2s ease, visibility 0s linear 0s;
     }
 }
@@ -66,12 +65,8 @@
 .dropdown-content {
     position: absolute;
     top: 100%;
-    right: 0;
-    /* Align to right edge of parent (Avatar) */
-    left: auto;
-    /* Override any default left alignment */
-    transform: translateY(10px);
-    /* Only explicit vertical gap */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
     background-color: white;
     min-width: 180px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1);
