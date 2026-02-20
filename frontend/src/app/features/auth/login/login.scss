@@ -262,6 +262,8 @@
     background: white;
     border: 1.5px solid #E2E8F0;
     border-radius: 14px;
+    overflow: hidden;
+    /* clips browser focus ring to rounded corners */
     transition: border-color 0.2s, box-shadow 0.2s;
 
     &:focus-within {
@@ -294,6 +296,13 @@
 
         &::placeholder {
             color: #94A3B8;
+        }
+
+        /* suppress browser autofill blue/yellow overlay */
+        &:-webkit-autofill,
+        &:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 1000px white inset;
+            -webkit-text-fill-color: #0F172A;
         }
     }
 
