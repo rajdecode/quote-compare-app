@@ -18,8 +18,9 @@
                     <span class="gradient-text">In Minutes</span>
                 </h1>
                 <p class="subtitle">
-                    Compare competitive quotes from vetted local vendors for solar, heat pumps,
-                    EV chargers, air conditioning &amp; more — all in one place.
+                    Compare competitive quotes from vetted local vendors for
+                    <strong>heat pumps</strong>, <strong>batteries</strong>,
+                    <strong>water filters</strong> &amp; <strong>air conditioning</strong> — all in one place.
                 </p>
                 <div class="cta-group">
                     <a routerLink="/request-quote" class="btn-hero-primary">
@@ -86,60 +87,74 @@
         </div>
     </section>
 
-    <!-- ═══ TRACK QUOTE BANNER ═════════════════════════ -->
-    <section class="track-banner container">
-        <div class="track-inner glass-panel">
-            <div class="track-left">
-                <span class="material-icons">search</span>
-                <div>
-                    <h3>Already requested a quote?</h3>
-                    <p>Track all vendor offers in one place</p>
+
+    <!-- ═══ TRACK QUOTE — Prominent Banner ══════════════ -->
+    <section class="track-section">
+        <div class="container">
+            <div class="track-full">
+                <div class="track-full-left">
+                    <div class="track-icon-wrap">
+                        <span class="material-icons">manage_search</span>
+                    </div>
+                    <div class="track-text">
+                        <h2>Already requested a quote?</h2>
+                        <p>Enter your Quote ID to track all vendor offers in real time</p>
+                    </div>
                 </div>
-            </div>
-            <div class="track-right">
-                <input type="text" #quoteIdInput placeholder="Enter Quote ID…" class="track-input">
-                <button class="btn-track"
-                    (click)="quoteIdInput.value ? router.navigate(['/track', quoteIdInput.value]) : null">
-                    <span class="material-icons">arrow_forward</span>
-                    Track
-                </button>
+                <div class="track-input-row">
+                    <input type="text" #quoteIdInput placeholder="e.g. QR-2024-XXXX" class="track-input-lg">
+                    <button class="btn-track-lg"
+                        (click)="quoteIdInput.value ? router.navigate(['/track', quoteIdInput.value]) : null">
+                        <span class="material-icons">search</span>
+                        Track My Quote
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ═══ SERVICES ════════════════════════════════════ -->
-    <section class="services-section container">
+    <!-- ═══ PRODUCTS ════════════════════════════════════ -->
+    <section class="products-section container">
         <div class="section-header">
-            <h2>Services We Cover</h2>
-            <p>One platform. Every home upgrade.</p>
+            <h2>Products We Quote</h2>
+            <p>Get competitive quotes from verified vendors for all four categories</p>
         </div>
-        <div class="services-grid">
-            <div class="service-chip">
-                <span class="material-icons">wb_sunny</span> Solar Panels
-            </div>
-            <div class="service-chip">
-                <span class="material-icons">heat_pump</span> Heat Pumps
-            </div>
-            <div class="service-chip">
-                <span class="material-icons">battery_charging_full</span> Battery Storage
-            </div>
-            <div class="service-chip">
-                <span class="material-icons">ev_station</span> EV Chargers
-            </div>
-            <div class="service-chip">
-                <span class="material-icons">ac_unit</span> Air Conditioning
-            </div>
-            <div class="service-chip">
-                <span class="material-icons">water_drop</span> Water Filters
-            </div>
-            <div class="service-chip">
-                <span class="material-icons">thermostat</span> Insulation
-            </div>
-            <div class="service-chip">
-                <span class="material-icons">bolt</span> Electrical
-            </div>
+        <div class="products-grid">
+            <a routerLink="/products/heat-pumps" class="product-card">
+                <div class="product-icon" style="background: linear-gradient(135deg, #FCE7F3, #FBD5E7);">
+                    <span class="material-icons" style="color: #9D174D;">heat_pump</span>
+                </div>
+                <h3>Heat Pumps</h3>
+                <p>Efficient heating &amp; cooling solutions for your home</p>
+                <span class="product-link">Get quotes <span class="material-icons">arrow_forward</span></span>
+            </a>
+            <a routerLink="/products/batteries" class="product-card">
+                <div class="product-icon" style="background: linear-gradient(135deg, #D1FAE5, #A7F3D0);">
+                    <span class="material-icons" style="color: #065F46;">battery_charging_full</span>
+                </div>
+                <h3>Batteries</h3>
+                <p>Home battery storage to save and manage your energy</p>
+                <span class="product-link">Get quotes <span class="material-icons">arrow_forward</span></span>
+            </a>
+            <a routerLink="/products/water-filters" class="product-card">
+                <div class="product-icon" style="background: linear-gradient(135deg, #E0F2FE, #BAE6FD);">
+                    <span class="material-icons" style="color: #075985;">water_drop</span>
+                </div>
+                <h3>Water Filters</h3>
+                <p>Clean, filtered water systems installed by professionals</p>
+                <span class="product-link">Get quotes <span class="material-icons">arrow_forward</span></span>
+            </a>
+            <a routerLink="/products/aircons" class="product-card">
+                <div class="product-icon" style="background: linear-gradient(135deg, #EDE9FE, #DDD6FE);">
+                    <span class="material-icons" style="color: #5B21B6;">ac_unit</span>
+                </div>
+                <h3>Air Conditioning</h3>
+                <p>Split systems and ducted air con quotes at your fingertips</p>
+                <span class="product-link">Get quotes <span class="material-icons">arrow_forward</span></span>
+            </a>
         </div>
     </section>
+
 
     <!-- ═══ HOW IT WORKS ═══════════════════════════════ -->
     <section id="how-it-works" class="how-section">
