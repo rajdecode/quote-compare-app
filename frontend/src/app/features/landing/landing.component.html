@@ -42,22 +42,23 @@
                     </div>
                     <span>Join <strong>5,000+</strong> happy homeowners saving money</span>
                 </div>
-
-                <!-- Inline track widget -->
-                <div class="hero-track">
-                    <p class="hero-track-label">Already submitted a request?</p>
-                    <div class="hero-track-row">
-                        <input type="text" #heroTrackInput placeholder="Enter your Quote ID" class="hero-track-input">
-                        <button class="hero-track-btn"
-                            (click)="heroTrackInput.value ? router.navigate(['/track', heroTrackInput.value]) : null">
-                            <span class="material-icons">search</span>
-                            Track My Quote
-                        </button>
-                    </div>
-                </div>
             </div>
 
             <div class="hero-visual">
+
+                <!-- Track My Quote glass card — top of right panel -->
+                <div class="visual-track-card">
+                    <p class="visual-track-label">Already submitted a request?</p>
+                    <div class="visual-track-row">
+                        <input type="text" #vizTrackInput placeholder="Enter Quote ID" class="visual-track-input">
+                        <button class="visual-track-btn"
+                            (click)="vizTrackInput.value ? router.navigate(['/track', vizTrackInput.value]) : null">
+                            <span class="material-icons">search</span>
+                            Track
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Central icon -->
                 <div class="hero-icon-ring">
                     <div class="ring ring-outer"></div>
