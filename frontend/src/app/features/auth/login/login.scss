@@ -248,6 +248,13 @@
     gap: 6px;
 }
 
+.field-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #374151;
+    letter-spacing: 0.2px;
+}
+
 .input-wrapper {
     position: relative;
     display: flex;
@@ -256,7 +263,6 @@
     border: 1.5px solid #E2E8F0;
     border-radius: 14px;
     transition: border-color 0.2s, box-shadow 0.2s;
-    overflow: visible;
 
     &:focus-within {
         border-color: #4F46E5;
@@ -265,11 +271,10 @@
 
     .field-icon {
         position: absolute;
-        left: 16px;
+        left: 14px;
         font-size: 1.15rem;
         color: #94A3B8;
         pointer-events: none;
-        z-index: 1;
         transition: color 0.2s;
     }
 
@@ -279,7 +284,7 @@
 
     input {
         width: 100%;
-        padding: 20px 48px 8px 48px;
+        padding: 14px 46px;
         font-size: 0.95rem;
         background: transparent;
         border: none;
@@ -288,29 +293,13 @@
         font-family: inherit;
 
         &::placeholder {
-            color: transparent;
+            color: #94A3B8;
         }
     }
 
-    /* Floating label */
+    /* Label is now ABOVE the wrapper — handled in .field-group */
     label {
-        position: absolute;
-        left: 48px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 0.95rem;
-        color: #94A3B8;
-        pointer-events: none;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        transform-origin: left top;
-    }
-
-    &:focus-within label,
-    input:not(:placeholder-shown)~label {
-        top: 10px;
-        transform: translateY(0) scale(0.78);
-        color: #4F46E5;
-        font-weight: 600;
+        display: none;
     }
 }
 

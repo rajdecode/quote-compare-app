@@ -19,49 +19,47 @@
             <button class="btn btn-secondary btn-sm" routerLink="/request-quote">Start a Request</button>
         </div>
         } @else {
-        <div class="request-list">
+        <div class="request-cards">
             @for (quote of quotesList(); track quote.id) {
-            <div class="request-row glass-panel" [routerLink]="['/buyer/quote', quote.id]" style="cursor: pointer;">
-                <div class="row-icon icon-{{ getStatusColor(quote.status) }}">
-                    <span class="material-icons">{{ getServiceIcon(quote.service_type) }}</span>
-                </div>
-                <div class="row-body">
-                    <div class="row-top">
-                        <span
-                            class="service-tag service-{{ (quote.service_type || '').toLowerCase().replace(' ', '-') }}">
-                            {{ quote.service_type | titlecase }}
-                        </span>
-                        <span class="location-chip">
-                            <span class="material-icons">location_on</span>
-                            {{ quote.postal_code || quote.postalCode }}
-                            @if (quote.city || quote.suburb) {
-                            · {{ quote.city || quote.suburb }}
-                            }
-                        </span>
-                        <span class="date-chip">
-                            <span class="material-icons">schedule</span>
-                            {{ quote.created_at || quote.createdAt | date:'d MMM yyyy' }}
-                        </span>
+            <div class="quote-card" [routerLink]="['/buyer/quote', quote.id]">
+                <!-- Card header: icon + status badge -->
+                <div class="qcard-header">
+                    <div class="qcard-icon icon-{{ getStatusColor(quote.status) }}">
+                        <span class="material-icons">{{ getServiceIcon(quote.service_type) }}</span>
                     </div>
-                    <div class="row-bottom">
-                        <span class="status-badge status-{{ (quote.status || 'open').toLowerCase() }}">
-                            {{ quote.status || 'open' | titlecase }}
-                        </span>
-                        @if ((quote.responses?.length || 0) > 0) {
-                        <span class="offers-chip">
-                            <span class="material-icons">local_offer</span>
-                            {{ quote.responses?.length }} offer{{ (quote.responses?.length || 0) > 1 ? 's' : '' }}
-                            received
-                        </span>
-                        }
-                    </div>
+                    <span class="status-badge status-{{ (quote.status || 'open').toLowerCase() }}">
+                        {{ quote.status || 'open' | titlecase }}
+                    </span>
                 </div>
-                <div class="row-action">
-                    <button class="btn btn-secondary" (click)="$event.stopPropagation();"
-                        [routerLink]="['/buyer/quote', quote.id]">
-                        <span class="material-icons">chevron_right</span> View
-                    </button>
+
+                <!-- Service name -->
+                <div class="qcard-service">{{ quote.service_type | titlecase }}</div>
+
+                <!-- Meta info -->
+                <div class="qcard-meta">
+                    <span class="qcard-meta-item">
+                        <span class="material-icons">location_on</span>
+                        {{ quote.postal_code || quote.postalCode }}
+                        @if (quote.city || quote.suburb) { · {{ quote.city || quote.suburb }} }
+                    </span>
+                    <span class="qcard-meta-item">
+                        <span class="material-icons">schedule</span>
+                        {{ quote.created_at || quote.createdAt | date:'d MMM yy' }}
+                    </span>
                 </div>
+
+                <!-- Offers badge -->
+                @if ((quote.responses?.length || 0) > 0) {
+                <div class="qcard-offers">
+                    <span class="material-icons">local_offer</span>
+                    {{ quote.responses?.length }} offer{{ (quote.responses?.length || 0) > 1 ? 's' : '' }} received
+                </div>
+                }
+
+                <!-- View button -->
+                <button class="qcard-btn" (click)="$event.stopPropagation()" [routerLink]="['/buyer/quote', quote.id]">
+                    View Details <span class="material-icons">chevron_right</span>
+                </button>
             </div>
             }
         </div>
