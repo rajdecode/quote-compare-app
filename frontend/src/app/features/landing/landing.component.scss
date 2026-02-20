@@ -332,7 +332,6 @@
 
 .hero-text {
     flex: 1;
-    max-width: 480px;
 }
 
 /* Badge above headline */
@@ -356,15 +355,15 @@
 
 /* Headline */
 .hero-text h1 {
-    font-size: 3.8rem;
+    font-size: 3.2rem;
     font-weight: 900;
     line-height: 1.1;
     color: #0F172A;
     letter-spacing: -1.5px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 
     @media (max-width: 768px) {
-        font-size: 2.6rem;
+        font-size: 2.4rem;
     }
 }
 
@@ -376,10 +375,10 @@
 }
 
 .hero-text .subtitle {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: #475569;
-    line-height: 1.7;
-    margin-bottom: 36px;
+    line-height: 1.6;
+    margin-bottom: 18px;
     max-width: 520px;
 }
 
@@ -388,7 +387,7 @@
     display: flex;
     gap: 14px;
     flex-wrap: wrap;
-    margin-bottom: 36px;
+    margin-bottom: 18px;
 
     @media (max-width: 900px) {
         justify-content: center;
