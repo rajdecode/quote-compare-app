@@ -3,17 +3,86 @@
    ============================================== */
 
 .landing-page {
-    padding-top: 90px;
-    /* clears the floating navbar (top:20px + ~70px height) */
+    padding-top: 80px;
+    /* clears the floating navbar */
     font-family: 'Inter', sans-serif;
     overflow: hidden;
 }
 
-/* ── TRACK SECTION — first thing below the navbar ─ */
-.track-section {
-    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-    padding: 6px 24px;
-    margin: 0;
+/* ── TRACK SECTION styles kept for potential reuse ─ */
+
+/* ── HERO INLINE TRACK WIDGET ────────────────── */
+.hero-track {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(79, 70, 229, 0.12);
+}
+
+.hero-track-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748B;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hero-track-row {
+    display: flex;
+    gap: 8px;
+
+    @media (max-width: 520px) {
+        flex-direction: column;
+    }
+}
+
+.hero-track-input {
+    flex: 1;
+    padding: 11px 14px;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    color: #0F172A;
+    background: white;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &::placeholder {
+        color: #94A3B8;
+    }
+
+    &:focus {
+        border-color: #4F46E5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+}
+
+.hero-track-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 18px;
+    background: linear-gradient(135deg, #4F46E5, #6366F1);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    box-shadow: 0 3px 10px rgba(79, 70, 229, 0.3);
+
+    .material-icons {
+        font-size: 0.95rem;
+    }
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+    }
 }
 
 /* Compact centred layout */
