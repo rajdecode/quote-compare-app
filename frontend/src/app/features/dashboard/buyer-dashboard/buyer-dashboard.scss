@@ -312,3 +312,244 @@
     padding: 40px;
     color: var(--text-dim);
 }
+
+/* ========================================
+   Rich Card-List Row Styles (Buyer Dashboard)
+   ======================================== */
+
+.request-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.request-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 24px;
+    border-radius: 16px;
+    background: white;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 4px solid transparent;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        border-left-color: var(--primary-color);
+        background: linear-gradient(to right, #fff, #fafbff);
+    }
+}
+
+/* Icon column */
+.row-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--primary-color, #4F46E5), #6366F1);
+    box-shadow: 0 4px 8px rgba(79, 70, 229, 0.25);
+
+    .material-icons {
+        font-size: 1.5rem;
+        color: white;
+    }
+
+    &.icon-green {
+        background: linear-gradient(135deg, #10B981, #059669);
+        box-shadow: 0 4px 8px rgba(16, 185, 129, 0.25);
+    }
+
+    &.icon-amber {
+        background: linear-gradient(135deg, #F59E0B, #D97706);
+        box-shadow: 0 4px 8px rgba(245, 158, 11, 0.25);
+    }
+
+    &.icon-indigo {
+        background: linear-gradient(135deg, #4F46E5, #6366F1);
+        box-shadow: 0 4px 8px rgba(79, 70, 229, 0.25);
+    }
+}
+
+/* Row body */
+.row-body {
+    flex: 1;
+    min-width: 0;
+
+    .row-top {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    .row-bottom {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .row-detail {
+        font-size: 0.88rem;
+        color: var(--text-dim);
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 540px;
+    }
+}
+
+/* Service tag — coloured by service type */
+.service-tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    background: #EDE9FE;
+    color: #5B21B6;
+
+    &.service-solar {
+        background: #FEF9C3;
+        color: #854D0E;
+    }
+
+    &.service-battery {
+        background: #D1FAE5;
+        color: #065F46;
+    }
+
+    &.service-heat-pump {
+        background: #FCE7F3;
+        color: #9D174D;
+    }
+
+    &.service-ev-charger {
+        background: #DBEAFE;
+        color: #1E40AF;
+    }
+
+    &.service-insulation {
+        background: #FEF3C7;
+        color: #92400E;
+    }
+
+    &.service-air-conditioning {
+        background: #E0F2FE;
+        color: #075985;
+    }
+}
+
+/* Location pill */
+.location-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.83rem;
+    color: var(--text-dim);
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-weight: 500;
+
+    .material-icons {
+        font-size: 0.95rem;
+        color: #94A3B8;
+    }
+}
+
+/* Date chip */
+.date-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.83rem;
+    color: var(--text-dim);
+    font-weight: 500;
+
+    .material-icons {
+        font-size: 0.95rem;
+        color: #94A3B8;
+    }
+}
+
+/* Offers badge */
+.offers-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, #4F46E5, #6366F1);
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 99px;
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.25);
+
+    .material-icons {
+        font-size: 0.9rem;
+    }
+}
+
+/* Row action area */
+.row-action {
+    flex-shrink: 0;
+
+    .btn {
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        .material-icons {
+            font-size: 1.1rem;
+        }
+    }
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.status-open {
+        background: #DBEAFE;
+        color: #1E40AF;
+    }
+
+    &.status-responded {
+        background: #D1FAE5;
+        color: #065F46;
+    }
+
+    &.status-negotiating {
+        background: #FEF3C7;
+        color: #92400E;
+        border: 1px solid #FDE68A;
+    }
+
+    &.status-accepted {
+        background: linear-gradient(135deg, #10B981, #059669);
+        color: white;
+    }
+
+    &.status-pending {
+        background: #F3F4F6;
+        color: #4B5563;
+    }
+}
