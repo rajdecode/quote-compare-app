@@ -1,4 +1,4 @@
-<div class="landing-page">
+﻿<div class="landing-page">
 
     <!-- ═══ HERO ══════════════════════════════════════ -->
     <section class="hero">
@@ -8,89 +8,81 @@
         <div class="blob blob-3"></div>
 
         <div class="container hero-content">
-            <div class="hero-text">
-                <div class="hero-badge">
-                    <span class="material-icons">verified</span>
-                    Trusted by 5,000+ homeowners
+
+            <!-- Track My Quote — TOP CENTRE -->
+            <div class="hero-track">
+                <p class="hero-track-label">Already submitted a request?</p>
+                <div class="hero-track-row">
+                    <input type="text" #heroTrackInput placeholder="Enter your Quote ID" class="hero-track-input">
+                    <button class="hero-track-btn"
+                        (click)="heroTrackInput.value ? router.navigate(['/track', heroTrackInput.value]) : null">
+                        <span class="material-icons">search</span>
+                        Track My Quote
+                    </button>
                 </div>
-                <h1>
-                    Get the Best Quote<br>
-                    <span class="gradient-text">In Minutes</span>
-                </h1>
-                <p class="subtitle">
-                    Compare competitive quotes from vetted local vendors for
-                    <strong>heat pumps</strong>, <strong>batteries</strong>,
-                    <strong>water filters</strong> &amp; <strong>air conditioning</strong> — all in one place.
-                </p>
-                <div class="cta-group">
-                    <a routerLink="/request-quote" class="btn-hero-primary">
-                        <span class="material-icons">flash_on</span>
-                        Get Free Quotes
-                    </a>
-                    <a href="#how-it-works" class="btn-hero-secondary">
-                        See How It Works
-                    </a>
+            </div>
+
+            <!-- Two columns below — both smaller -->
+            <div class="hero-columns">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <span class="material-icons">verified</span>
+                        Trusted by 5,000+ homeowners
+                    </div>
+                    <h1>
+                        Get the Best Quote<br>
+                        <span class="gradient-text">In Minutes</span>
+                    </h1>
+                    <p class="subtitle">
+                        Compare competitive quotes from vetted local vendors for
+                        <strong>heat pumps</strong>, <strong>batteries</strong>,
+                        <strong>water filters</strong> &amp; <strong>air conditioning</strong> — all in one place.
+                    </p>
+                    <div class="cta-group">
+                        <a routerLink="/request-quote" class="btn-hero-primary">
+                            <span class="material-icons">flash_on</span>
+                            Get Free Quotes
+                        </a>
+                        <a href="#how-it-works" class="btn-hero-secondary">
+                            See How It Works
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Track My Quote — replaces social proof -->
-                <div class="hero-track">
-                    <p class="hero-track-label">Already submitted a request?</p>
-                    <div class="hero-track-row">
-                        <input type="text" #heroTrackInput placeholder="Enter your Quote ID" class="hero-track-input">
-                        <button class="hero-track-btn"
-                            (click)="heroTrackInput.value ? router.navigate(['/track', heroTrackInput.value]) : null">
-                            <span class="material-icons">search</span>
-                            Track My Quote
-                        </button>
+                <div class="hero-visual">
+                    <div class="hero-icon-ring">
+                        <div class="ring ring-outer"></div>
+                        <div class="ring ring-mid"></div>
+                        <div class="icon-center">
+                            <span class="material-icons">compare_arrows</span>
+                        </div>
+                    </div>
+                    <div class="service-badge badge-battery">
+                        <span class="material-icons">battery_charging_full</span> Batteries
+                    </div>
+                    <div class="service-badge badge-water">
+                        <span class="material-icons">water_drop</span> Water Filters
+                    </div>
+                    <div class="service-badge badge-heat">
+                        <span class="material-icons">heat_pump</span> Heat Pump
+                    </div>
+                    <div class="service-badge badge-ac">
+                        <span class="material-icons">ac_unit</span> Air Con
+                    </div>
+                    <div class="float-stat stat-top">
+                        <div class="stat-icon">💰</div>
+                        <div><div class="stat-val">$1,200</div><div class="stat-lbl">Avg. savings</div></div>
+                    </div>
+                    <div class="float-stat stat-bottom">
+                        <div class="stat-icon">⚡</div>
+                        <div><div class="stat-val">2 min</div><div class="stat-lbl">To get quotes</div></div>
                     </div>
                 </div>
             </div>
 
-            <div class="hero-visual">
-                <!-- Central icon -->
-                <div class="hero-icon-ring">
-                    <div class="ring ring-outer"></div>
-                    <div class="ring ring-mid"></div>
-                    <div class="icon-center">
-                        <span class="material-icons">compare_arrows</span>
-                    </div>
-                </div>
-
-                <!-- Floating service badges -->
-                <div class="service-badge badge-battery">
-                    <span class="material-icons">battery_charging_full</span> Batteries
-                </div>
-                <div class="service-badge badge-water">
-                    <span class="material-icons">water_drop</span> Water Filters
-                </div>
-                <div class="service-badge badge-heat">
-                    <span class="material-icons">heat_pump</span> Heat Pump
-                </div>
-                <div class="service-badge badge-ac">
-                    <span class="material-icons">ac_unit</span> Air Con
-                </div>
-
-                <!-- Floating stat cards -->
-                <div class="float-stat stat-top">
-                    <div class="stat-icon">💰</div>
-                    <div>
-                        <div class="stat-val">$1,200</div>
-                        <div class="stat-lbl">Avg. savings</div>
-                    </div>
-                </div>
-                <div class="float-stat stat-bottom">
-                    <div class="stat-icon">⚡</div>
-                    <div>
-                        <div class="stat-val">2 min</div>
-                        <div class="stat-lbl">To get quotes</div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
-
-
-    <!-- ═══ PRODUCTS ════════════════════════════════════ -->
+    <!-- ΓòÉΓòÉΓòÉ PRODUCTS ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
     <section class="products-section container">
         <div class="section-header">
             <h2>Products We Quote</h2>
@@ -133,7 +125,7 @@
     </section>
 
 
-    <!-- ═══ HOW IT WORKS ═══════════════════════════════ -->
+    <!-- ΓòÉΓòÉΓòÉ HOW IT WORKS ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
     <section id="how-it-works" class="how-section">
         <div class="container">
             <div class="section-header">
@@ -171,7 +163,7 @@
         </div>
     </section>
 
-    <!-- ═══ SOCIAL PROOF STATS ══════════════════════════ -->
+    <!-- ΓòÉΓòÉΓòÉ SOCIAL PROOF STATS ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
     <section class="stats-section container">
         <div class="stats-row glass-panel">
             <div class="stat-block">
@@ -190,13 +182,13 @@
             </div>
             <div class="stat-divider"></div>
             <div class="stat-block">
-                <div class="stat-number">4.9 ★</div>
+                <div class="stat-number">4.9 Γÿà</div>
                 <div class="stat-desc">Average rating</div>
             </div>
         </div>
     </section>
 
-    <!-- ═══ CTA BANNER ══════════════════════════════════ -->
+    <!-- ΓòÉΓòÉΓòÉ CTA BANNER ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
     <section class="cta-section">
         <div class="container cta-inner">
             <h2>Ready to save on your next home upgrade?</h2>
