@@ -31,11 +31,13 @@
 .hero-track-hint {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
     margin-top: 8px;
-    font-size: 0.78rem;
-    color: #64748B;
-    font-weight: 500;
+    font-size: 0.88rem;
+    color: #334155;
+    font-weight: 600;
+    text-align: center;
 }
 
 .track-hint-icon {
@@ -288,7 +290,7 @@
 
 /* ── HERO ───────────────────────────────────── */
 .hero {
-    padding: 32px 0 80px;
+    padding: 0 0 80px;
     position: relative;
     background: linear-gradient(180deg, #F8F9FF 0%, #FFFFFF 100%);
 }
