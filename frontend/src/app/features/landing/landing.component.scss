@@ -461,7 +461,7 @@
         position: absolute;
         top: 0;
         bottom: 0;
-        right: -20px;
+        right: -40px;
         width: 6px;
         border-radius: 6px;
         background: linear-gradient(180deg,
@@ -472,7 +472,7 @@
                 transparent 100%);
         opacity: 0.45;
         box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
-        z-index: 2;
+        z-index: 0;
     }
 
     @media (max-width: 900px) {
