@@ -9,28 +9,8 @@
 
         <div class="container hero-content">
 
-            <!-- Track My Quote — TOP CENTRE -->
-            <div class="hero-track">
-                <div class="hero-track-row">
-                    <input type="text" #heroTrackInput placeholder="Enter your Quote ID" class="hero-track-input">
-                    <button class="hero-track-btn"
-                        (click)="heroTrackInput.value ? router.navigate(['/track', heroTrackInput.value]) : null">
-                        <span class="material-icons">search</span>
-                        Track My Quote
-                    </button>
-                </div>
-                <p class="hero-track-hint">
-                    <span class="material-icons track-hint-icon">track_changes</span>
-                    Check the status of your request if you have already submitted
-                </p>
-            </div>
+            <!-- Track My Quote moved to hero-text -->
 
-            <!-- Mini divider between track and columns -->
-            <div class="hero-divider">
-                <span class="material-icons hd-icon">drag_handle</span>
-            </div>
-
-            <!-- Two columns below — both smaller -->
             <div class="hero-columns">
                 <div class="hero-visual">
                     <div class="hero-icon-ring">
@@ -70,8 +50,8 @@
 
                 <div class="hero-text">
                     <h1>
-                        Get the Best Quote<br>
-                        <span class="gradient-text">In Minutes</span>
+                        Get multiple quotes<br>
+                        <span class="gradient-text">and choose the best one</span>
                     </h1>
                     <p class="subtitle">
                         Compare competitive quotes from vetted local vendors for
@@ -86,6 +66,19 @@
                         <a href="#how-it-works" class="btn-hero-secondary">
                             See How It Works
                         </a>
+                    </div>
+
+                    <div class="hero-track-inline">
+                        <p class="track-heading">Already Submitted a Quote?</p>
+                        <div class="hero-track-row">
+                            <input type="text" #heroTrackInput placeholder="Enter your Quote ID"
+                                class="hero-track-input">
+                            <button class="hero-track-btn"
+                                (click)="heroTrackInput.value ? router.navigate(['/track', heroTrackInput.value]) : null">
+                                <span class="material-icons">search</span>
+                                Track
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
