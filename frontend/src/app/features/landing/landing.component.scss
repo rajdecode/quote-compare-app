@@ -3,7 +3,8 @@
    ============================================== */
 
 .landing-page {
-    padding-top: 80px;
+    padding-top: 120px;
+    /* Increased from 80px to move down further from nav */
     /* clears the floating navbar */
     font-family: 'Inter', sans-serif;
     overflow: hidden;
@@ -16,14 +17,16 @@
 }
 
 .hero-track-inline {
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 1px solid #E2E8F0;
+    margin: 32px auto 0;
+    /* Auto margin for centering */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(14px);
+    border: 1.5px solid rgba(79, 70, 229, 0.18);
+    border-radius: 18px;
+    padding: 18px 20px;
+    box-shadow: 0 6px 24px rgba(79, 70, 229, 0.1);
     max-width: 500px;
-
-    @media (max-width: 900px) {
-        margin: 32px auto 0;
-    }
+    width: 100%;
 }
 
 .track-heading {
@@ -453,8 +456,8 @@
     display: flex;
     align-items: center;
     /* Better alignment for differently sized columns */
-    gap: 60px;
-    /* Increased gap to push text slightly right and avoid overlap */
+    gap: 80px;
+    /* Increased gap from 60px for more spacing */
     width: 100%;
     position: relative;
 
@@ -470,6 +473,11 @@
     /* Make the text portion slightly larger than visual */
     padding-left: 20px;
     /* Slight right push */
+    text-align: center;
+    /* Center align all text in the right part */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     @media (max-width: 900px) {
         padding-left: 0;
@@ -521,7 +529,7 @@
     font-size: 1.05rem;
     color: #475569;
     line-height: 1.6;
-    margin-bottom: 18px;
+    margin-bottom: 24px;
     max-width: 520px;
 }
 
@@ -530,11 +538,9 @@
     display: flex;
     gap: 14px;
     flex-wrap: wrap;
+    justify-content: center;
+    /* Center horizontally */
     margin-bottom: 18px;
-
-    @media (max-width: 900px) {
-        justify-content: center;
-    }
 }
 
 .btn-hero-primary {
@@ -642,13 +648,16 @@
 
 /* ── HERO VISUAL ─────────────────────────────── */
 .hero-visual {
-    flex: 0 0 420px;
-    height: 420px;
+    flex: 0 0 350px;
+    /* Reduced original 420px size */
+    height: 350px;
     /* extra height for card + rings */
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 auto;
+    /* Center within column if it shrinks */
 
     @media (max-width: 900px) {
         flex: none;
