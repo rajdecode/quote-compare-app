@@ -1,150 +1,189 @@
-<div class="container" style="padding-top: 2rem;">
-    <div class="back-link" style="margin-bottom: 1rem;">
-        <a routerLink="/buyer" class="btn btn-sm btn-secondary">
-            <span class="material-icons" style="font-size: 1rem; vertical-align: middle;">arrow_back</span> Back to
-            Dashboard
+<div class="qd-page container">
+
+    <!-- Back link -->
+    <div class="qd-back">
+        <a routerLink="/buyer" class="qd-back-link">
+            <span class="material-icons">arrow_back</span> Back to Dashboard
         </a>
     </div>
 
     @if (loading()) {
-    <div class="glass-panel" style="text-align: center; padding: 40px;">
+    <div class="glass-panel qd-loading">
+        <span class="material-icons qd-loading-icon">hourglass_top</span>
         <p>Loading details...</p>
     </div>
     } @else if (!quote()) {
-    <div class="glass-panel" style="text-align: center; padding: 40px;">
+    <div class="glass-panel qd-loading">
+        <span class="material-icons">search_off</span>
         <p>Quote not found.</p>
     </div>
     } @else {
-    <div class="quote-detail-layout glass-panel" style="padding: 2rem;">
-        <div class="detail-header">
-            <h1>{{ quote().service_type | titlecase }} Quote</h1>
-            <span class="status-badge status-{{(quote().status || 'open').toLowerCase()}}">{{ quote().status || 'Open'
-                }}</span>
+
+    <!-- ── REQUEST HEADER CARD ──────────────────── -->
+    <div class="qd-header glass-panel">
+        <div class="qd-header-left">
+            <div class="qd-service-icon">
+                <span class="material-icons">{{ getServiceIcon ? getServiceIcon(quote().service_type) :
+                    'home_repair_service' }}</span>
+            </div>
+            <div>
+                <h1 class="qd-title">{{ quote().service_type | titlecase }}</h1>
+                <p class="qd-subtitle">Quote Request</p>
+            </div>
         </div>
+        <span class="status-badge status-{{ (quote().status || 'open').toLowerCase() }}">
+            {{ quote().status || 'Open' }}
+        </span>
+    </div>
 
-        <div class="detail-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;">
-            <div class="info-group">
-                <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Postal Code</label>
-                <span style="font-size: 1.1rem;">{{ quote().postal_code }}</span>
+    <!-- ── INFO GRID ────────────────────────────── -->
+    <div class="qd-info-grid">
+        <div class="qd-info-card glass-panel">
+            <span class="material-icons qd-info-icon">location_on</span>
+            <div class="qd-info-body">
+                <label>Postal Code</label>
+                <span>{{ quote().postal_code }}</span>
             </div>
-            <div class="info-group">
-                <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Date Posted</label>
-                <span style="font-size: 1.1rem;">{{ quote().created_at | date:'medium' }}</span>
+        </div>
+        <div class="qd-info-card glass-panel">
+            <span class="material-icons qd-info-icon">calendar_today</span>
+            <div class="qd-info-body">
+                <label>Date Posted</label>
+                <span>{{ quote().created_at | date:'d MMM yyyy' }}</span>
             </div>
-            <div class="info-group" style="grid-column: 1 / -1;">
-                <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Details</label>
-                <p style="font-size: 1.1rem; line-height: 1.6;">{{ quote().details }}</p>
+        </div>
+        <div class="qd-info-card glass-panel">
+            <span class="material-icons qd-info-icon">local_offer</span>
+            <div class="qd-info-body">
+                <label>Offers Received</label>
+                <span class="qd-offers-count">{{ quote().responses?.length || 0 }}</span>
+            </div>
+        </div>
+    </div>
 
-                @if (quote().attachments?.length) {
-                <div class="attachments" style="margin-top: 1rem;">
-                    <label style="color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Attachments</label>
-                    @for (file of quote().attachments; track $index) {
-                    <a [href]="file" target="_blank" class="btn btn-sm btn-secondary"
-                        style="display: inline-flex; align-items: center; gap: 5px;">
-                        <span class="material-icons" style="font-size: 1rem;">description</span>
-                        View Request PDF
-                    </a>
-                    }
-                </div>
+    <!-- ── DETAILS CARD ──────────────────────────── -->
+    <div class="qd-details-card glass-panel">
+        <h3 class="qd-section-title">
+            <span class="material-icons">description</span> Request Details
+        </h3>
+        <p class="qd-details-text">{{ quote().details }}</p>
+
+        @if (quote().attachments?.length) {
+        <div class="qd-attachments">
+            <label>Attachments</label>
+            <div class="qd-attachment-list">
+                @for (file of quote().attachments; track $index) {
+                <a [href]="file" target="_blank" class="qd-attachment-chip">
+                    <span class="material-icons">description</span>
+                    View PDF
+                </a>
                 }
             </div>
         </div>
-
-        <h2 style="margin-top: 3rem; margin-bottom: 1.5rem;">Vendor Offers ({{ quote().responses?.length || 0 }})</h2>
-
-        @if (quote().responses?.length) {
-        <div class="table-responsive">
-            <table class="comparison-table" style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <th style="padding: 1rem; text-align: left;">Vendor</th>
-                        <th style="padding: 1rem; text-align: left;">Message</th>
-                        <th style="padding: 1rem; text-align: right;">Date</th>
-                        <th style="padding: 1rem; text-align: right;">Price</th>
-                        <th style="padding: 1rem; text-align: center;">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (response of quote().responses; track $index) {
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <td style="padding: 1rem; color: var(--primary-color); font-weight: 500; position: relative;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                {{ response.vendor_name }}
-                                @if (response.history?.length) {
-                                <div class="history-icon-wrapper">
-                                    <span class="material-icons history-icon">info</span>
-                                    <div class="history-tooltip glass-panel">
-                                        <h4>Price History</h4>
-                                        <div class="history-table-container">
-                                            <table class="history-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Price</th>
-                                                        <th>Date</th>
-                                                        <th>Note</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @for (item of response.history; track $index) {
-                                                    <tr>
-                                                        <td class="history-price">${{ item.price }}</td>
-                                                        <td class="history-date">{{ (item.archivedAt || item.updatedAt)
-                                                            | date:'shortDate' }}<br><small>{{ (item.archivedAt ||
-                                                                item.updatedAt) | date:'shortTime' }}</small></td>
-                                                        <td class="history-msg">{{ item.message || '-' }}</td>
-                                                    </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                }
-                            </div>
-                        </td>
-                        <td style="padding: 1rem; color: var(--text-dim);">
-                            {{ response.message }}
-                            @if(response.buyerMessage) {
-                            <div
-                                style="margin-top: 8px; padding: 8px; background: rgba(0,0,0,0.05); border-left: 3px solid var(--primary-color); font-size: 0.9rem;">
-                                <strong>Your Note:</strong> {{ response.buyer_message || response.buyerMessage }}
-                            </div>
-                            }
-                        </td>
-                        <td style="padding: 1rem; text-align: right; color: var(--text-dim);">{{ response.created_at |
-                            date:'short' }}</td>
-                        <td style="padding: 1rem; text-align: right;">
-                            <div style="font-weight: bold; color: #2ecc71; font-size: 1.1rem; margin-bottom: 0.5rem;">
-                                ${{ response.price }}</div>
-
-                            @if (!response.status || response.status === 'negotiating' || response.status ===
-                            'responded') {
-                            <div class="offer-actions" style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                                <button class="btn btn-sm btn-primary"
-                                    (click)="updateStatus(response, 'accepted')">Accept</button>
-                                <button class="btn btn-sm btn-secondary"
-                                    (click)="updateStatus(response, 'negotiating')">Renegotiate</button>
-                            </div>
-                            }
-                        </td>
-                        <td style="padding: 1rem; text-align: center;">
-                            @if(response.status) {
-                            <div [class]="'offer-status status-' + response.status"
-                                style="font-size: 0.8rem; display: inline-block; padding: 4px 12px; border-radius: 4px; text-transform: uppercase; font-weight: bold;">
-                                {{ response.status }}
-                            </div>
-                            } @else {
-                            <span style="color: var(--text-dim);">-</span>
-                            }
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        } @else {
-        <p style="color: var(--text-dim); font-style: italic;">No offers received yet.</p>
         }
     </div>
+
+    <!-- ── VENDOR OFFERS ─────────────────────────── -->
+    <div class="qd-offers-section">
+        <h2 class="qd-offers-heading">
+            Vendor Offers
+            <span class="qd-offers-pill">{{ quote().responses?.length || 0 }}</span>
+        </h2>
+
+        @if (quote().responses?.length) {
+        <div class="qd-offer-cards">
+            @for (response of quote().responses; track $index) {
+            <div class="qd-offer-card glass-panel" [class.offer-accepted]="response.status === 'accepted'">
+                <!-- Offer card header: vendor name + status -->
+                <div class="offer-card-header">
+                    <div class="offer-vendor-name">
+                        <span class="material-icons">store</span>
+                        {{ response.vendor_name }}
+
+                        @if (response.history?.length) {
+                        <div class="history-icon-wrapper">
+                            <span class="material-icons history-icon">history</span>
+                            <div class="history-tooltip glass-panel">
+                                <h4>Price History</h4>
+                                <div class="history-table-container">
+                                    <table class="history-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Price</th>
+                                                <th>Date</th>
+                                                <th>Note</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (item of response.history; track $index) {
+                                            <tr>
+                                                <td class="history-price">${{ item.price }}</td>
+                                                <td class="history-date">{{ (item.archivedAt || item.updatedAt)
+                                                    | date:'shortDate' }}</td>
+                                                <td class="history-msg">{{ item.message || '-' }}</td>
+                                            </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                    @if (response.status) {
+                    <span class="offer-status-badge offer-status-{{ response.status }}">{{ response.status }}</span>
+                    } @else {
+                    <span class="offer-status-badge offer-status-responded">Offer</span>
+                    }
+                </div>
+
+                <!-- Price row -->
+                <div class="offer-price-row">
+                    <span class="offer-price">${{ response.price }}</span>
+                    <span class="offer-date">
+                        <span class="material-icons">schedule</span>
+                        {{ response.created_at | date:'d MMM yy' }}
+                    </span>
+                </div>
+
+                <!-- Vendor message -->
+                @if (response.message) {
+                <div class="offer-message">
+                    <span class="material-icons">chat</span>
+                    <p>{{ response.message }}</p>
+                </div>
+                }
+
+                <!-- Buyer note -->
+                @if (response.buyerMessage || response.buyer_message) {
+                <div class="offer-buyer-note">
+                    <span class="material-icons">reply</span>
+                    <p><strong>Your note:</strong> {{ response.buyer_message || response.buyerMessage }}</p>
+                </div>
+                }
+
+                <!-- Actions -->
+                @if (!response.status || response.status === 'negotiating' || response.status === 'responded') {
+                <div class="offer-actions">
+                    <button class="offer-btn offer-btn-accept" (click)="updateStatus(response, 'accepted')">
+                        <span class="material-icons">check_circle</span> Accept
+                    </button>
+                    <button class="offer-btn offer-btn-negotiate" (click)="updateStatus(response, 'negotiating')">
+                        <span class="material-icons">forum</span> Renegotiate
+                    </button>
+                </div>
+                }
+            </div>
+            }
+        </div>
+        } @else {
+        <div class="qd-no-offers glass-panel">
+            <span class="material-icons">hourglass_empty</span>
+            <p>No offers received yet. Vendors will respond soon.</p>
+        </div>
+        }
+    </div>
+
     }
 </div>

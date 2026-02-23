@@ -97,6 +97,87 @@
     .date {
         color: var(--text-dim) !important;
     }
+
+    /* Urgent / negotiating state */
+    &.card-urgent {
+        border-left: 4px solid #F59E0B;
+        background: linear-gradient(135deg, #FFFBEB, #FEF3C7) !important;
+    }
+
+    /* Completed state */
+    &.card-completed {
+        border-left: 4px solid #10B981;
+        background: linear-gradient(135deg, #F0FDF4, #ECFDF5) !important;
+    }
+}
+
+/* Truncated detail text inside card */
+.qcard-detail {
+    font-size: 0.88rem;
+    color: #64748B;
+    line-height: 1.5;
+    margin: 0 0 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Buyer note inside vendor card */
+.qcard-buyer-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: #EEF2FF;
+    border-left: 3px solid #4F46E5;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin: 0 0 14px;
+    font-size: 0.88rem;
+    color: #3730A3;
+
+    .material-icons {
+        font-size: 1rem;
+        padding-top: 1px;
+        flex-shrink: 0;
+        color: #4F46E5;
+    }
+
+    span {
+        line-height: 1.4;
+    }
+}
+
+/* Secondary action button */
+.qcard-btn-secondary {
+    background: #F1F5F9 !important;
+    color: #475569 !important;
+
+    &:hover {
+        background: #E2E8F0 !important;
+        box-shadow: none !important;
+    }
+}
+
+/* Success (Complete) button */
+.qcard-btn-success {
+    background: linear-gradient(135deg, #059669, #10B981) !important;
+
+    &:hover {
+        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4) !important;
+    }
+}
+
+/* Indigo icon variant */
+.icon-indigo {
+    background: linear-gradient(135deg, #EEF2FF, #E0E7FF) !important;
+
+    .material-icons {
+        background: linear-gradient(135deg, #4F46E5, #7C3AED);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
 }
 
 /* Modern & Flashy Table Styles */

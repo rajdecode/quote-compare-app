@@ -58,31 +58,30 @@
             <button class="btn btn-secondary btn-sm" (click)="updateServiceArea()">Update Service Area</button>
         </div>
         } @else {
-        <div class="request-list">
+        <div class="request-cards">
             @for (quote of newRequests(); track quote.id) {
-            <div class="request-row glass-panel">
-                <div class="row-icon">
-                    <span class="material-icons">{{ getServiceIcon(quote.service_type) }}</span>
-                </div>
-                <div class="row-body">
-                    <div class="row-top">
-                        <span class="service-tag service-{{ quote.service_type?.toLowerCase().replace(' ', '-') }}">
-                            {{ quote.service_type | titlecase }}
-                        </span>
-                        <span class="location-chip">
-                            <span class="material-icons">location_on</span>{{ quote.postal_code }}
-                        </span>
-                        <span class="date-chip">
-                            <span class="material-icons">schedule</span>{{ quote.created_at | date:'d MMM yyyy' }}
-                        </span>
+            <div class="quote-card">
+                <div class="qcard-header">
+                    <div class="qcard-icon icon-indigo">
+                        <span class="material-icons">{{ getServiceIcon(quote.service_type) }}</span>
                     </div>
-                    <p class="row-detail">{{ quote.details }}</p>
+                    <span class="status-badge status-open">New</span>
                 </div>
-                <div class="row-action">
-                    <button (click)="respondToQuote(quote.id)" class="btn btn-primary">
-                        <span class="material-icons">send</span> Submit Quote
-                    </button>
+                <div class="qcard-service">{{ quote.service_type | titlecase }}</div>
+                <div class="qcard-meta">
+                    <span class="qcard-meta-item">
+                        <span class="material-icons">location_on</span>{{ quote.postal_code }}
+                    </span>
+                    <span class="qcard-meta-item">
+                        <span class="material-icons">schedule</span>{{ quote.created_at | date:'d MMM yy' }}
+                    </span>
                 </div>
+                @if (quote.details) {
+                <p class="qcard-detail">{{ quote.details }}</p>
+                }
+                <button class="qcard-btn" (click)="respondToQuote(quote.id)">
+                    <span class="material-icons">send</span> Submit Quote
+                </button>
             </div>
             }
         </div>
@@ -97,47 +96,45 @@
             <p>No actions required at the moment.</p>
         </div>
         } @else {
-        <div class="request-list">
+        <div class="request-cards">
             @for (quote of actionRequiredQuotes(); track quote.id) {
-            <div class="request-row glass-panel" [class.row-urgent]="!hasAcceptedResponse(quote)">
-                <div class="row-icon" [class.icon-green]="hasAcceptedResponse(quote)" [class.icon-amber]="!hasAcceptedResponse(quote)">
-                    <span class="material-icons">{{ hasAcceptedResponse(quote) ? 'task_alt' : 'pending_actions' }}</span>
-                </div>
-                <div class="row-body">
-                    <div class="row-top">
-                        <span class="service-tag service-{{ quote.service_type?.toLowerCase().replace(' ', '-') }}">
-                            {{ quote.service_type | titlecase }}
-                        </span>
-                        <span class="location-chip">
-                            <span class="material-icons">location_on</span>{{ quote.postal_code }}
-                        </span>
-                        @if (hasAcceptedResponse(quote)) {
-                        <span class="status-badge status-accepted">Accepted</span>
-                        } @else {
-                        <span class="status-badge status-negotiating">Negotiating</span>
-                        }
-                        <span class="date-chip">
-                            <span class="material-icons">schedule</span>{{ quote.created_at | date:'d MMM yyyy' }}
-                        </span>
+            <div class="quote-card" [class.card-urgent]="!hasAcceptedResponse(quote)">
+                <div class="qcard-header">
+                    <div class="qcard-icon" [class.icon-green]="hasAcceptedResponse(quote)"
+                        [class.icon-amber]="!hasAcceptedResponse(quote)">
+                        <span class="material-icons">{{ hasAcceptedResponse(quote) ? 'task_alt' : 'pending_actions'
+                            }}</span>
                     </div>
-                    @if (!hasAcceptedResponse(quote)) {
-                    <div class="buyer-note">
-                        <span class="material-icons">chat_bubble_outline</span>
-                        <span>{{ getMyResponse(quote)?.buyer_message || getMyResponse(quote)?.buyerMessage || 'No message from buyer' }}</span>
-                    </div>
-                    }
-                </div>
-                <div class="row-action">
                     @if (hasAcceptedResponse(quote)) {
-                    <button (click)="completeJob(quote)" class="btn btn-success">
-                        <span class="material-icons">check_circle</span> Complete
-                    </button>
+                    <span class="status-badge status-accepted">Accepted</span>
                     } @else {
-                    <button (click)="respondToQuote(quote.id)" class="btn btn-primary">
-                        <span class="material-icons">reply</span> Respond
-                    </button>
+                    <span class="status-badge status-negotiating">Negotiating</span>
                     }
                 </div>
+                <div class="qcard-service">{{ quote.service_type | titlecase }}</div>
+                <div class="qcard-meta">
+                    <span class="qcard-meta-item">
+                        <span class="material-icons">location_on</span>{{ quote.postal_code }}
+                    </span>
+                    <span class="qcard-meta-item">
+                        <span class="material-icons">schedule</span>{{ quote.created_at | date:'d MMM yy' }}
+                    </span>
+                </div>
+                @if (!hasAcceptedResponse(quote) && getMyResponse(quote)?.buyer_message) {
+                <div class="qcard-buyer-note">
+                    <span class="material-icons">chat_bubble_outline</span>
+                    <span>{{ getMyResponse(quote)?.buyer_message || getMyResponse(quote)?.buyerMessage }}</span>
+                </div>
+                }
+                @if (hasAcceptedResponse(quote)) {
+                <button class="qcard-btn qcard-btn-success" (click)="completeJob(quote)">
+                    <span class="material-icons">check_circle</span> Complete
+                </button>
+                } @else {
+                <button class="qcard-btn" (click)="respondToQuote(quote.id)">
+                    <span class="material-icons">reply</span> Respond
+                </button>
+                }
             </div>
             }
         </div>
@@ -152,31 +149,27 @@
             <p>No quotes awaiting buyer response.</p>
         </div>
         } @else {
-        <div class="request-list">
+        <div class="request-cards">
             @for (quote of sentQuotes(); track quote.id) {
-            <div class="request-row glass-panel">
-                <div class="row-icon icon-blue">
-                    <span class="material-icons">hourglass_top</span>
-                </div>
-                <div class="row-body">
-                    <div class="row-top">
-                        <span class="service-tag service-{{ quote.service_type?.toLowerCase().replace(' ', '-') }}">
-                            {{ quote.service_type | titlecase }}
-                        </span>
-                        <span class="location-chip">
-                            <span class="material-icons">location_on</span>{{ quote.postal_code }}
-                        </span>
-                        <span class="status-badge status-responded">Awaiting Buyer</span>
-                        <span class="date-chip">
-                            <span class="material-icons">schedule</span>{{ quote.created_at | date:'d MMM yyyy' }}
-                        </span>
+            <div class="quote-card">
+                <div class="qcard-header">
+                    <div class="qcard-icon icon-blue">
+                        <span class="material-icons">hourglass_top</span>
                     </div>
+                    <span class="status-badge status-responded">Awaiting Buyer</span>
                 </div>
-                <div class="row-action">
-                    <button (click)="editQuote(quote.id)" class="btn btn-secondary">
-                        <span class="material-icons">edit</span> Edit Quote
-                    </button>
+                <div class="qcard-service">{{ quote.service_type | titlecase }}</div>
+                <div class="qcard-meta">
+                    <span class="qcard-meta-item">
+                        <span class="material-icons">location_on</span>{{ quote.postal_code }}
+                    </span>
+                    <span class="qcard-meta-item">
+                        <span class="material-icons">schedule</span>{{ quote.created_at | date:'d MMM yy' }}
+                    </span>
                 </div>
+                <button class="qcard-btn qcard-btn-secondary" (click)="editQuote(quote.id)">
+                    <span class="material-icons">edit</span> Edit Quote
+                </button>
             </div>
             }
         </div>
@@ -191,32 +184,31 @@
             <p>No completed jobs yet.</p>
         </div>
         } @else {
-        <div class="request-list">
+        <div class="request-cards">
             @for (quote of completedQuotes(); track quote.id) {
-            <div class="request-row glass-panel">
-                <div class="row-icon icon-green">
-                    <span class="material-icons">verified</span>
-                </div>
-                <div class="row-body">
-                    <div class="row-top">
-                        <span class="service-tag service-{{ quote.service_type?.toLowerCase().replace(' ', '-') }}">
-                            {{ quote.service_type | titlecase }}
-                        </span>
-                        <span class="location-chip">
-                            <span class="material-icons">location_on</span>{{ quote.postal_code }}
-                        </span>
-                        <span class="status-badge status-accepted">Completed</span>
-                        <span class="date-chip">
-                            <span class="material-icons">event_available</span>{{ quote.responses[0]?.created_at | date:'d MMM yyyy' }}
-                        </span>
+            <div class="quote-card card-completed">
+                <div class="qcard-header">
+                    <div class="qcard-icon icon-green">
+                        <span class="material-icons">verified</span>
                     </div>
-                    <p class="row-detail">{{ quote.details }}</p>
+                    <span class="status-badge status-accepted">Completed</span>
                 </div>
-                <div class="row-action">
-                    <a [href]="quote.responses[0]?.invoiceUrl" target="_blank" class="btn btn-secondary">
-                        <span class="material-icons">receipt_long</span> Invoice
-                    </a>
+                <div class="qcard-service">{{ quote.service_type | titlecase }}</div>
+                <div class="qcard-meta">
+                    <span class="qcard-meta-item">
+                        <span class="material-icons">location_on</span>{{ quote.postal_code }}
+                    </span>
+                    <span class="qcard-meta-item">
+                        <span class="material-icons">event_available</span>{{ quote.responses[0]?.created_at |
+                        date:'d MMM yy' }}
+                    </span>
                 </div>
+                @if (quote.details) {
+                <p class="qcard-detail">{{ quote.details }}</p>
+                }
+                <a [href]="quote.responses[0]?.invoiceUrl" target="_blank" class="qcard-btn qcard-btn-secondary">
+                    <span class="material-icons">receipt_long</span> Invoice
+                </a>
             </div>
             }
         </div>
