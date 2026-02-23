@@ -466,32 +466,11 @@
         z-index: 2;
     }
 
-    /* Curvy glowing right border */
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: -40px;
-        width: 6px;
-        border-radius: 6px;
-        background: linear-gradient(180deg,
-                transparent 0%,
-                #EC4899 20%,
-                #7C3AED 45%,
-                #4F46E5 75%,
-                transparent 100%);
-        opacity: 0.45;
-        box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
-        z-index: 0;
-    }
-
     @media (max-width: 900px) {
         flex-direction: column;
         text-align: center;
 
-        &::before,
-        &::after {
+        &::before {
             display: none;
         }
     }
