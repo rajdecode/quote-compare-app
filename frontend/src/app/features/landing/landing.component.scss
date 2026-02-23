@@ -288,7 +288,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    opacity: 0.75;
+    opacity: 0.65;
     flex-shrink: 0;
 }
 
@@ -319,7 +319,7 @@
 
 /* ── HERO ───────────────────────────────────── */
 .hero {
-    padding: 0 0 80px;
+    padding: 20px 0 80px;
     position: relative;
     background: linear-gradient(180deg, #F8F9FF 0%, #FFFFFF 100%);
     overflow: visible;
