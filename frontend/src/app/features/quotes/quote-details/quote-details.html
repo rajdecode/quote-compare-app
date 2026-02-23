@@ -23,8 +23,7 @@
     <div class="qd-header glass-panel">
         <div class="qd-header-left">
             <div class="qd-service-icon">
-                <span class="material-icons">{{ getServiceIcon ? getServiceIcon(quote().service_type) :
-                    'home_repair_service' }}</span>
+                <span class="material-icons">{{ getServiceIcon(quote().service_type) }}</span>
             </div>
             <div>
                 <h1 class="qd-title">{{ quote().service_type | titlecase }}</h1>
