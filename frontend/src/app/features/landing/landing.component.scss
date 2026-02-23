@@ -21,10 +21,11 @@
     /* Auto margin for centering */
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(14px);
-    border: 1.5px solid rgba(79, 70, 229, 0.18);
+    border: 1.5px solid rgba(79, 70, 229, 0.3);
     border-radius: 18px;
-    padding: 18px 20px;
-    box-shadow: 0 6px 24px rgba(79, 70, 229, 0.1);
+    padding: 12px 20px 18px;
+    /* Reduced top padding */
+    box-shadow: 0 6px 24px rgba(79, 70, 229, 0.15);
     max-width: 500px;
     width: 100%;
 }
@@ -82,15 +83,16 @@
 
 .hero-track-input {
     flex: 1;
-    padding: 10px 13px;
-    border: 1.5px solid #E2E8F0;
+    padding: 12px 14px;
+    border: 2px solid #A5B4FC;
+    /* More prominent border */
     border-radius: 10px;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     font-family: inherit;
     color: #0F172A;
     background: white;
     outline: none;
-    transition: border-color 0.2s;
+    transition: all 0.2s;
 
     &::placeholder {
         color: #94A3B8;
@@ -98,7 +100,7 @@
 
     &:focus {
         border-color: #4F46E5;
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
     }
 }
 
@@ -469,7 +471,8 @@
 }
 
 .hero-text {
-    flex: 1.2;
+    flex: 1.1;
+    /* Reduced from 1.2 */
     /* Make the text portion slightly larger than visual */
     padding-left: 20px;
     /* Slight right push */
@@ -648,9 +651,9 @@
 
 /* ── HERO VISUAL ─────────────────────────────── */
 .hero-visual {
-    flex: 0 0 350px;
-    /* Reduced original 420px size */
-    height: 350px;
+    flex: 0 0 380px;
+    /* Increased from 350px */
+    height: 380px;
     /* extra height for card + rings */
     position: relative;
     display: flex;
@@ -1222,10 +1225,10 @@
 
 /* ── CTA SECTION ─────────────────────────────── */
 .cta-section {
-    margin: 20px auto 80px;
-    max-width: 640px;
-    /* Match the text inner width */
-    border-radius: 28px;
+    margin: 40px auto 80px;
+    max-width: 900px;
+    /* Spread wider on the screen */
+    border-radius: 20px;
     background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 60%, #6366F1 100%);
     overflow: hidden;
     position: relative;
@@ -1242,27 +1245,47 @@
 .cta-inner {
     position: relative;
     z-index: 1;
-    text-align: center;
-    padding: 80px 24px;
-    max-width: 640px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 48px;
+    /* Limit height padding, keep length more */
     margin: 0 auto;
 
+    @media (max-width: 768px) {
+        flex-direction: column;
+        text-align: center;
+        padding: 32px 24px;
+        gap: 20px;
+    }
+
+    .cta-text {
+        text-align: left;
+        flex: 1;
+
+        @media (max-width: 768px) {
+            text-align: center;
+        }
+    }
+
     h2 {
-        font-size: 2.4rem;
-        font-weight: 900;
+        font-size: 2rem;
+        font-weight: 800;
         color: white;
         letter-spacing: -0.5px;
-        margin-bottom: 14px;
+        margin-bottom: 8px;
+        /* Reduced bottom gap */
 
         @media (max-width: 600px) {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
         }
     }
 
     p {
-        color: rgba(255, 255, 255, 0.75);
+        color: rgba(255, 255, 255, 0.85);
         font-size: 1.05rem;
-        margin-bottom: 36px;
+        margin: 0;
+        /* Remove margin bottom */
     }
 
     .btn-hero-primary {
