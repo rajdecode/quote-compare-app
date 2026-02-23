@@ -292,6 +292,33 @@
     flex-shrink: 0;
 }
 
+/* In-hero separator between track card and columns */
+.hero-divider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 8px 0;
+
+    &::before,
+    &::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.18), rgba(236, 72, 153, 0.18), transparent);
+    }
+}
+
+.hd-icon {
+    font-size: 1.05rem;
+    margin: 0 12px;
+    background: linear-gradient(135deg, #4F46E5, #EC4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.6;
+    flex-shrink: 0;
+}
+
 /* ── SHARED ─────────────────────────────────── */
 .container {
     max-width: 1200px;
