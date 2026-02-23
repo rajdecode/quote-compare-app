@@ -83,4 +83,15 @@ export class QuoteDetails implements OnInit {
             alert('Error updating status.');
         }
     }
+
+    getServiceIcon(serviceType: string): string {
+        const icons: Record<string, string> = {
+            'heat pumps': 'heat_pump',
+            'solar': 'solar_power',
+            'batteries': 'battery_charging_full',
+            'air conditioning': 'ac_unit',
+            'water heating': 'water_heater',
+        };
+        return icons[serviceType?.toLowerCase()] ?? 'home_repair_service';
+    }
 }
