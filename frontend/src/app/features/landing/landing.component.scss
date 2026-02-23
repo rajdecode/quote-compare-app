@@ -269,26 +269,32 @@
     align-items: center;
     justify-content: center;
     gap: 0;
-    padding: 4px 24px;
+    padding: 12px 24px;
     position: relative;
 
     &::before,
     &::after {
         content: '';
         flex: 1;
-        height: 1.5px;
-        background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.25), rgba(236, 72, 153, 0.25), transparent);
+        height: 2px;
+        background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(99, 102, 241, 0.6) 30%,
+                rgba(168, 85, 247, 0.6) 60%,
+                rgba(236, 72, 153, 0.6) 85%,
+                transparent 100%);
+        border-radius: 2px;
     }
 }
 
 .sd-icon {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin: 0 14px;
     background: linear-gradient(135deg, #4F46E5, #EC4899);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    opacity: 0.65;
+    opacity: 1;
     flex-shrink: 0;
 }
 
@@ -297,25 +303,30 @@
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 8px 0;
+    padding: 12px 0;
 
     &::before,
     &::after {
         content: '';
         flex: 1;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.18), rgba(236, 72, 153, 0.18), transparent);
+        height: 2px;
+        background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(99, 102, 241, 0.55) 30%,
+                rgba(236, 72, 153, 0.55) 70%,
+                transparent 100%);
+        border-radius: 2px;
     }
 }
 
 .hd-icon {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     margin: 0 12px;
     background: linear-gradient(135deg, #4F46E5, #EC4899);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    opacity: 0.6;
+    opacity: 0.9;
     flex-shrink: 0;
 }
 
