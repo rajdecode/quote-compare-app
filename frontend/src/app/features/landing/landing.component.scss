@@ -28,6 +28,8 @@
     box-shadow: 0 6px 24px rgba(79, 70, 229, 0.15);
     max-width: 500px;
     width: 100%;
+    box-sizing: border-box;
+    /* Fix mobile horizontal overflow from padding */
 }
 
 .track-heading {
@@ -107,6 +109,8 @@
 .hero-track-btn {
     display: flex;
     align-items: center;
+    justify-content: center;
+    /* Center the text when button stretches */
     gap: 6px;
     padding: 10px 16px;
     background: linear-gradient(135deg, #4F46E5, #6366F1);
