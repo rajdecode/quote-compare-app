@@ -263,6 +263,35 @@
     color: rgba(255, 255, 255, 0.88);
 }
 
+/* ── SECTION DIVIDERS ───────────────────────── */
+.section-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 4px 24px;
+    position: relative;
+
+    &::before,
+    &::after {
+        content: '';
+        flex: 1;
+        height: 1.5px;
+        background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.25), rgba(236, 72, 153, 0.25), transparent);
+    }
+}
+
+.sd-icon {
+    font-size: 1.3rem;
+    margin: 0 14px;
+    background: linear-gradient(135deg, #4F46E5, #EC4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.75;
+    flex-shrink: 0;
+}
+
 /* ── SHARED ─────────────────────────────────── */
 .container {
     max-width: 1200px;
