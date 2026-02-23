@@ -322,45 +322,7 @@
     padding: 0 0 80px;
     position: relative;
     background: linear-gradient(180deg, #F8F9FF 0%, #FFFFFF 100%);
-    overflow: hidden;
-
-    /* Curvy glowing left border */
-    &::before {
-        content: '';
-        position: absolute;
-        top: 8%;
-        bottom: 8%;
-        left: 0;
-        width: 4px;
-        border-radius: 0 4px 4px 0;
-        background: linear-gradient(180deg,
-                transparent 0%,
-                rgba(79, 70, 229, 0.5) 30%,
-                rgba(139, 92, 246, 0.55) 60%,
-                rgba(236, 72, 153, 0.3) 85%,
-                transparent 100%);
-        z-index: 2;
-        filter: blur(1px);
-    }
-
-    /* Curvy glowing right border */
-    &::after {
-        content: '';
-        position: absolute;
-        top: 8%;
-        bottom: 8%;
-        right: 0;
-        width: 4px;
-        border-radius: 4px 0 0 4px;
-        background: linear-gradient(180deg,
-                transparent 0%,
-                rgba(236, 72, 153, 0.3) 15%,
-                rgba(139, 92, 246, 0.55) 40%,
-                rgba(79, 70, 229, 0.5) 70%,
-                transparent 100%);
-        z-index: 2;
-        filter: blur(1px);
-    }
+    overflow: visible;
 }
 
 /* Section spacing — breathing room between sections */
@@ -444,10 +406,56 @@
     /* both columns start at the same level */
     gap: 40px;
     width: 100%;
+    position: relative;
+
+    /* Curvy glowing left border */
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -20px;
+        width: 6px;
+        border-radius: 6px;
+        background: linear-gradient(180deg,
+                transparent 0%,
+                #4F46E5 25%,
+                #7C3AED 55%,
+                #EC4899 80%,
+                transparent 100%);
+        opacity: 0.45;
+        box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
+        z-index: 2;
+    }
+
+    /* Curvy glowing right border */
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: -20px;
+        width: 6px;
+        border-radius: 6px;
+        background: linear-gradient(180deg,
+                transparent 0%,
+                #EC4899 20%,
+                #7C3AED 45%,
+                #4F46E5 75%,
+                transparent 100%);
+        opacity: 0.45;
+        box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
+        z-index: 2;
+    }
 
     @media (max-width: 900px) {
         flex-direction: column;
         text-align: center;
+
+        &::before,
+        &::after {
+            display: none;
+        }
     }
 }
 
