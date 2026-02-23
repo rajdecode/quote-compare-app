@@ -301,19 +301,19 @@
 
 .section-header {
     text-align: center;
-    margin-bottom: 56px;
+    margin-bottom: 40px;
 
     h2 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         font-weight: 800;
         color: #0F172A;
         letter-spacing: -0.5px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
     p {
         color: #64748B;
-        font-size: 1.05rem;
+        font-size: 1rem;
     }
 }
 
@@ -322,6 +322,63 @@
     padding: 0 0 80px;
     position: relative;
     background: linear-gradient(180deg, #F8F9FF 0%, #FFFFFF 100%);
+    overflow: hidden;
+
+    /* Curvy glowing left border */
+    &::before {
+        content: '';
+        position: absolute;
+        top: 8%;
+        bottom: 8%;
+        left: 0;
+        width: 4px;
+        border-radius: 0 4px 4px 0;
+        background: linear-gradient(180deg,
+                transparent 0%,
+                rgba(79, 70, 229, 0.5) 30%,
+                rgba(139, 92, 246, 0.55) 60%,
+                rgba(236, 72, 153, 0.3) 85%,
+                transparent 100%);
+        z-index: 2;
+        filter: blur(1px);
+    }
+
+    /* Curvy glowing right border */
+    &::after {
+        content: '';
+        position: absolute;
+        top: 8%;
+        bottom: 8%;
+        right: 0;
+        width: 4px;
+        border-radius: 4px 0 0 4px;
+        background: linear-gradient(180deg,
+                transparent 0%,
+                rgba(236, 72, 153, 0.3) 15%,
+                rgba(139, 92, 246, 0.55) 40%,
+                rgba(79, 70, 229, 0.5) 70%,
+                transparent 100%);
+        z-index: 2;
+        filter: blur(1px);
+    }
+}
+
+/* Section spacing — breathing room between sections */
+.products-section {
+    padding: 72px 24px;
+}
+
+.how-section {
+    padding: 72px 0;
+    background: #FAFBFF;
+}
+
+.stats-section {
+    padding: 64px 24px;
+}
+
+.cta-section {
+    padding: 80px 24px;
 }
 
 /* Animated background blobs */
