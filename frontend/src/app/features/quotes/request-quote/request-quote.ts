@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
@@ -28,7 +28,7 @@ export class RequestQuote {
     submissionSuccess = false;
     submittedQuoteId = '';
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, private cd: ChangeDetectorRef) { }
 
     async copyToClipboard(text: string) {
         try {
@@ -129,27 +129,34 @@ export class RequestQuote {
                 })
             });
 
+            console.log('API Response received. Status:', response.status);
+
             if (!response.ok) {
                 const errText = await response.text();
+                console.error('API Error Response:', errText);
                 throw new Error('Failed to submit quote request: ' + errText);
             }
 
             const data = await response.json();
-            console.log('Quote created:', data);
+            console.log('Quote created successfully, parsed data:', data);
 
             if (user) {
                 alert('Quote request submitted successfully!');
                 this.router.navigate(['/buyer']);
             } else {
+                console.log('Setting success screen for guest user...');
                 // Show success screen with ID instead of alerting and routing immediately
                 this.submissionSuccess = true;
                 this.submittedQuoteId = data.id;
+                console.log('Success screen variables set:', { success: this.submissionSuccess, id: this.submittedQuoteId });
+                this.cd.detectChanges(); // Force UI update
             }
         } catch (error) {
             console.error('Error submitting quote:', error);
             alert('Error submitting quote. Please try again.');
         } finally {
             this.loading = false;
+            this.cd.detectChanges(); // Force UI update to clear spinner
         }
     }
 }

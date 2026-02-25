@@ -61,7 +61,9 @@ exports.createQuote = async (req, res) => {
         console.log(`Quote saved to Supabase (Short ID: ${shortId}, UUID: ${data.id})`);
 
         if (contactEmail) {
-            emailService.sendQuoteReceivedEmail(contactEmail, shortId, newQuote)
+            // Get origin from request header, fallback to environment var, or localhost
+            const requestOrigin = req.headers.origin || req.protocol + '://' + req.get('host');
+            emailService.sendQuoteReceivedEmail(contactEmail, shortId, newQuote, requestOrigin)
                 .catch(err => console.error('Failed to send email:', err));
         }
 
@@ -189,7 +191,10 @@ exports.getQuoteById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const { data: quote, error } = await supabase
+        // Check if ID is UUID (36 chars) or short_id (8 chars)
+        const isUuid = id.length > 20;
+
+        let query = supabase
             .from('quotes')
             .select(`
                 *,
@@ -201,9 +206,15 @@ exports.getQuoteById = async (req, res) => {
                         email
                     )
                 )
-            `)
-            .eq('id', id)
-            .single();
+            `);
+
+        if (isUuid) {
+            query = query.eq('id', id);
+        } else {
+            query = query.eq('short_id', id);
+        }
+
+        const { data: quote, error } = await query.single();
 
         if (error || !quote) {
             return res.status(404).json({ error: 'Quote not found' });
