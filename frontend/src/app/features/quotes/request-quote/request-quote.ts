@@ -25,7 +25,19 @@ export class RequestQuote {
     isUploading = false;
     uploadError = '';
 
+    submissionSuccess = false;
+    submittedQuoteId = '';
+
     constructor(private router: Router) { }
+
+    async copyToClipboard(text: string) {
+        try {
+            await navigator.clipboard.writeText(text);
+            alert('Quote ID copied to clipboard!');
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+    }
 
     async onFileSelected(event: any) {
         const file = event.target.files[0];
@@ -129,8 +141,9 @@ export class RequestQuote {
                 alert('Quote request submitted successfully!');
                 this.router.navigate(['/buyer']);
             } else {
-                alert('Quote request submitted! Check your email for confirmation.');
-                this.router.navigate(['/']); // Go to landing page
+                // Show success screen with ID instead of alerting and routing immediately
+                this.submissionSuccess = true;
+                this.submittedQuoteId = data.id;
             }
         } catch (error) {
             console.error('Error submitting quote:', error);
