@@ -37,7 +37,8 @@ exports.sendEmail = async (to, subject, text) => {
 };
 
 exports.sendQuoteReceivedEmail = async (email, quoteId, details = {}) => {
-    const trackingLink = `http://localhost:4200/track/${quoteId}`;
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4200';
+    const trackingLink = `${frontendUrl}/track/${quoteId}`;
     const { serviceType = 'Service', postalCode = 'N/A', details: description = 'No details provided.' } = details;
 
     // Glassmorphism-inspired HTML Email
