@@ -6,7 +6,15 @@
                 Details</h5>
             @if(quote) {
             <h3 style="margin: 0 0 5px 0;">{{ quote.service_type | titlecase }}</h3>
-            <p style="margin: 0 0 15px 0;">{{ quote.details }}</p>
+
+            <div
+                style="background: #F8FAFC; padding: 15px; border-radius: 8px; border-left: 4px solid #4F46E5; margin-bottom: 15px; margin-top: 15px;">
+                <strong
+                    style="display: block; font-size: 0.85rem; color: #64748B; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px;">Buyer
+                    Initial Comments</strong>
+                <p style="margin: 0; color: #1E293B; font-size: 1.05rem; line-height: 1.5;">{{ quote.details || 'No
+                    additional details provided.' }}</p>
+            </div>
 
             @if (quote.attachments?.length) {
             <div class="attachments" style="margin-bottom: 15px;">

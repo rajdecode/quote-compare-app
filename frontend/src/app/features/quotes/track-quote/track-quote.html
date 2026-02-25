@@ -25,11 +25,12 @@
         @if (quote) {
         <div class="results-area">
             <!-- Status Card -->
-            <div class="glass-panel status-card">
+            <div class="glass-panel status-card" style="border-top: 5px solid var(--primary-color);">
                 <div class="status-header">
                     <h2>Quote Status</h2>
                     <span class="status-badge" [class.status-open]="quote.status === 'open'"
-                        [class.status-responded]="quote.status === 'responded'">
+                        [class.status-responded]="quote.status === 'responded'"
+                        style="padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; letter-spacing: 0.5px;">
                         {{ quote.status | uppercase }}
                     </span>
                 </div>
@@ -37,21 +38,21 @@
                 <div class="quote-summary">
                     <div class="summary-item">
                         <span class="label">Service</span>
-                        <span class="value">{{ quote.serviceType | titlecase }}</span>
+                        <span class="value">{{ quote.service_type | titlecase }}</span>
                     </div>
                     <div class="summary-item">
                         <span class="label">Location</span>
-                        <span class="value">{{ quote.postalCode }}</span>
+                        <span class="value">{{ quote.suburb ? quote.suburb + ', ' : '' }}{{ quote.postal_code }}</span>
                     </div>
                     <div class="summary-item">
-                        <span class="label">Submitted</span>
-                        <span class="value">{{ quote.createdAt | date:'mediumDate' }}</span>
+                        <span class="label">Date Submitted</span>
+                        <span class="value" style="color: #4F46E5;">{{ quote.created_at | date:'mediumDate' }}</span>
                     </div>
                 </div>
 
-                <div class="details-box">
-                    <h3>Your Request</h3>
-                    <p>{{ quote.details }}</p>
+                <div class="details-box" style="background: #F0F9FF; border-left: 4px solid #0EA5E9;">
+                    <h3 style="color: #0369A1;">Buyer Request Details</h3>
+                    <p style="color: #0C4A6E; font-size: 1.05rem;">{{ quote.details || 'No details provided.' }}</p>
                 </div>
             </div>
 
@@ -69,12 +70,18 @@
                     @for (response of quote.responses; track $index) {
                     <div class="glass-panel response-card">
                         <div class="vendor-info">
-                            <span class="vendor-name">{{ response.vendorName || 'Vendor' }}</span>
-                            <span class="price">{{ response.price | currency }}</span>
+                            <span class="vendor-name">{{ response.vendorName || response.profiles?.company_name ||
+                                'Vendor' }}</span>
+                            <span class="price" style="color: #10B981; font-size: 1.4rem;">{{ response.price | currency
+                                }}</span>
                         </div>
-                        <p class="message">{{ response.message }}</p>
-                        <div class="response-meta">
-                            Received: {{ response.createdAt | date:'short' }}
+                        <div class="message-container" style="flex-grow: 1; overflow-y: auto;">
+                            <p class="message" style="color: #334155; font-size: 1rem; line-height: 1.5;">{{
+                                response.message }}</p>
+                        </div>
+                        <div class="response-meta"
+                            style="margin-top: 15px; border-top: 1px solid #E2E8F0; padding-top: 10px; font-weight: 500;">
+                            Received: {{ response.created_at | date:'shortTime' }}
                         </div>
                     </div>
                     }
