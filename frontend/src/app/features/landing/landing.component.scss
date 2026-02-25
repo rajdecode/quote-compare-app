@@ -708,6 +708,25 @@
         animation-delay: 0.8s;
         border-color: rgba(99, 102, 241, 0.3);
     }
+
+    &.ring-dashed {
+        width: 160px;
+        height: 160px;
+        border: 2px dashed rgba(99, 102, 241, 0.4);
+        border-radius: 50%;
+        animation: ringSpin 24s linear infinite;
+        /* overrides ringPulse */
+    }
+}
+
+@keyframes ringSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes ringPulse {
