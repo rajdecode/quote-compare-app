@@ -1,5 +1,6 @@
 const supabase = require('../config/supabase');
 const emailService = require('../services/email.service');
+const crypto = require('crypto');
 
 // ... mockQuotes removed ...
 
@@ -28,14 +29,23 @@ exports.createQuote = async (req, res) => {
     // Correction: In Supabase/Postgres, referencing a UUID must exist.
     // If buyerId is null, that's fine if column is nullable.
 
+    // Generate a short alphanumeric ID for easier tracking
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    const bytes = crypto.randomBytes(4);
+    let shortId = '';
+    for (let i = 0; i < 8; i++) {
+        shortId += chars[bytes[i % bytes.length] % chars.length];
+    }
+
     const newQuote = {
         buyer_id: buyerId,
         service_type: serviceType,
         postal_code: postalCode,
         suburb: suburb || '',
         details,
-        email: contactEmail, // Store email for guest reference if needed, though usually in profile
+        email: contactEmail,
         status: 'open',
+        short_id: shortId,
         attachments: req.body.attachments || []
     };
 
@@ -48,14 +58,15 @@ exports.createQuote = async (req, res) => {
 
         if (error) throw error;
 
-        console.log('Quote saved to Supabase:', data.id);
+        console.log(`Quote saved to Supabase (Short ID: ${shortId}, UUID: ${data.id})`);
 
         if (contactEmail) {
-            emailService.sendQuoteReceivedEmail(contactEmail, data.id, newQuote)
+            emailService.sendQuoteReceivedEmail(contactEmail, shortId, newQuote)
                 .catch(err => console.error('Failed to send email:', err));
         }
 
-        res.status(201).json(data);
+        res.status(201).json({ ...data, id: shortId }); // Return shortId as 'id' to frontend for backward compatibility
+
     } catch (error) {
         console.error('Supabase Create Error:', error);
         res.status(500).json({ error: 'Failed to create quote' });

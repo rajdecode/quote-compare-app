@@ -1,10 +1,11 @@
 <div class="container page-content">
     <div class="glass-panel form-card">
-        <h2>Request a Quote</h2>
+        <h2 style="font-size: 2rem; font-weight: 800; color: #0F172A; text-align: center;">Request a Quote</h2>
         @if (!submissionSuccess) {
-        <p class="subtitle">Tell us what you need, and we'll match you with top vendors.</p>
+        <p class="subtitle" style="text-align: center; font-size: 1.05rem;">Tell us what you need, and we'll match you
+            with top vendors.</p>
 
-        <form (ngSubmit)="onSubmit()">
+        <form (ngSubmit)="onSubmit()" style="margin-top: 2rem;">
             <div class="form-group">
                 <label for="serviceType">Service Type</label>
                 <select id="serviceType" [(ngModel)]="serviceType" name="serviceType" required>
