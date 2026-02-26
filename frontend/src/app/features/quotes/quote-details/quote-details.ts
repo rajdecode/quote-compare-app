@@ -22,6 +22,12 @@ export class QuoteDetails implements OnInit {
     negotiatePrice = signal<number | null>(null);
     negotiateMessage = signal<string>('');
 
+    // Modal State
+    showConfirmModal = signal<boolean>(false);
+    showSuccessModal = signal<boolean>(false);
+    successMessage = signal<string>('');
+    pendingAction = signal<any>(null);
+
     private route = inject(ActivatedRoute);
     private authService = inject(AuthService);
 
@@ -68,7 +74,7 @@ export class QuoteDetails implements OnInit {
         this.negotiateMessage.set('');
     }
 
-    async updateStatus(response: any, status: 'accepted' | 'negotiating') {
+    async initiateStatusUpdate(response: any, status: 'accepted' | 'negotiating') {
         let message = '';
 
         if (status === 'negotiating') {
@@ -89,24 +95,50 @@ export class QuoteDetails implements OnInit {
             message = 'Quote accepted. Please proceed with the job.';
         }
 
+        this.pendingAction.set({ response, status, message });
+        this.showConfirmModal.set(true);
+    }
+
+    cancelConfirm() {
+        this.showConfirmModal.set(false);
+        this.pendingAction.set(null);
+    }
+
+    closeSuccessModal() {
+        this.showSuccessModal.set(false);
+        this.ngOnInit(); // Reload data after closing success modal
+    }
+
+    async confirmStatusUpdate() {
+        const action = this.pendingAction();
+        if (!action) return;
+
+        this.showConfirmModal.set(false);
+
         try {
             const token = await this.authService.getToken();
             if (!token) return;
 
-            const res = await fetch(`${environment.apiUrl}/quotes/${this.quoteId}/responses/${response.vendor_id}/status`, {
+            const res = await fetch(`${environment.apiUrl}/quotes/${this.quoteId}/responses/${action.response.vendor_id}/status`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ status, message })
+                body: JSON.stringify({ status: action.status, message: action.message })
             });
 
             if (res.ok) {
-                alert(`Quote ${status} successfully!`);
                 this.cancelNegotiation();
-                // Reload data
-                this.ngOnInit();
+
+                // Set appropriate beautiful success message
+                if (action.status === 'accepted') {
+                    this.successMessage.set('Offer accepted and sent to the seller!');
+                } else {
+                    this.successMessage.set('Counter offer successfully sent to the seller!');
+                }
+
+                this.showSuccessModal.set(true);
             } else {
                 const err = await res.text();
                 console.error('Failed to update status:', err);
@@ -115,6 +147,8 @@ export class QuoteDetails implements OnInit {
         } catch (error) {
             console.error('Error updating status:', error);
             alert('Error updating status.');
+        } finally {
+            this.pendingAction.set(null);
         }
     }
 

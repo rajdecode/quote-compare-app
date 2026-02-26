@@ -353,25 +353,30 @@ exports.updateResponseStatus = async (req, res) => {
             return res.status(400).json({ error: `Invalid status. Must be one of: ${ALLOWED_STATUSES.join(', ')}` });
         }
 
-        // Verify Buyer owns the Quote first
-        const { data: quote, error: quoteError } = await supabase
-            .from('quotes')
-            .select('buyer_id')
-            .eq('id', quoteId)
-            .single();
+        const isUuid = quoteId.length > 20;
+
+        // Verify Buyer owns the Quote first and get the real UUID if short_id was provided
+        let query = supabase.from('quotes').select('id, buyer_id');
+        if (isUuid) {
+            query = query.eq('id', quoteId);
+        } else {
+            query = query.eq('short_id', quoteId);
+        }
+
+        const { data: quote, error: quoteError } = await query.single();
 
         if (quoteError || !quote || quote.buyer_id !== buyerId) {
             return res.status(403).json({ error: 'Unauthorized or Quote not found' });
         }
 
-        // Update the response from specific vendor
+        // Update the response from specific vendor using the actual quote UUID
         const { error: updateError } = await supabase
             .from('quote_responses')
             .update({
                 status: status,
                 buyer_message: message || ''
             })
-            .eq('quote_id', quoteId)
+            .eq('quote_id', quote.id)
             .eq('vendor_id', vendorId);
 
         if (updateError) throw updateError;
