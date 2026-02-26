@@ -19,6 +19,7 @@ export class Register {
   plan = '';
   loading = false;
   errorMessage = '';
+  returnUrl: string | null = null;
 
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -29,6 +30,9 @@ export class Register {
       if (params['plan']) {
         this.plan = params['plan'];
         this.role = 'vendor'; // If coming from pricing, assume vendor
+      }
+      if (params['returnUrl']) {
+        this.returnUrl = params['returnUrl'];
       }
     });
   }
@@ -44,7 +48,9 @@ export class Register {
 
       // Check if session exists (Email confirmation might be required)
       if (session) {
-        if (this.role === 'buyer') {
+        if (this.returnUrl) {
+          this.router.navigateByUrl(this.returnUrl);
+        } else if (this.role === 'buyer') {
           this.router.navigate(['/buyer']);
         } else {
           this.router.navigate(['/vendor']);
