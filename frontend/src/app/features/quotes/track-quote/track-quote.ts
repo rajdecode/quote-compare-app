@@ -85,7 +85,7 @@ export class TrackQuote implements OnInit {
 
   signupToNegotiate() {
     // Specifically route to register, with a return URL to the quote dashboard
-    this.router.navigate(['/auth/register'], {
+    this.router.navigate(['/register'], {
       queryParams: {
         returnUrl: `/buyer/quote/${this.quote.id || this.quoteId}`
       }
