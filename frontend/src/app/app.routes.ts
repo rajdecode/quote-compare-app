@@ -6,14 +6,15 @@ import { BuyerDashboard } from './features/dashboard/buyer-dashboard/buyer-dashb
 import { VendorDashboard } from './features/dashboard/vendor-dashboard/vendor-dashboard';
 import { AdminDashboard } from './features/dashboard/admin-dashboard/admin-dashboard';
 import { authGuard } from './core/guards/auth.guard';
+import { guestGuard } from './core/guards/guest.guard';
 
 import { RequestQuote } from './features/quotes/request-quote/request-quote';
 import { RespondQuote } from './features/quotes/respond-quote/respond-quote';
 
 export const routes: Routes = [
-    { path: '', component: LandingComponent },
-    { path: 'login', component: Login },
-    { path: 'register', component: Register },
+    { path: '', component: LandingComponent, canActivate: [guestGuard] },
+    { path: 'login', component: Login, canActivate: [guestGuard] },
+    { path: 'register', component: Register, canActivate: [guestGuard] },
     { path: 'forgot-password', loadComponent: () => import('./features/auth/forgot-password/forgot-password').then(m => m.ForgotPassword) },
     { path: 'change-password', loadComponent: () => import('./features/auth/change-password/change-password').then(m => m.ChangePassword), canActivate: [authGuard] },
     { path: 'buyer', component: BuyerDashboard, canActivate: [authGuard] },
