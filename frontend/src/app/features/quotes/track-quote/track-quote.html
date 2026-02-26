@@ -67,30 +67,63 @@
                 </div>
                 } @else {
                 <div class="responses-grid">
-                    @for (response of quote.responses; track $index) {
-                    <div class="glass-panel response-card" (click)="openResponse()"
-                        style="cursor: pointer; position: relative;">
+                    @for (response of quote.responses; track response.id) {
+                    <div class="glass-panel response-card" (click)="toggleCard(response.id)"
+                        [class.expanded]="expandedCardId === response.id" style="cursor: pointer; position: relative;">
                         <div class="vendor-info">
                             <span class="vendor-name">{{ response.vendorName || response.profiles?.company_name ||
                                 'Vendor' }}</span>
                             <span class="price" style="color: #10B981; font-size: 1.4rem;">{{ response.price | currency
                                 }}</span>
                         </div>
-                        <div class="message-container" style="flex-grow: 1; overflow-y: auto; margin-bottom: 20px;">
-                            <p class="message" style="color: #334155; font-size: 1rem; line-height: 1.5;">{{
-                                response.message }}</p>
-                        </div>
-                        <div class="response-meta"
-                            style="margin-top: auto; border-top: 1px solid #E2E8F0; padding-top: 12px; display: flex; flex-direction: column; gap: 8px;">
+
+                        <div class="response-meta-compact"
+                            style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #E2E8F0; padding-top: 12px; margin-top: auto;">
                             <span style="font-weight: 500; color: #64748B; font-size: 0.85rem;">Received: {{
-                                response.created_at |
-                                date:'shortTime' }}</span>
-                            <button class="btn btn-primary btn-sm"
-                                style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 6px; padding: 10px; font-size: 0.85rem; font-weight: 600; text-transform: none; border-radius: 8px; line-height: 1.2; text-align: center;">
-                                To accept and get invoice or Renegotiate with the seller
-                                <span class="material-icons" style="font-size: 1rem;">open_in_new</span>
-                            </button>
+                                response.created_at | date:'shortTime' }}</span>
+                            <span
+                                style="display: flex; align-items: center; gap: 4px; color: #4F46E5; font-weight: 600; font-size: 0.9rem;">
+                                {{ expandedCardId === response.id ? 'Close' : 'View Details' }}
+                                <span class="material-icons" style="font-size: 1.1rem;">
+                                    {{ expandedCardId === response.id ? 'expand_less' : 'expand_more' }}
+                                </span>
+                            </span>
                         </div>
+
+                        @if (expandedCardId === response.id) {
+                        <div class="expanded-content" (click)="$event.stopPropagation()"
+                            style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #CBD5E1; cursor: default;">
+                            <div class="message-container"
+                                style="background: #F8FAFC; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                                <strong
+                                    style="display: block; font-size: 0.85rem; color: #64748B; text-transform: uppercase; margin-bottom: 8px;">Vendor
+                                    Message</strong>
+                                <p class="message"
+                                    style="color: #334155; font-size: 1rem; line-height: 1.5; margin: 0;">{{
+                                    response.message }}</p>
+                            </div>
+
+                            @if (isGuest()) {
+                            <div class="guest-action" style="text-align: center;">
+                                <button class="btn btn-primary" (click)="signupToNegotiate()"
+                                    style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; padding: 12px; font-size: 0.95rem; font-weight: 600; border-radius: 8px;">
+                                    Sign up to accept or renegotiate
+                                    <span class="material-icons" style="font-size: 1.1rem;">person_add</span>
+                                </button>
+                                <p style="margin-top: 10px; font-size: 0.8rem; color: #94A3B8;">Free account required to
+                                    respond securely.</p>
+                            </div>
+                            } @else {
+                            <div class="user-action">
+                                <button class="btn btn-primary" (click)="goToNegotiation()"
+                                    style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; padding: 12px; font-size: 0.95rem; font-weight: 600; border-radius: 8px;">
+                                    Go to Negotiation Dashboard
+                                    <span class="material-icons" style="font-size: 1.1rem;">arrow_forward</span>
+                                </button>
+                            </div>
+                            }
+                        </div>
+                        }
                     </div>
                     }
                 </div>

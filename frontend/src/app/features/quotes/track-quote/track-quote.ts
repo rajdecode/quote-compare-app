@@ -18,6 +18,7 @@ export class TrackQuote implements OnInit {
   quote: any = null;
   loading = false;
   error = '';
+  expandedCardId: string | null = null;
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -64,21 +65,28 @@ export class TrackQuote implements OnInit {
       });
   }
 
-  submitSearch() {
-    if (this.quoteId) {
-      this.router.navigate(['/track', this.quoteId]);
+  toggleCard(responseId: string) {
+    if (this.expandedCardId === responseId) {
+      this.expandedCardId = null; // Close if already open
+    } else {
+      this.expandedCardId = responseId; // Open new card
     }
   }
 
-  openResponse() {
-    if (!this.quote) return;
+  isGuest(): boolean {
+    return !this.authService.currentUser();
+  }
 
-    if (this.authService.currentUser()) {
-      // If logged in, go straight to the buyer quote detail view to negotiate
-      this.router.navigate(['/buyer/quote', this.quote.id || this.quoteId]);
-    } else {
-      // If guest, send them to signup with a returnUrl
-      this.router.navigate(['/auth/signup'], { queryParams: { returnUrl: `/buyer/quote/${this.quote.id || this.quoteId}` } });
-    }
+  signupToNegotiate() {
+    // Specifically route to register, with a return URL to the quote dashboard
+    this.router.navigate(['/auth/register'], {
+      queryParams: {
+        returnUrl: `/buyer/quote/${this.quote.id || this.quoteId}`
+      }
+    });
+  }
+
+  goToNegotiation() {
+    this.router.navigate(['/buyer/quote', this.quote.id || this.quoteId]);
   }
 }
