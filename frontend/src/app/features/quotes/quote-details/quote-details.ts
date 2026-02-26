@@ -1,5 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
@@ -7,7 +8,7 @@ import { environment } from '../../../../environments/environment';
 @Component({
     selector: 'app-quote-details',
     standalone: true,
-    imports: [CommonModule, RouterLink],
+    imports: [CommonModule, FormsModule, RouterLink],
     templateUrl: './quote-details.html',
     styleUrls: ['./quote-details.scss']
 })
@@ -15,6 +16,12 @@ export class QuoteDetails implements OnInit {
     quote = signal<any>(null);
     quoteId: string | null = null;
     loading = signal<boolean>(true);
+
+    // Negotiation Form State
+    activeNegotiationId = signal<string | null>(null);
+    negotiatePrice = signal<number | null>(null);
+    negotiateMessage = signal<string>('');
+
     private route = inject(ActivatedRoute);
     private authService = inject(AuthService);
 
@@ -49,12 +56,38 @@ export class QuoteDetails implements OnInit {
         }
     }
 
-    async updateStatus(response: any, status: 'accepted' | 'negotiating') {
-        const message = status === 'negotiating'
-            ? prompt('Enter your message for the vendor:')
-            : 'Quote accepted. Please proceed with the job.';
+    openNegotiationForm(vendorId: string) {
+        this.activeNegotiationId.set(vendorId);
+        this.negotiatePrice.set(null);
+        this.negotiateMessage.set('');
+    }
 
-        if (status === 'negotiating' && !message) return;
+    cancelNegotiation() {
+        this.activeNegotiationId.set(null);
+        this.negotiatePrice.set(null);
+        this.negotiateMessage.set('');
+    }
+
+    async updateStatus(response: any, status: 'accepted' | 'negotiating') {
+        let message = '';
+
+        if (status === 'negotiating') {
+            // Combine price and details from the form
+            const price = this.negotiatePrice();
+            const details = this.negotiateMessage();
+            if (!details && !price) {
+                alert('Please provide a proposed price or additional details.');
+                return;
+            }
+
+            if (price) {
+                message = `Proposed Price: $${price}\n\n${details}`;
+            } else {
+                message = details;
+            }
+        } else {
+            message = 'Quote accepted. Please proceed with the job.';
+        }
 
         try {
             const token = await this.authService.getToken();
@@ -71,6 +104,7 @@ export class QuoteDetails implements OnInit {
 
             if (res.ok) {
                 alert(`Quote ${status} successfully!`);
+                this.cancelNegotiation();
                 // Reload data
                 this.ngOnInit();
             } else {

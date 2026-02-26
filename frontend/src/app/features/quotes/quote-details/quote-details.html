@@ -162,16 +162,52 @@
                 </div>
                 }
 
-                <!-- Actions -->
+                <!-- Actions & Negotiation Form -->
                 @if (!response.status || response.status === 'negotiating' || response.status === 'responded') {
+                @if (activeNegotiationId() === response.vendor_id) {
+                <div class="qd-negotiation-form"
+                    style="margin-top: 15px; padding: 20px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0;">
+                    <h4
+                        style="margin-top: 0; margin-bottom: 15px; color: #1E293B; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                        <span class="material-icons" style="color: #4F46E5;">forum</span> Send Counter Offer
+                    </h4>
+
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label
+                            style="display: block; margin-bottom: 6px; font-weight: 600; color: #475569; font-size: 0.9rem;">Proposed
+                            Price ($)</label>
+                        <input type="number" [(ngModel)]="negotiatePrice" placeholder="E.g., 450"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #CBD5E1; border-radius: 8px; font-size: 1rem;">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; margin-bottom: 6px; font-weight: 600; color: #475569; font-size: 0.9rem;">Additional
+                            Details</label>
+                        <textarea [(ngModel)]="negotiateMessage"
+                            placeholder="Any specific terms or reasons for the counter offer..." rows="3"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #CBD5E1; border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="btn btn-secondary" (click)="cancelNegotiation()"
+                            style="padding: 10px 20px; font-weight: 600; border-radius: 8px;">Cancel</button>
+                        <button class="btn btn-primary" (click)="updateStatus(response, 'negotiating')"
+                            style="padding: 10px 20px; font-weight: 600; border-radius: 8px; display: flex; align-items: center; gap: 6px; background-color: #4F46E5; color: white; border: none;">
+                            <span class="material-icons" style="font-size: 1.1rem;">send</span> Send Offer
+                        </button>
+                    </div>
+                </div>
+                } @else {
                 <div class="offer-actions">
                     <button class="offer-btn offer-btn-accept" (click)="updateStatus(response, 'accepted')">
                         <span class="material-icons">check_circle</span> Accept
                     </button>
-                    <button class="offer-btn offer-btn-negotiate" (click)="updateStatus(response, 'negotiating')">
+                    <button class="offer-btn offer-btn-negotiate" (click)="openNegotiationForm(response.vendor_id)">
                         <span class="material-icons">forum</span> Renegotiate
                     </button>
                 </div>
+                }
                 }
             </div>
             }
