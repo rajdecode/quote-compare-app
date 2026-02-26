@@ -142,11 +142,11 @@ export class QuoteDetails implements OnInit {
             } else {
                 const err = await res.text();
                 console.error('Failed to update status:', err);
-                alert('Failed to update status.');
+                alert('Backend Error: ' + err);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error updating status:', error);
-            alert('Error updating status.');
+            alert('Network Error: ' + (error.message || 'Unknown error'));
         } finally {
             this.pendingAction.set(null);
         }
