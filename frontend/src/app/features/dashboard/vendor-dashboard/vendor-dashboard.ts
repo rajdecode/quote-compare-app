@@ -25,6 +25,17 @@ export class VendorDashboard {
   actionRequiredQuotes = signal<any[]>([]);
   completedQuotes = signal<any[]>([]);
 
+  // Expanded Card State
+  expandedQuoteId = signal<string | null>(null);
+
+  toggleCard(quoteId: string) {
+    if (this.expandedQuoteId() === quoteId) {
+      this.expandedQuoteId.set(null);
+    } else {
+      this.expandedQuoteId.set(quoteId);
+    }
+  }
+
   hasResponded(quote: any): boolean {
     const user = this.authService.currentUser();
     if (!user || !quote.responses) return false;

@@ -60,7 +60,7 @@
         } @else {
         <div class="request-cards">
             @for (quote of newRequests(); track quote.id) {
-            <div class="quote-card">
+            <div class="quote-card" [class.expanded]="expandedQuoteId() === quote.id" (click)="toggleCard(quote.id)">
                 <div class="qcard-header">
                     <div class="qcard-icon icon-indigo">
                         <span class="material-icons">{{ getServiceIcon(quote.service_type) }}</span>
@@ -79,7 +79,7 @@
                 @if (quote.details) {
                 <p class="qcard-detail">{{ quote.details }}</p>
                 }
-                <button class="qcard-btn" (click)="respondToQuote(quote.id)">
+                <button class="qcard-btn" (click)="$event.stopPropagation(); respondToQuote(quote.id)">
                     <span class="material-icons">send</span> Submit Quote
                 </button>
             </div>
@@ -98,7 +98,8 @@
         } @else {
         <div class="request-cards">
             @for (quote of actionRequiredQuotes(); track quote.id) {
-            <div class="quote-card" [class.card-urgent]="!hasAcceptedResponse(quote)">
+            <div class="quote-card" [class.card-urgent]="!hasAcceptedResponse(quote)"
+                [class.expanded]="expandedQuoteId() === quote.id" (click)="toggleCard(quote.id)">
                 <div class="qcard-header">
                     <div class="qcard-icon" [class.icon-green]="hasAcceptedResponse(quote)"
                         [class.icon-amber]="!hasAcceptedResponse(quote)">
@@ -127,11 +128,11 @@
                 </div>
                 }
                 @if (hasAcceptedResponse(quote)) {
-                <button class="qcard-btn qcard-btn-success" (click)="completeJob(quote)">
+                <button class="qcard-btn qcard-btn-success" (click)="$event.stopPropagation(); completeJob(quote)">
                     <span class="material-icons">check_circle</span> Complete
                 </button>
                 } @else {
-                <button class="qcard-btn" (click)="respondToQuote(quote.id)">
+                <button class="qcard-btn" (click)="$event.stopPropagation(); respondToQuote(quote.id)">
                     <span class="material-icons">reply</span> Respond
                 </button>
                 }
@@ -151,7 +152,7 @@
         } @else {
         <div class="request-cards">
             @for (quote of sentQuotes(); track quote.id) {
-            <div class="quote-card">
+            <div class="quote-card" [class.expanded]="expandedQuoteId() === quote.id" (click)="toggleCard(quote.id)">
                 <div class="qcard-header">
                     <div class="qcard-icon icon-blue">
                         <span class="material-icons">hourglass_top</span>
@@ -167,7 +168,7 @@
                         <span class="material-icons">schedule</span>{{ quote.created_at | date:'d MMM yy' }}
                     </span>
                 </div>
-                <button class="qcard-btn qcard-btn-secondary" (click)="editQuote(quote.id)">
+                <button class="qcard-btn qcard-btn-secondary" (click)="$event.stopPropagation(); editQuote(quote.id)">
                     <span class="material-icons">edit</span> Edit Quote
                 </button>
             </div>
@@ -186,7 +187,8 @@
         } @else {
         <div class="request-cards">
             @for (quote of completedQuotes(); track quote.id) {
-            <div class="quote-card card-completed">
+            <div class="quote-card card-completed" [class.expanded]="expandedQuoteId() === quote.id"
+                (click)="toggleCard(quote.id)">
                 <div class="qcard-header">
                     <div class="qcard-icon icon-green">
                         <span class="material-icons">verified</span>
@@ -206,7 +208,8 @@
                 @if (quote.details) {
                 <p class="qcard-detail">{{ quote.details }}</p>
                 }
-                <a [href]="quote.responses[0]?.invoiceUrl" target="_blank" class="qcard-btn qcard-btn-secondary">
+                <a [href]="quote.responses[0]?.invoiceUrl" target="_blank" class="qcard-btn qcard-btn-secondary"
+                    (click)="$event.stopPropagation()">
                     <span class="material-icons">receipt_long</span> Invoice
                 </a>
             </div>

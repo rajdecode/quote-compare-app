@@ -446,6 +446,8 @@
     font-family: inherit;
     cursor: pointer;
     transition: all 0.2s;
+    box-sizing: border-box;
+    text-decoration: none;
 
     .material-icons {
         font-size: 0.95rem;

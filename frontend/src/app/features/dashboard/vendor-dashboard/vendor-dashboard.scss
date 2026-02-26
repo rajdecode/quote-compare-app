@@ -109,6 +109,11 @@
         border-left: 4px solid #10B981;
         background: linear-gradient(135deg, #F0FDF4, #ECFDF5) !important;
     }
+
+    height: auto !important;
+    min-height: 220px;
+    box-sizing: border-box;
+    cursor: pointer;
 }
 
 /* Truncated detail text inside card */
@@ -122,6 +127,12 @@
     -webkit-box-orient: vertical;
     line-clamp: 2;
     overflow: hidden;
+
+    .quote-card.expanded & {
+        -webkit-line-clamp: initial;
+        line-clamp: initial;
+        overflow: visible;
+    }
 }
 
 /* Buyer note inside vendor card */
@@ -136,6 +147,11 @@
     margin: 0 0 14px;
     font-size: 0.88rem;
     color: #3730A3;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-sizing: border-box;
+    text-decoration: none;
 
     .material-icons {
         font-size: 1rem;
