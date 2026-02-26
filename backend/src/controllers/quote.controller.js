@@ -220,6 +220,19 @@ exports.getQuoteById = async (req, res) => {
             return res.status(404).json({ error: 'Quote not found' });
         }
 
+        // Auto-claim orphaned quotes if a registered Buyer views them via their private tracking link
+        if (!quote.buyer_id && req.user && req.user.role === 'buyer') {
+            const { error: claimError } = await supabase
+                .from('quotes')
+                .update({ buyer_id: req.user.uid })
+                .eq('id', quote.id);
+
+            if (!claimError) {
+                quote.buyer_id = req.user.uid;
+                console.log(`Quote ${quote.short_id} automatically claimed by newly registered Buyer: ${req.user.uid}`);
+            }
+        }
+
         // Map quote_responses to responses and flatten vendor info
         const isOwner = req.user && quote.buyer_id === req.user.uid;
         const isAdmin = req.user && req.user.role === 'admin';
@@ -364,6 +377,18 @@ exports.updateResponseStatus = async (req, res) => {
         }
 
         const { data: quote, error: quoteError } = await query.single();
+
+        // Auto-claim the quote if it has no buyer_id (e.g. from Guest creation)
+        if (!quoteError && quote && !quote.buyer_id) {
+            const { error: claimError } = await supabase
+                .from('quotes')
+                .update({ buyer_id: buyerId })
+                .eq('id', quote.id);
+            if (!claimError) {
+                quote.buyer_id = buyerId;
+                console.log(`Quote ${quote.short_id || quote.id} automatically claimed during status update by newly registered Buyer: ${buyerId}`);
+            }
+        }
 
         if (quoteError || !quote || quote.buyer_id !== buyerId) {
             return res.status(403).json({ error: 'Unauthorized or Quote not found' });
