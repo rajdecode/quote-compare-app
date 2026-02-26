@@ -65,6 +65,12 @@ export class TrackQuote implements OnInit {
       });
   }
 
+  submitSearch() {
+    if (this.quoteId) {
+      this.router.navigate(['/track', this.quoteId]);
+    }
+  }
+
   toggleCard(responseId: string) {
     if (this.expandedCardId === responseId) {
       this.expandedCardId = null; // Close if already open
