@@ -81,13 +81,15 @@
                                 response.message }}</p>
                         </div>
                         <div class="response-meta"
-                            style="margin-top: auto; border-top: 1px solid #E2E8F0; padding-top: 12px; display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-weight: 500; color: #64748B; font-size: 0.85rem;">{{ response.created_at |
+                            style="margin-top: auto; border-top: 1px solid #E2E8F0; padding-top: 12px; display: flex; flex-direction: column; gap: 8px;">
+                            <span style="font-weight: 500; color: #64748B; font-size: 0.85rem;">Received: {{
+                                response.created_at |
                                 date:'shortTime' }}</span>
-                            <span
-                                style="display: flex; align-items: center; gap: 4px; color: #4F46E5; font-weight: 600; font-size: 0.9rem;">
-                                Renegotiate <span class="material-icons" style="font-size: 1.1rem;">chevron_right</span>
-                            </span>
+                            <button class="btn btn-primary btn-sm"
+                                style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 6px; padding: 10px; font-size: 0.85rem; font-weight: 600; text-transform: none; border-radius: 8px; line-height: 1.2; text-align: center;">
+                                To accept and get invoice or Renegotiate with the seller
+                                <span class="material-icons" style="font-size: 1rem;">open_in_new</span>
+                            </button>
                         </div>
                     </div>
                     }

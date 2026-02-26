@@ -77,9 +77,8 @@ export class TrackQuote implements OnInit {
       // If logged in, go straight to the buyer quote detail view to negotiate
       this.router.navigate(['/buyer/quote', this.quote.id || this.quoteId]);
     } else {
-      // If guest, alert them and send them to login with a returnUrl
-      alert('To negotiate or accept quotes, please sign in or create an account for free.');
-      this.router.navigate(['/auth/login'], { queryParams: { returnUrl: `/track/${this.quoteId}` } });
+      // If guest, send them to signup with a returnUrl
+      this.router.navigate(['/auth/signup'], { queryParams: { returnUrl: `/buyer/quote/${this.quote.id || this.quoteId}` } });
     }
   }
 }
