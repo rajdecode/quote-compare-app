@@ -1,13 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-vendor-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './vendor-dashboard.html',
   styleUrls: ['./vendor-dashboard.scss']
 })
@@ -27,6 +28,13 @@ export class VendorDashboard {
 
   // Expanded Card State
   expandedQuoteId = signal<string | null>(null);
+
+  // Modal States
+  showCompleteModal = signal<boolean>(false);
+  showSuccessModal = signal<boolean>(false);
+  successMessage = signal<string>('');
+  pendingCompleteQuote = signal<any>(null);
+  invoiceUrlInput = signal<string>('');
 
   toggleCard(quoteId: string) {
     if (this.expandedQuoteId() === quoteId) {
@@ -137,14 +145,32 @@ export class VendorDashboard {
     return quote.responses.some((r: any) => r.vendor_id === user.id && r.status === 'completed');
   }
 
-  async completeJob(quote: any) {
-    const invoiceUrl = prompt('Please enter the URL for the invoice (e.g., Google Drive link):');
-    if (!invoiceUrl) return;
+  initiateCompleteJob(quote: any) {
+    this.pendingCompleteQuote.set(quote);
+    this.invoiceUrlInput.set('');
+    this.showCompleteModal.set(true);
+  }
+
+  cancelCompleteJob() {
+    this.showCompleteModal.set(false);
+    this.pendingCompleteQuote.set(null);
+    this.invoiceUrlInput.set('');
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal.set(false);
+    this.ngOnInit(); // Reload
+  }
+
+  async confirmCompleteJob() {
+    const quote = this.pendingCompleteQuote();
+    const invoiceUrl = this.invoiceUrlInput();
+
+    if (!quote || !invoiceUrl.trim()) return;
 
     try {
-      const user = this.authService.currentUser();
-      if (!user) return;
       const token = await this.authService.getToken();
+      if (!token) return;
 
       const response = await fetch(`${environment.apiUrl}/quotes/${quote.id}/complete`, {
         method: 'POST',
@@ -156,15 +182,18 @@ export class VendorDashboard {
       });
 
       if (response.ok) {
-        alert('Job completed and invoice submitted!');
-        this.ngOnInit(); // Reload
+        this.showCompleteModal.set(false);
+        this.successMessage.set('Job completed and invoice submitted to the buyer!');
+        this.showSuccessModal.set(true);
       } else {
         const err = await response.json();
-        alert('Failed to complete job: ' + (err.error || 'Unknown error'));
+        alert('Backend Error: ' + (err.error || 'Unknown error'));
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error completing job:', error);
-      alert('Error completing job.');
+      alert('Network Error: ' + (error.message || 'Unknown error'));
+    } finally {
+      this.pendingCompleteQuote.set(null);
     }
   }
 
