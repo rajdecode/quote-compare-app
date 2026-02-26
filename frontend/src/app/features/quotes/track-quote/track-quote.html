@@ -104,10 +104,13 @@
                             </div>
 
                             @if (isGuest()) {
-                            <div class="guest-action" style="text-align: center;">
+                            <div class="guest-action"
+                                style="background: #F8FAFC; padding: 20px; border-radius: 12px; border: 1px solid #E2E8F0; text-align: center;">
+                                <p style="color: #334155; font-size: 1.05rem; font-weight: 700; margin-bottom: 12px;">To
+                                    accept and get invoice or Renegotiate with the seller</p>
                                 <button class="btn btn-primary" (click)="signupToNegotiate()"
-                                    style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; padding: 12px; font-size: 0.95rem; font-weight: 600; border-radius: 8px;">
-                                    Sign up to accept or renegotiate
+                                    style="display: inline-flex; justify-content: center; align-items: center; gap: 8px; padding: 12px 30px; font-size: 1rem; font-weight: 600; border-radius: 8px; width: auto;">
+                                    Sign Up
                                     <span class="material-icons" style="font-size: 1.1rem;">person_add</span>
                                 </button>
                                 <p style="margin-top: 10px; font-size: 0.8rem; color: #94A3B8;">Free account required to
