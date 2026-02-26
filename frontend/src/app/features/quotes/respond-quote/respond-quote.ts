@@ -1,4 +1,4 @@
-import { Component, inject, effect, untracked, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, effect, untracked, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,6 +23,8 @@ export class RespondQuote {
   // Separate loading states
   isLoadingData = false;
   isSubmitting = false;
+  showSuccessModal = signal<boolean>(false);
+  successMessage = signal<string>('');
 
   private route = inject(ActivatedRoute);
   private authService = inject(AuthService);
@@ -124,8 +126,8 @@ export class RespondQuote {
         throw new Error(`Failed to submit: ${response.status} ${response.statusText}`);
       }
 
-      alert(this.isEditMode ? 'Quote updated successfully!' : 'Quote submitted successfully!');
-      this.router.navigate(['/vendor']);
+      this.successMessage.set(this.isEditMode ? 'Quote updated successfully!' : 'Quote submitted successfully!');
+      this.showSuccessModal.set(true);
     } catch (error) {
       console.error('Error submitting response:', error);
       alert('Error submitting response.');
@@ -135,6 +137,11 @@ export class RespondQuote {
   }
 
   cancel() {
+    this.router.navigate(['/vendor']);
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal.set(false);
     this.router.navigate(['/vendor']);
   }
 }
