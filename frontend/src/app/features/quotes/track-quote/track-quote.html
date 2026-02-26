@@ -68,20 +68,26 @@
                 } @else {
                 <div class="responses-grid">
                     @for (response of quote.responses; track $index) {
-                    <div class="glass-panel response-card">
+                    <div class="glass-panel response-card" (click)="openResponse()"
+                        style="cursor: pointer; position: relative;">
                         <div class="vendor-info">
                             <span class="vendor-name">{{ response.vendorName || response.profiles?.company_name ||
                                 'Vendor' }}</span>
                             <span class="price" style="color: #10B981; font-size: 1.4rem;">{{ response.price | currency
                                 }}</span>
                         </div>
-                        <div class="message-container" style="flex-grow: 1; overflow-y: auto;">
+                        <div class="message-container" style="flex-grow: 1; overflow-y: auto; margin-bottom: 20px;">
                             <p class="message" style="color: #334155; font-size: 1rem; line-height: 1.5;">{{
                                 response.message }}</p>
                         </div>
                         <div class="response-meta"
-                            style="margin-top: 15px; border-top: 1px solid #E2E8F0; padding-top: 10px; font-weight: 500;">
-                            Received: {{ response.created_at | date:'shortTime' }}
+                            style="margin-top: auto; border-top: 1px solid #E2E8F0; padding-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 500; color: #64748B; font-size: 0.85rem;">{{ response.created_at |
+                                date:'shortTime' }}</span>
+                            <span
+                                style="display: flex; align-items: center; gap: 4px; color: #4F46E5; font-weight: 600; font-size: 0.9rem;">
+                                Renegotiate <span class="material-icons" style="font-size: 1.1rem;">chevron_right</span>
+                            </span>
                         </div>
                     </div>
                     }

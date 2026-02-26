@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-track-quote',
@@ -22,6 +23,7 @@ export class TrackQuote implements OnInit {
   private router = inject(Router);
   private http = inject(HttpClient);
   private cd = inject(ChangeDetectorRef);
+  private authService = inject(AuthService); // Inject AuthService for renegotiation checks
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -65,6 +67,19 @@ export class TrackQuote implements OnInit {
   submitSearch() {
     if (this.quoteId) {
       this.router.navigate(['/track', this.quoteId]);
+    }
+  }
+
+  openResponse() {
+    if (!this.quote) return;
+
+    if (this.authService.currentUser()) {
+      // If logged in, go straight to the buyer quote detail view to negotiate
+      this.router.navigate(['/buyer/quote', this.quote.id || this.quoteId]);
+    } else {
+      // If guest, alert them and send them to login with a returnUrl
+      alert('To negotiate or accept quotes, please sign in or create an account for free.');
+      this.router.navigate(['/auth/login'], { queryParams: { returnUrl: `/track/${this.quoteId}` } });
     }
   }
 }
