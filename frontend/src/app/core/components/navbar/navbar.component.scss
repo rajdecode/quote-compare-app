@@ -8,6 +8,10 @@
     z-index: 1000;
     padding: 12px 0;
     border-radius: 16px;
+
+    &.navbar-sticky {
+        position: fixed;
+    }
 }
 
 .navbar-content {

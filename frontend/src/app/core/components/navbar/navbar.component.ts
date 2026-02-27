@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -12,8 +12,14 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent {
     authService = inject(AuthService);
+    router = inject(Router);
     currentUser = this.authService.currentUser;
     userRole = this.authService.userRole;
+
+    isHomePage(): boolean {
+        const url = this.router.url;
+        return url === '/' || url.startsWith('/#') || url.startsWith('/?');
+    }
 
     logout() {
         this.authService.logout();

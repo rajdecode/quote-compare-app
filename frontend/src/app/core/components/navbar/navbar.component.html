@@ -1,4 +1,4 @@
-<nav class="navbar glass-panel">
+<nav class="navbar glass-panel" [class.navbar-sticky]="isHomePage()">
     <div class="container navbar-content">
         <a [routerLink]="currentUser() ? getDashboardRoute() : '/'" class="logo">
             <span class="logo-highlight">Quote</span>Compare
