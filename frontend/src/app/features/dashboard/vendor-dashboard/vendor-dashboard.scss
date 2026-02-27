@@ -58,10 +58,10 @@
     }
 
     .stat-item.stat-new .value {
-        border-color: #EF4444;
-        /* Red 500 */
-        color: #EF4444;
-        box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.15);
+        border-color: #F59E0B;
+        /* Amber 500 */
+        color: #F59E0B;
+        box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.15);
     }
 
     .stat-item.stat-sent .value {
@@ -72,9 +72,10 @@
     }
 
     .stat-item.stat-action .value {
-        border-color: #e74c3c;
-        color: #e74c3c;
-        box-shadow: 0 4px 6px -1px rgba(231, 76, 60, 0.15);
+        border-color: #EF4444;
+        /* Red 500 */
+        color: #EF4444;
+        box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.15);
     }
 }
 
