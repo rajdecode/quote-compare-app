@@ -29,6 +29,13 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
+// Enable trust proxy if behind Render's load balancer so IP limits work correctly
+app.set('trust proxy', 1);
+
+// Import and apply Global Rate Limiter
+const { apiLimiter } = require('./middleware/rateLimit.middleware');
+app.use('/api/', apiLimiter);
+
 // Supabase Initialization
 const supabase = require('./config/supabase');
 console.log('✅ Supabase Client initialized.');

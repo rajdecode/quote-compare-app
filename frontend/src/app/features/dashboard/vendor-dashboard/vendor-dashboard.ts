@@ -4,11 +4,13 @@ import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
+import { SuccessModalComponent } from '../../../core/components/modals/success-modal';
+import { CompleteJobModalComponent } from '../../../core/components/modals/complete-job-modal';
 
 @Component({
   selector: 'app-vendor-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, SuccessModalComponent, CompleteJobModalComponent],
   templateUrl: './vendor-dashboard.html',
   styleUrls: ['./vendor-dashboard.scss']
 })
@@ -162,9 +164,8 @@ export class VendorDashboard {
     this.ngOnInit(); // Reload
   }
 
-  async confirmCompleteJob() {
+  async confirmCompleteJob(invoiceUrl: string) {
     const quote = this.pendingCompleteQuote();
-    const invoiceUrl = this.invoiceUrlInput();
 
     if (!quote || !invoiceUrl.trim()) return;
 

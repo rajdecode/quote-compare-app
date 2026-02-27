@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const quoteController = require('../controllers/quote.controller');
 const authMiddleware = require('../middleware/auth.middleware');
+const { quoteSubmissionLimiter } = require('../middleware/rateLimit.middleware');
 
-// Create a quote (Buyer or Guest)
-router.post('/', authMiddleware.verifyTokenOptional, quoteController.createQuote);
+// Create a new quote request (Public/Guest allowed)
+router.post('/', quoteSubmissionLimiter, authMiddleware.verifyTokenOptional, quoteController.createQuote);
 
 // Get quotes (All authenticated users, filtered by role in controller)
 router.get('/', authMiddleware.verifyToken, quoteController.getQuotes);

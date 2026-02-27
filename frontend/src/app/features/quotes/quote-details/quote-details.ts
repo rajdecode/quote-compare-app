@@ -4,11 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
+import { SuccessModalComponent } from '../../../core/components/modals/success-modal';
+import { ConfirmModalComponent } from '../../../core/components/modals/confirm-modal';
 
 @Component({
     selector: 'app-quote-details',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink],
+    imports: [CommonModule, FormsModule, RouterLink, SuccessModalComponent, ConfirmModalComponent],
     templateUrl: './quote-details.html',
     styleUrls: ['./quote-details.scss']
 })
@@ -26,6 +28,7 @@ export class QuoteDetails implements OnInit {
     showConfirmModal = signal<boolean>(false);
     showSuccessModal = signal<boolean>(false);
     successMessage = signal<string>('');
+    confirmMessage = signal<string>('');
     pendingAction = signal<any>(null);
 
     // Comparison State
@@ -123,8 +126,10 @@ export class QuoteDetails implements OnInit {
             } else {
                 message = details;
             }
+            this.confirmMessage.set('Are you sure you want to send this counter offer to the seller?');
         } else {
             message = 'Quote accepted. Please proceed with the job.';
+            this.confirmMessage.set(`Are you sure you want to Accept this quote for $${response.price}? This will notify the seller to begin the job.`);
         }
 
         this.pendingAction.set({ response, status, message });
