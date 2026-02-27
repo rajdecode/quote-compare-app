@@ -28,6 +28,9 @@ export class QuoteDetails implements OnInit {
     successMessage = signal<string>('');
     pendingAction = signal<any>(null);
 
+    // Comparison State
+    showComparison = signal<boolean>(false);
+
     private route = inject(ActivatedRoute);
     private authService = inject(AuthService);
 
@@ -49,6 +52,7 @@ export class QuoteDetails implements OnInit {
                     if (found && found.responses) {
                         console.log('Offers/Responses:', found.responses);
                         found.responses.sort((a: any, b: any) => a.price - b.price);
+                        this.generateComparison(found.responses);
                     }
                     this.quote.set(found);
                 }
@@ -60,6 +64,34 @@ export class QuoteDetails implements OnInit {
         } else {
             this.loading.set(false);
         }
+    }
+
+    generateComparison(responses: any[]) {
+        if (!responses || responses.length < 2) return;
+
+        const lowestPrice = Math.min(...responses.map((r: any) => r.price));
+        const highestPrice = Math.max(...responses.map((r: any) => r.price));
+
+        responses.forEach((response: any) => {
+            response.pros = [];
+            response.cons = [];
+
+            if (response.price === lowestPrice) {
+                response.pros.push('Lowest Price');
+            } else if (response.price === highestPrice) {
+                response.cons.push('Highest Price');
+            } else {
+                response.pros.push('Competitive Mid-Range Price');
+            }
+
+            if (response.message && response.message.length > 50) {
+                response.pros.push('Detailed Proposal');
+            } else if (!response.message || response.message.length < 15) {
+                response.cons.push('Minimal details provided');
+            } else {
+                response.pros.push('Direct communication');
+            }
+        });
     }
 
     openNegotiationForm(vendorId: string) {

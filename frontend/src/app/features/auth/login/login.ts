@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
@@ -18,7 +18,7 @@ export class Login {
   errorMessage = '';
   showPassword = false;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private cdr: ChangeDetectorRef) { }
 
   async onSubmit() {
     console.log('Attempting login with:', this.email);
@@ -34,11 +34,13 @@ export class Login {
       this.errorMessage = error.message || 'An error occurred during login.';
     } finally {
       this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 
   cancel() {
     this.loading = false;
     this.errorMessage = 'Login cancelled by user.';
+    this.cdr.detectChanges();
   }
 }
