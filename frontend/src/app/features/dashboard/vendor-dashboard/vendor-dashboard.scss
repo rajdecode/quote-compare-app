@@ -17,11 +17,13 @@
     display: flex;
     gap: 32px;
     align-items: center;
-    background: #F8FAFC;
-    /* Light gray background for stats box */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 1rem 2rem;
-    border-radius: 12px;
-    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 
     .stat-item {
         display: flex;
@@ -37,21 +39,19 @@
             width: 64px;
             height: 64px;
             border-radius: 16px;
-            /* Curved square */
-            border: 3px solid var(--primary-color);
-            background: white;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             font-size: 1.6rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--primary-color);
             margin-bottom: 1.25rem;
-            /* Increased spacing */
-            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
         .label {
             font-size: 0.85rem;
-            color: var(--text-dim);
-            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
