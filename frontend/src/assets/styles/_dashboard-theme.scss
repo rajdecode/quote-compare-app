@@ -474,33 +474,42 @@
 }
 
 .qcard-btn {
-    margin-top: auto;
     width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    padding: 9px 12px;
-    background: #F1F5FF;
-    color: #4F46E5;
-    border: 1.5px solid #C7D2FE;
-    border-radius: 10px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-sizing: border-box;
-    text-decoration: none;
+    gap: 8px;
 
     .material-icons {
-        font-size: 0.95rem;
+        font-size: 1.2rem;
     }
 
     &:hover {
-        background: #4F46E5;
+        background: var(--primary-color);
         color: white;
-        border-color: #4F46E5;
+        border-color: var(--primary-color);
+    }
+}
+
+.qcard-btn-success {
+    background: #ECFDF5;
+    color: #059669;
+    border: 1px solid #A7F3D0;
+
+    &:hover {
+        background: #10B981;
+        color: white;
+        border-color: #10B981;
     }
 }
 

@@ -221,3 +221,13 @@
 
     </div>
 </div>
+
+<!-- Modals -->
+<app-complete-job-modal [isOpen]="showCompleteModal()" [quote]="pendingCompleteQuote()" [loading]="completingJob()"
+    (confirm)="confirmCompleteJob($event)" (cancel)="cancelCompleteJob()">
+</app-complete-job-modal>
+
+<app-success-modal [isOpen]="showSuccessModal()" title="Job Completed!"
+    message="The job has been marked as complete and the invoice link was sent to the buyer."
+    (close)="closeSuccessModal()">
+</app-success-modal>
