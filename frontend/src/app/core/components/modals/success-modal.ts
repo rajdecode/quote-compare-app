@@ -1,12 +1,12 @@
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-success-modal',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
-    @if(isOpen()) {
+  selector: 'app-success-modal',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    @if(isOpen) {
     <div class="modal-overlay" (click)="close.emit()">
       <div class="modal-content success-modal" (click)="$event.stopPropagation()">
         
@@ -16,9 +16,9 @@ import { CommonModule } from '@angular/common';
           <span class="material-icons check-icon">check_circle</span>
         </div>
 
-        <h3 style="margin-top: 20px; color: #10B981; font-size: 1.5rem;">Success!</h3>
+        <h3 style="margin-top: 20px; color: #10B981; font-size: 1.5rem;">{{ title }}</h3>
         <p style="color: #475569; font-size: 1.1rem; margin-bottom: 25px; max-width: 300px; margin-left: auto; margin-right: auto; line-height: 1.5;">
-          {{ message() }}
+          {{ message }}
         </p>
 
         <button class="btn btn-primary" (click)="close.emit()" style="width: 100%; max-width: 200px; font-size: 1.05rem; padding: 12px; background: #10B981; border: none; border-radius: 12px;">
@@ -28,7 +28,7 @@ import { CommonModule } from '@angular/common';
     </div>
     }
   `,
-    styles: [`
+  styles: [`
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(15, 23, 42, 0.6);
@@ -78,7 +78,8 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class SuccessModalComponent {
-    @Input() isOpen = signal<boolean>(false);
-    @Input() message = signal<string>('Action completed successfully.');
-    @Output() close = new EventEmitter<void>();
+  @Input() isOpen: boolean = false;
+  @Input() title: string = 'Success!';
+  @Input() message: string = 'Action completed successfully.';
+  @Output() close = new EventEmitter<void>();
 }

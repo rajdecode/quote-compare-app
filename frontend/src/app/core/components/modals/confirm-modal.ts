@@ -1,12 +1,12 @@
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-confirm-modal',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
-    @if(isOpen()) {
+  selector: 'app-confirm-modal',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    @if(isOpen) {
     <div class="modal-overlay" (click)="cancel.emit()">
       <div class="modal-content confirm-modal" (click)="$event.stopPropagation()">
         
@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
         </div>
 
         <h3>Are you sure?</h3>
-        <p class="mb-4 text-slate-600">{{ message() }}</p>
+        <p class="mb-4 text-slate-600">{{ message }}</p>
 
         <div class="modal-actions" style="display: flex; gap: 12px; justify-content: center; margin-top: 25px;">
           <button class="btn btn-secondary" (click)="cancel.emit()" style="flex: 1;">Cancel</button>
@@ -25,7 +25,7 @@ import { CommonModule } from '@angular/common';
     </div>
     }
   `,
-    styles: [`
+  styles: [`
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
@@ -57,8 +57,8 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class ConfirmModalComponent {
-    @Input() isOpen = signal<boolean>(false);
-    @Input() message = signal<string>('Do you want to proceed?');
-    @Output() confirm = new EventEmitter<void>();
-    @Output() cancel = new EventEmitter<void>();
+  @Input() isOpen: boolean = false;
+  @Input() message: string = 'Do you want to proceed?';
+  @Output() confirm = new EventEmitter<void>();
+  @Output() cancel = new EventEmitter<void>();
 }
