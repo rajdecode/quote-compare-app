@@ -140,17 +140,10 @@ export class RequestQuote {
             const data = await response.json();
             console.log('Quote created successfully, parsed data:', data);
 
-            if (user) {
-                alert('Quote request submitted successfully!');
-                this.router.navigate(['/buyer']);
-            } else {
-                console.log('Setting success screen for guest user...');
-                // Show success screen with ID instead of alerting and routing immediately
-                this.submissionSuccess = true;
-                this.submittedQuoteId = data.id;
-                console.log('Success screen variables set:', { success: this.submissionSuccess, id: this.submittedQuoteId });
-                this.cd.detectChanges(); // Force UI update
-            }
+            this.submissionSuccess = true;
+            this.submittedQuoteId = data.id;
+            console.log('Success screen variables set:', { success: this.submissionSuccess, id: this.submittedQuoteId });
+            this.cd.detectChanges(); // Force UI update
         } catch (error) {
             console.error('Error submitting quote:', error);
             alert('Error submitting quote. Please try again.');

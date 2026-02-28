@@ -104,12 +104,21 @@
             </div>
 
             <div class="success-actions" style="display: flex; gap: 16px; justify-content: center;">
+                @if (authService.currentUser()) {
+                <button class="btn btn-secondary" routerLink="/buyer"
+                    style="padding: 12px 28px; font-size: 1.05rem; font-weight: 600; border-radius: 12px; background: white;">Go
+                    to Dashboard</button>
+                <button class="btn btn-primary" [routerLink]="['/buyer/quote', submittedQuoteId]"
+                    style="padding: 12px 28px; font-size: 1.05rem; font-weight: 600; border-radius: 12px; background: linear-gradient(135deg, #4F46E5, #6366F1);">View
+                    Request</button>
+                } @else {
                 <button class="btn btn-secondary" routerLink="/"
                     style="padding: 12px 28px; font-size: 1.05rem; font-weight: 600; border-radius: 12px; background: white;">Return
                     Home</button>
                 <button class="btn btn-primary" routerLink="/track"
                     style="padding: 12px 28px; font-size: 1.05rem; font-weight: 600; border-radius: 12px; background: linear-gradient(135deg, #4F46E5, #6366F1);">Track
                     Now</button>
+                }
             </div>
         </div>
         }
