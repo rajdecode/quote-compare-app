@@ -300,11 +300,11 @@
     }
 
     <!-- ── REUSABLE MODALS ───────────────────────── -->
-    <app-confirm-modal [isOpen]="showConfirmModal" [message]="confirmMessage" (confirm)="confirmStatusUpdate()"
+    <app-confirm-modal [isOpen]="showConfirmModal()" [message]="confirmMessage()" (confirm)="confirmStatusUpdate()"
         (cancel)="cancelConfirm()">
     </app-confirm-modal>
 
-    <app-success-modal [isOpen]="showSuccessModal" [message]="successMessage" (close)="closeSuccessModal()">
+    <app-success-modal [isOpen]="showSuccessModal()" [message]="successMessage()" (close)="closeSuccessModal()">
     </app-success-modal>
 
 </div>
