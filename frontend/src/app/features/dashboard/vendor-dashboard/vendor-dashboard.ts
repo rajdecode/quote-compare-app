@@ -37,6 +37,7 @@ export class VendorDashboard {
   successMessage = signal<string>('');
   pendingCompleteQuote = signal<any>(null);
   invoiceUrlInput = signal<string>('');
+  completingJob = signal<boolean>(false);
 
   toggleCard(quoteId: string) {
     if (this.expandedQuoteId() === quoteId) {
@@ -169,6 +170,8 @@ export class VendorDashboard {
 
     if (!quote || !invoiceUrl.trim()) return;
 
+    this.completingJob.set(true);
+
     try {
       const token = await this.authService.getToken();
       if (!token) return;
@@ -194,6 +197,7 @@ export class VendorDashboard {
       console.error('Error completing job:', error);
       alert('Network Error: ' + (error.message || 'Unknown error'));
     } finally {
+      this.completingJob.set(false);
       this.pendingCompleteQuote.set(null);
     }
   }
