@@ -60,7 +60,8 @@
         } @else {
         <div class="request-cards">
             @for (quote of newRequests(); track quote.id) {
-            <div class="quote-card" [class.expanded]="expandedQuoteId() === quote.id" (click)="toggleCard(quote.id)">
+            <!-- Clicking anywhere on the card navigates to the respond page -->
+            <div class="quote-card" style="cursor:pointer" (click)="respondToQuote(quote.id)">
                 <div class="qcard-header">
                     <div class="qcard-icon icon-indigo">
                         <span class="material-icons">{{ getServiceIcon(quote.service_type) }}</span>
@@ -79,6 +80,7 @@
                 @if (quote.details) {
                 <p class="qcard-detail">{{ quote.details }}</p>
                 }
+                <!-- Button stops propagation so card click doesn't fire twice -->
                 <button class="qcard-btn" (click)="$event.stopPropagation(); respondToQuote(quote.id)">
                     <span class="material-icons">send</span> Submit Quote
                 </button>
@@ -98,8 +100,8 @@
         } @else {
         <div class="request-cards">
             @for (quote of actionRequiredQuotes(); track quote.id) {
-            <div class="quote-card" [class.card-urgent]="!hasAcceptedResponse(quote)"
-                [class.expanded]="expandedQuoteId() === quote.id" (click)="toggleCard(quote.id)">
+            <div class="quote-card" style="cursor:pointer" [class.card-urgent]="!hasAcceptedResponse(quote)"
+                (click)="respondToQuote(quote.id)">
                 <div class="qcard-header">
                     <div class="qcard-icon" [class.icon-green]="hasAcceptedResponse(quote)"
                         [class.icon-amber]="!hasAcceptedResponse(quote)">
@@ -128,6 +130,7 @@
                 </div>
                 }
                 @if (hasAcceptedResponse(quote)) {
+                <!-- Complete button opens modal — stop propagation so card click (navigate) doesn't also fire -->
                 <button class="qcard-btn qcard-btn-success"
                     (click)="$event.stopPropagation(); initiateCompleteJob(quote)">
                     <span class="material-icons">check_circle</span> Complete
@@ -153,7 +156,7 @@
         } @else {
         <div class="request-cards">
             @for (quote of sentQuotes(); track quote.id) {
-            <div class="quote-card" [class.expanded]="expandedQuoteId() === quote.id" (click)="toggleCard(quote.id)">
+            <div class="quote-card" style="cursor:pointer" (click)="editQuote(quote.id)">
                 <div class="qcard-header">
                     <div class="qcard-icon icon-blue">
                         <span class="material-icons">hourglass_top</span>
@@ -188,8 +191,7 @@
         } @else {
         <div class="request-cards">
             @for (quote of completedQuotes(); track quote.id) {
-            <div class="quote-card card-completed" [class.expanded]="expandedQuoteId() === quote.id"
-                (click)="toggleCard(quote.id)">
+            <div class="quote-card card-completed" style="cursor:pointer" (click)="respondToQuote(quote.id)">
                 <div class="qcard-header">
                     <div class="qcard-icon icon-green">
                         <span class="material-icons">verified</span>
