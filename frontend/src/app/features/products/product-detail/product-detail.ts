@@ -30,8 +30,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
             <div class="sidebar">
                 <div class="glass-panel cta-card">
                     <h3>Ready to upgrade?</h3>
-                    <p>Get free quotes from trusted local vendors today.</p>
-                    <a routerLink="/request-quote" class="btn btn-primary btn-block">Request Quotes</a>
+                    <p>Compare multi-vendor quotes from certified Australian installers today.</p>
+                    <a [routerLink]="['/request-quote']" [queryParams]="{ serviceType: getQuoteServiceType() }" class="btn btn-primary btn-block">Compare Multi-Vendor Quotes</a>
                 </div>
             </div>
         </div>
@@ -72,32 +72,36 @@ export class ProductDetailComponent {
 
     contentMap: any = {
         'heat-pumps': {
-            title: 'Heat Pumps',
-            subtitle: 'Efficient heating and cooling for your home.',
-            description: 'Heat pumps are the most efficient way to heat and cool your home. They move heat rather than generating it, using significantly less energy than traditional heating systems.',
-            benefits: ['Lower energy bills', 'Heating & Cooling in one', 'Eco-friendly technology', 'Government rebates available'],
-            image: 'assets/heat-pump.jpg' // Placeholder
+            title: 'Heat Pump Water Heaters',
+            subtitle: 'Cut water heating energy by up to 70% with federal & state rebates.',
+            description: 'Heat pump hot water systems extract ambient heat from the air to heat your water efficiently. Backed by Small-scale Technology Certificates (STCs) and state schemes (VEU in VIC, ESS in NSW), heat pumps deliver massive annual running cost savings over legacy gas or resistive electric storage tanks.',
+            benefits: ['Up to $1,200+ in STCs and state subsidies', '60%–70% reduction in water heating electricity', 'Environmentally friendly refrigerant technology', 'Compatible with rooftop solar self-consumption'],
+            image: 'assets/heat-pump.jpg',
+            serviceType: 'heat-pump'
         },
         'water-filters': {
-            title: 'Water Filters',
-            subtitle: 'Pure, safe drinking water for your family.',
-            description: 'Enjoy clean, great-tasting water straight from your tap. Our vendors offer a range of filtration systems from under-sink units to whole-house solutions.',
-            benefits: ['Removes contaminants', 'Better taste', 'Protects appliances', 'Healthier lifestyle'],
-            image: 'assets/water-filter.jpg'
+            title: 'Water Filtration & Treatment',
+            subtitle: 'Pure, mineral-rich drinking water for the entire household.',
+            description: 'Enjoy clean, great-tasting water straight from every tap. Our verified Australian vendors offer heavy-duty filtration, reverse osmosis, UV sterilisation, and whole-home filtration systems installed by certified plumbers.',
+            benefits: ['Removes micro-contaminants, chlorine & heavy metals', 'Better taste and kitchen appliance longevity', 'Whole-home and point-of-use systems', 'Verified Australian plumbing standards'],
+            image: 'assets/water-filter.jpg',
+            serviceType: 'water-filter'
         },
         'aircons': {
-            title: 'Air Conditioning',
-            subtitle: 'Stay cool and comfortable all summer long.',
-            description: 'Modern air conditioning systems are quiet, efficient, and smart. Control your home climate with precision and save on running costs with high energy star ratings.',
-            benefits: ['Fast cooling', 'Smart control', 'Energy efficient', 'Quiet operation'],
-            image: 'assets/aircon.jpg'
+            title: 'Reverse Cycle Air Conditioning',
+            subtitle: 'Ultra-efficient heating and cooling for Australian climate conditions.',
+            description: 'Modern inverter reverse cycle split and ducted systems deliver superior year-round climate control while drastically lowering seasonal power bills. Claim peak-demand incentives and energy efficiency upgrade discounts through certified installers.',
+            benefits: ['~35%+ efficiency gains over resistive heaters', 'Smart WiFi zoning & climate automation', 'High Energy Star ratings & low decibel operation', 'Fast turnaround quotes from verified HVAC technicians'],
+            image: 'assets/aircon.jpg',
+            serviceType: 'aircon'
         },
         'batteries': {
-            title: 'Solar Batteries',
-            subtitle: 'Store your solar energy for day and night.',
-            description: 'Maximize your solar investment by storing excess energy. Power your home at night or during blackouts with a high-performance home battery system.',
-            benefits: ['Energy independence', 'Backup power', 'Save more on bills', 'Grid support'],
-            image: 'assets/battery.jpg'
+            title: 'Home Solar Battery Storage',
+            subtitle: 'Store excess solar energy and eliminate peak electricity rates.',
+            description: 'Maximize your rooftop solar generation by storing daytime surplus power for evening peak usage. Home batteries provide blackout protection, virtual power plant (VPP) revenue opportunities, and substantial annual bill reduction.',
+            benefits: ['Save $800–$1,400 AUD per year on grid power', 'Cheaper Home Battery subsidies & CER incentives', 'Emergency backup power during outages', 'Seamless inverter & solar system integration'],
+            image: 'assets/battery.jpg',
+            serviceType: 'battery'
         }
     };
 
@@ -108,6 +112,10 @@ export class ProductDetailComponent {
     }
 
     product() {
-        return this.contentMap[this.type];
+        return this.contentMap[this.type] || this.contentMap['heat-pumps'];
+    }
+
+    getQuoteServiceType(): string {
+        return this.product()?.serviceType || 'heat-pump';
     }
 }

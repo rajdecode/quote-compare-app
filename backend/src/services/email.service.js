@@ -37,7 +37,7 @@ exports.sendEmail = async (to, subject, text) => {
 };
 
 exports.sendQuoteReceivedEmail = async (email, quoteId, details = {}, origin = null) => {
-    const frontendUrl = origin || process.env.FRONTEND_URL || 'http://localhost:4200';
+    const frontendUrl = origin || process.env.FRONTEND_URL || 'https://procurenow.com.au';
     const trackingLink = `${frontendUrl}/track/${quoteId}`;
     const { serviceType = 'Service', postalCode = 'N/A', details: description = 'No details provided.' } = details;
 
@@ -46,20 +46,20 @@ exports.sendQuoteReceivedEmail = async (email, quoteId, details = {}, origin = n
     <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f8fafc; padding: 40px 0;">
         <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
             <!-- Header -->
-            <div style="background: linear-gradient(135deg, #4F46E5 0%, #EC4899 100%); padding: 32px; text-align: center;">
+            <div style="background: linear-gradient(135deg, #2563EB 0%, #059669 100%); padding: 32px; text-align: center;">
                 <h1 style="color: white; margin: 0; font-size: 24px; font-weight: 700;">Quote Request Received!</h1>
-                <p style="color: rgba(255,255,255,0.9); margin-top: 8px; font-size: 16px;">We're finding the best vendors for you.</p>
+                <p style="color: rgba(255,255,255,0.9); margin-top: 8px; font-size: 16px;">We're matching you with certified Australian clean energy installers.</p>
             </div>
             
             <!-- Body -->
             <div style="padding: 32px;">
                 <p style="color: #64748B; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
                     Hi there,<br><br>
-                    Thanks for submitting your request. Local vendors will review your project and send you competitive quotes soon.
+                    Thanks for submitting your request through Procure Now. Vetted local vendors will review your project and submit competitive quotes shortly.
                 </p>
 
                 <!-- Request Details -->
-                <div style="background: #F8FAFC; border-left: 4px solid #4F46E5; padding: 16px; margin-bottom: 24px;">
+                <div style="background: #F8FAFC; border-left: 4px solid #2563EB; padding: 16px; margin-bottom: 24px;">
                     <h3 style="margin: 0 0 12px 0; color: #1E293B; font-size: 14px; text-transform: uppercase;">Request Details</h3>
                     <p style="margin: 0 0 4px 0; color: #475569; font-size: 14px;"><strong>Service:</strong> ${serviceType}</p>
                     <p style="margin: 0 0 4px 0; color: #475569; font-size: 14px;"><strong>Location:</strong> ${postalCode}</p>
@@ -74,19 +74,19 @@ exports.sendQuoteReceivedEmail = async (email, quoteId, details = {}, origin = n
 
                 <!-- CTA Button -->
                 <div style="text-align: center; margin-bottom: 32px;">
-                    <a href="${trackingLink}" style="display: inline-block; background: #4F46E5; color: white; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);">
+                    <a href="${trackingLink}" style="display: inline-block; background: #2563EB; color: white; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);">
                         Track Status
                     </a>
                 </div>
 
                 <p style="color: #94A3B8; font-size: 14px; text-align: center;">
-                    Or visit <a href="${trackingLink}" style="color: #4F46E5;">${trackingLink}</a>
+                    Or visit <a href="${trackingLink}" style="color: #2563EB;">${trackingLink}</a>
                 </p>
             </div>
             
             <!-- Footer -->
             <div style="background: #F8FAFC; padding: 24px; text-align: center; border-top: 1px solid #E2E8F0;">
-                <p style="color: #94A3B8; font-size: 12px; margin: 0;">&copy; 2026 Quote Compare App. All rights reserved.</p>
+                <p style="color: #94A3B8; font-size: 12px; margin: 0;">&copy; 2026 Procure Now Pty Ltd. All rights reserved.</p>
             </div>
         </div>
     </div>
@@ -96,7 +96,7 @@ exports.sendQuoteReceivedEmail = async (email, quoteId, details = {}, origin = n
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
         try {
             await transporter.sendMail({
-                from: `"Quote Compare App" <${process.env.EMAIL_USER}>`,
+                from: `"Procure Now" <${process.env.EMAIL_USER}>`,
                 to: email,
                 subject: 'We received your quote request! 🚀',
                 html: htmlContent,

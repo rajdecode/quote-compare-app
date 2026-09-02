@@ -1,4 +1,4 @@
-﻿<div class="landing-page">
+<div class="landing-page">
 
     <!-- ═══ HERO ══════════════════════════════════════ -->
     <section class="hero">
@@ -8,9 +8,6 @@
         <div class="blob blob-3"></div>
 
         <div class="container hero-content">
-
-            <!-- Track My Quote moved to hero-text -->
-
             <div class="hero-columns">
                 <div class="hero-visual">
                     <div class="hero-outer-ring"></div>
@@ -18,64 +15,68 @@
                         <div class="ring ring-outer"></div>
                         <div class="ring ring-mid"></div>
                         <div class="icon-center">
-                            <span class="material-icons">compare_arrows</span>
+                            <span class="material-icons">bolt</span>
                         </div>
-                    </div>
-                    <div class="service-badge badge-battery">
-                        <span class="material-icons">battery_charging_full</span> Batteries
-                    </div>
-                    <div class="service-badge badge-water">
-                        <span class="material-icons">water_drop</span> Water Filters
                     </div>
                     <div class="service-badge badge-heat">
                         <span class="material-icons">heat_pump</span> Heat Pump
                     </div>
+                    <div class="service-badge badge-battery">
+                        <span class="material-icons">battery_charging_full</span> Solar Battery
+                    </div>
                     <div class="service-badge badge-ac">
-                        <span class="material-icons">ac_unit</span> Air Con
+                        <span class="material-icons">ac_unit</span> Reverse Cycle AC
+                    </div>
+                    <div class="service-badge badge-water">
+                        <span class="material-icons">water_drop</span> Water Filters
                     </div>
                     <div class="float-stat stat-top">
                         <div class="stat-icon">💰</div>
                         <div>
-                            <div class="stat-val">$1,200</div>
-                            <div class="stat-lbl">Avg. savings</div>
+                            <div class="stat-val">$1,200+</div>
+                            <div class="stat-lbl">Govt Rebates</div>
                         </div>
                     </div>
                     <div class="float-stat stat-bottom">
                         <div class="stat-icon">⚡</div>
                         <div>
                             <div class="stat-val">2 min</div>
-                            <div class="stat-lbl">To get quotes</div>
+                            <div class="stat-lbl">Multi-Quotes</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="hero-text">
+                    <div class="hero-badge-pill">
+                        <span class="material-icons">verified</span> Australian Clean Energy Procurement
+                    </div>
                     <h1>
-                        Get multiple quotes<br>
-                        <span class="gradient-text">and choose the best one</span>
+                        Procure Clean Energy<br>
+                        <span class="gradient-text">with Rebate-Eligible Quotes</span>
                     </h1>
                     <p class="subtitle">
-                        Compare competitive quotes from vetted local vendors for
-                        <strong>heat pumps</strong>, <strong>batteries</strong>,
-                        <strong>water filters</strong> &amp; <strong>air conditioning</strong> — all in one place.
+                        Compare multi-vendor quotes from vetted Australian installers for
+                        <strong>Heat Pump Water Heaters</strong>, <strong>Solar Batteries</strong>, and
+                        <strong>Reverse Cycle Air Conditioning</strong> — maximizing STC &amp; state rebate savings.
                     </p>
                     <div class="cta-group">
                         <a routerLink="/request-quote" class="btn-hero-primary">
                             <span class="material-icons">flash_on</span>
-                            Get Free Quotes
+                            Compare Multi-Vendor Quotes
                         </a>
-                        <a href="#how-it-works" class="btn-hero-secondary">
-                            See How It Works
+                        <a href="#rebate-calculator" class="btn-hero-secondary">
+                            <span class="material-icons">calculate</span>
+                            Rebate &amp; ROI Calculator
                         </a>
                     </div>
 
                     <div class="hero-track-inline">
-                        <p class="track-heading">Already Submitted a Quote?</p>
+                        <p class="track-heading">Track an Existing Quote Request</p>
                         <div class="hero-track-row">
-                            <input type="text" #heroTrackInput placeholder="Enter your Quote ID"
+                            <input type="text" #heroTrackInput placeholder="Enter your Quote ID (e.g. PN-12345)"
                                 class="hero-track-input">
                             <button class="hero-track-btn"
-                                (click)="heroTrackInput.value ? router.navigate(['/track', heroTrackInput.value]) : null">
+                                (click)="heroTrackInput.value ? router.navigate(['/track', heroTrackInput.value.trim()]) : null">
                                 <span class="material-icons">search</span>
                                 Track
                             </button>
@@ -88,46 +89,210 @@
     </section>
 
     <!-- divider -->
+    <div class="section-divider"><span class="material-icons sd-icon">calculate</span></div>
+
+    <!-- ═══ CLEAN ENERGY REBATE & ROI CALCULATOR ══════════════════════════════════════ -->
+    <section id="rebate-calculator" class="calculator-section container">
+        <div class="section-header">
+            <div class="calc-badge">
+                <span class="material-icons">energy_savings_leaf</span> Interactive Australian Subsidy Estimator
+            </div>
+            <h2>Clean Energy Rebate &amp; ROI Calculator</h2>
+            <p>Estimate your upfront government discounts, annual electricity bill savings, and payback timeline across subsidised electrification upgrades.</p>
+        </div>
+
+        <div class="calc-grid glass-panel">
+            <!-- Left Side: Inputs & Configuration -->
+            <div class="calc-inputs-panel">
+                <h3 class="panel-title">
+                    <span class="step-num-badge">1</span> Configure Your Electrification Upgrade
+                </h3>
+
+                <!-- 1. Category Dropdown -->
+                <div class="calc-form-group">
+                    <label for="upgradeCategory" class="calc-label">
+                        <span>Product / Upgrade Category</span>
+                        <span class="calc-info-tag">{{ currentOption.badge }}</span>
+                    </label>
+                    <select id="upgradeCategory" [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange($event)" class="calc-select">
+                        @for (opt of upgradeOptions; track opt.id) {
+                        <option [value]="opt.id">{{ opt.name }}</option>
+                        }
+                    </select>
+                    <p class="calc-helper-text">{{ currentOption.savingsNote }}</p>
+                </div>
+
+                <!-- 2. Upfront System Cost -->
+                <div class="calc-form-group">
+                    <div class="calc-slider-header">
+                        <label for="upfrontCost" class="calc-label">Estimated Upfront System Cost (AUD)</label>
+                        <div class="calc-val-pill">${{ upfrontCost | number }} AUD</div>
+                    </div>
+                    <input type="range" id="upfrontCost" [(ngModel)]="upfrontCost" [min]="currentOption.minCost" [max]="currentOption.maxCost" step="100" class="calc-range-slider">
+                    <div class="range-bounds">
+                        <span>${{ currentOption.minCost | number }}</span>
+                        <span>Benchmark: ${{ currentOption.defaultCost | number }}</span>
+                        <span>${{ currentOption.maxCost | number }}</span>
+                    </div>
+                </div>
+
+                <!-- 3. Rebate Estimate Slider -->
+                <div class="calc-form-group">
+                    <div class="calc-slider-header">
+                        <label for="rebateAmount" class="calc-label">Eligible Australian State &amp; Govt Rebate (AUD)</label>
+                        <div class="calc-val-pill rebate-pill">-${{ rebateAmount | number }} AUD</div>
+                    </div>
+                    <input type="range" id="rebateAmount" [(ngModel)]="rebateAmount" min="0" max="3500" step="50" class="calc-range-slider rebate-slider">
+                    <div class="range-bounds">
+                        <span>$0 (No Rebate)</span>
+                        <span>Avg Subsidy: $1,200</span>
+                        <span>$3,500 Max</span>
+                    </div>
+                    <p class="calc-helper-text rebate-helper">
+                        <span class="material-icons">info</span> {{ currentOption.rebateNote }}
+                    </p>
+                </div>
+
+                <!-- 4. Quarterly Energy Bill Slider -->
+                <div class="calc-form-group">
+                    <div class="calc-slider-header">
+                        <label for="quarterlyBill" class="calc-label">Current Average Quarterly Energy / Gas Bill (AUD)</label>
+                        <div class="calc-val-pill">${{ quarterlyBill | number }} / qtr</div>
+                    </div>
+                    <input type="range" id="quarterlyBill" [(ngModel)]="quarterlyBill" min="400" max="2500" step="50" class="calc-range-slider">
+                    <div class="range-bounds">
+                        <span>$400/qtr</span>
+                        <span>Avg: $850/qtr ($3,400/yr)</span>
+                        <span>$2,500/qtr</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Visual Output Cards & Metrics -->
+            <div class="calc-outputs-panel">
+                <h3 class="panel-title">
+                    <span class="step-num-badge">2</span> Your Estimated ROI &amp; Net Out-of-Pocket
+                </h3>
+
+                <!-- Primary Net Price Hero Card -->
+                <div class="output-hero-card">
+                    <div class="output-hero-top">
+                        <span class="hero-label">Net Out-of-Pocket Cost (After Rebates)</span>
+                        <span class="hero-saving-pill">Rebates Saved ${{ rebateAmount | number }}</span>
+                    </div>
+                    <div class="output-hero-price">
+                        ${{ netCost | number }} <span class="currency-tag">AUD</span>
+                    </div>
+                    <p class="output-hero-desc">
+                        Original upfront system price ${{ upfrontCost | number }} minus ${{ rebateAmount | number }} in government subsidies and STCs.
+                    </p>
+                </div>
+
+                <!-- Output Metrics 3-Grid -->
+                <div class="output-metrics-grid">
+                    <!-- Metric 1: Annual Bill Savings -->
+                    <div class="metric-card">
+                        <div class="metric-icon-wrap icon-green">
+                            <span class="material-icons">trending_down</span>
+                        </div>
+                        <div class="metric-content">
+                            <span class="metric-title">Estimated Annual Bill Savings</span>
+                            <div class="metric-value text-green">${{ annualSavings | number }} <small>/ yr</small></div>
+                            <span class="metric-sub">~${{ (annualSavings / 4) | number:'1.0-0' }} off each quarter</span>
+                        </div>
+                    </div>
+
+                    <!-- Metric 2: Estimated Payback Period -->
+                    <div class="metric-card">
+                        <div class="metric-icon-wrap icon-blue">
+                            <span class="material-icons">schedule</span>
+                        </div>
+                        <div class="metric-content">
+                            <span class="metric-title">Estimated Payback Period</span>
+                            <div class="metric-value text-blue">{{ paybackPeriodYears }} <small>Years</small></div>
+                            <span class="metric-sub">Rapid return on investment</span>
+                        </div>
+                    </div>
+
+                    <!-- Metric 3: Multi-Quote Procurement Spread Value -->
+                    <div class="metric-card spread-card">
+                        <div class="metric-icon-wrap icon-amber">
+                            <span class="material-icons">compare_arrows</span>
+                        </div>
+                        <div class="metric-content">
+                            <span class="metric-title">Multi-Vendor Best-Price Spread</span>
+                            <div class="metric-value text-amber">Save up to ${{ multiVendorSpread }}</div>
+                            <span class="metric-sub">Via Procure Now competitive vendor bidding</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10-Year Cumulative Benefit Banner -->
+                <div class="ten-year-banner">
+                    <div class="ten-year-icon">🌿</div>
+                    <div class="ten-year-text">
+                        <strong>10-Year Net Financial Gain:</strong>
+                        <span>~${{ tenYearNetBenefit | number }} AUD in cumulative savings and avoided grid costs.</span>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="calc-action-card">
+                    <a [routerLink]="['/request-quote']" [queryParams]="{ serviceType: currentOption.quoteServiceType }" class="btn-calc-cta">
+                        <span class="material-icons">bolt</span>
+                        Compare Multi-Vendor Quotes for this Upgrade
+                    </a>
+                    <p class="calc-cta-subtext">Free, fast, no-obligation quotes from certified Australian installers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- divider -->
     <div class="section-divider"><span class="material-icons sd-icon">grid_view</span></div>
 
-    <!-- PRODUCTS -->
+    <!-- ═══ PRODUCTS WE QUOTE ══════════════════════════════════════ -->
     <section id="products" class="products-section container">
         <div class="section-header">
-            <h2>Products We Quote</h2>
-            <p>Get competitive quotes from verified vendors for all four categories</p>
+            <h2>Subsidised Clean Energy Categories</h2>
+            <p>Get competitive quotes from verified Australian vendors for rebate-eligible products</p>
         </div>
         <div class="products-grid">
             <a routerLink="/products/heat-pumps" class="product-card">
                 <div class="product-icon" style="background: linear-gradient(135deg, #FCE7F3, #FBD5E7);">
                     <span class="material-icons" style="color: #9D174D;">heat_pump</span>
                 </div>
-                <h3>Heat Pumps</h3>
-                <p>Efficient heating &amp; cooling solutions for your home</p>
-                <span class="product-link">Get quotes <span class="material-icons">arrow_forward</span></span>
+                <div class="product-rebate-tag">Rebate Eligible · STCs</div>
+                <h3>Heat Pump Hot Water</h3>
+                <p>Cut water heating costs by up to 70% with high-COP electrification systems.</p>
+                <span class="product-link">Compare quotes <span class="material-icons">arrow_forward</span></span>
             </a>
             <a routerLink="/products/batteries" class="product-card">
                 <div class="product-icon" style="background: linear-gradient(135deg, #D1FAE5, #A7F3D0);">
                     <span class="material-icons" style="color: #065F46;">battery_charging_full</span>
                 </div>
-                <h3>Batteries</h3>
-                <p>Home battery storage to save and manage your energy</p>
-                <span class="product-link">Get quotes <span class="material-icons">arrow_forward</span></span>
-            </a>
-            <a routerLink="/products/water-filters" class="product-card">
-                <div class="product-icon" style="background: linear-gradient(135deg, #E0F2FE, #BAE6FD);">
-                    <span class="material-icons" style="color: #075985;">water_drop</span>
-                </div>
-                <h3>Water Filters</h3>
-                <p>Clean, filtered water systems installed by professionals</p>
-                <span class="product-link">Get quotes <span class="material-icons">arrow_forward</span></span>
+                <div class="product-rebate-tag">Solar Subsidised</div>
+                <h3>Solar Batteries</h3>
+                <p>Store your excess solar generation and optimize nighttime self-consumption.</p>
+                <span class="product-link">Compare quotes <span class="material-icons">arrow_forward</span></span>
             </a>
             <a routerLink="/products/aircons" class="product-card">
                 <div class="product-icon" style="background: linear-gradient(135deg, #EDE9FE, #DDD6FE);">
                     <span class="material-icons" style="color: #5B21B6;">ac_unit</span>
                 </div>
-                <h3>Air Conditioning</h3>
-                <p>Split systems and ducted air con quotes at your fingertips</p>
-                <span class="product-link">Get quotes <span class="material-icons">arrow_forward</span></span>
+                <div class="product-rebate-tag">Energy Upgrades</div>
+                <h3>Reverse Cycle Air Conditioning</h3>
+                <p>High-efficiency inverter split &amp; ducted systems for year-round climate control.</p>
+                <span class="product-link">Compare quotes <span class="material-icons">arrow_forward</span></span>
+            </a>
+            <a routerLink="/products/water-filters" class="product-card">
+                <div class="product-icon" style="background: linear-gradient(135deg, #E0F2FE, #BAE6FD);">
+                    <span class="material-icons" style="color: #075985;">water_drop</span>
+                </div>
+                <div class="product-rebate-tag">Home Health</div>
+                <h3>Water Filtration &amp; Treatment</h3>
+                <p>Professional whole-house and under-sink clean water filtration systems.</p>
+                <span class="product-link">Compare quotes <span class="material-icons">arrow_forward</span></span>
             </a>
         </div>
     </section>
@@ -135,12 +300,12 @@
     <!-- divider -->
     <div class="section-divider"><span class="material-icons sd-icon">emoji_objects</span></div>
 
-    <!-- HOW IT WORKS -->
+    <!-- ═══ HOW IT WORKS ══════════════════════════════════════ -->
     <section id="how-it-works" class="how-section">
         <div class="container">
             <div class="section-header">
-                <h2>How It Works</h2>
-                <p>Three simple steps to a better deal</p>
+                <h2>How Procure Now Works</h2>
+                <p>Three straightforward steps to transparent multi-vendor pricing</p>
             </div>
             <div class="steps-grid">
                 <div class="step-card">
@@ -148,8 +313,8 @@
                     <div class="step-icon-wrap">
                         <span class="material-icons">edit_note</span>
                     </div>
-                    <h3>Request a Quote</h3>
-                    <p>Tell us what you need and your postcode. Takes under 2 minutes.</p>
+                    <h3>Submit Request</h3>
+                    <p>Select your upgrade category and enter your postcode. Takes under 2 minutes.</p>
                     <div class="step-connector"></div>
                 </div>
                 <div class="step-card">
@@ -157,8 +322,8 @@
                     <div class="step-icon-wrap">
                         <span class="material-icons">groups</span>
                     </div>
-                    <h3>Vendors Respond</h3>
-                    <p>Verified local vendors send competitive quotes directly to you.</p>
+                    <h3>Certified Installers Quote</h3>
+                    <p>Accredited local clean energy installers review your job and apply STC &amp; state subsidies.</p>
                     <div class="step-connector"></div>
                 </div>
                 <div class="step-card">
@@ -166,8 +331,8 @@
                     <div class="step-icon-wrap">
                         <span class="material-icons">savings</span>
                     </div>
-                    <h3>Compare &amp; Save</h3>
-                    <p>Choose the best price and terms. Save hundreds, effortlessly.</p>
+                    <h3>Compare &amp; Lock In Savings</h3>
+                    <p>Review side-by-side quotes, price spreads, warranty terms, and select the best offer.</p>
                 </div>
             </div>
         </div>
@@ -176,27 +341,27 @@
     <!-- divider -->
     <div class="section-divider"><span class="material-icons sd-icon">bar_chart</span></div>
 
-    <!-- STATS -->
+    <!-- ═══ STATS ══════════════════════════════════════ -->
     <section class="stats-section container">
         <div class="stats-row glass-panel">
             <div class="stat-block">
                 <div class="stat-number">5,000+</div>
-                <div class="stat-desc">Homeowners served</div>
+                <div class="stat-desc">Australian Homes Electrified</div>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-block">
-                <div class="stat-number">$1,200</div>
-                <div class="stat-desc">Average savings</div>
+                <div class="stat-number">$1,200+</div>
+                <div class="stat-desc">Average Rebate Claimed</div>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-block">
                 <div class="stat-number">200+</div>
-                <div class="stat-desc">Verified vendors</div>
+                <div class="stat-desc">Accredited Clean Energy Installers</div>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-block">
-                <div class="stat-number">4.9 Γÿà</div>
-                <div class="stat-desc">Average rating</div>
+                <div class="stat-number">4.9 ★</div>
+                <div class="stat-desc">Customer Satisfaction</div>
             </div>
         </div>
     </section>
@@ -204,16 +369,16 @@
     <!-- divider -->
     <div class="section-divider"><span class="material-icons sd-icon">rocket_launch</span></div>
 
-    <!-- CTA BANNER -->
+    <!-- ═══ CTA BANNER ══════════════════════════════════════ -->
     <section class="cta-section">
         <div class="container cta-inner">
             <div class="cta-text">
-                <h2>Ready to save on your upcoming upgrade?</h2>
-                <p>It's free, takes 2 minutes, and there's no obligation.</p>
+                <h2>Ready to claim rebates and compare certified quotes?</h2>
+                <p>Join thousands of Australian households saving with Procure Now. Free &amp; no obligation.</p>
             </div>
             <a routerLink="/request-quote" class="btn-hero-primary">
                 <span class="material-icons">flash_on</span>
-                Get My Free Quotes
+                Compare Multi-Vendor Quotes Now
             </a>
         </div>
     </section>

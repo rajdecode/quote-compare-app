@@ -1,7 +1,7 @@
 import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
 
@@ -20,6 +20,7 @@ export class RequestQuote {
     email = '';
     loading = false;
     authService = inject(AuthService);
+    route = inject(ActivatedRoute);
 
     attachments: string[] = [];
     isUploading = false;
@@ -28,7 +29,13 @@ export class RequestQuote {
     submissionSuccess = false;
     submittedQuoteId = '';
 
-    constructor(private router: Router, private cd: ChangeDetectorRef) { }
+    constructor(private router: Router, private cd: ChangeDetectorRef) {
+        this.route.queryParams.subscribe(params => {
+            if (params['serviceType']) {
+                this.serviceType = params['serviceType'];
+            }
+        });
+    }
 
     async copyToClipboard(text: string) {
         try {

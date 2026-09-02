@@ -1,34 +1,42 @@
 <nav class="navbar glass-panel" [class.navbar-sticky]="isHomePage()">
     <div class="container navbar-content">
-        <a [routerLink]="currentUser() ? getDashboardRoute() : '/'" class="logo">
-            <span class="logo-highlight">Quote</span>Compare
+        <!-- LOGO_PLACEHOLDER -->
+        <a [routerLink]="currentUser() ? getDashboardRoute() : '/'" class="logo" id="logoPlaceholder" title="Procure Now — Australian Clean Energy & Rebate-Eligible Quotes">
+            <div class="logo-slot-container">
+                <span class="logo-badge">PN</span>
+                <span class="logo-text"><span class="logo-highlight">Procure</span> Now</span>
+            </div>
         </a>
         <div class="nav-links">
-            <!-- Only show Home for guests -->
-            @if (!currentUser()) {
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-            <!-- Pricing hidden for guests as per requirement -->
-            <a routerLink="/" fragment="products">Products</a>
-            <a routerLink="/" fragment="how-it-works">How it Works</a>
+            <!-- Navigation links -->
+            <a routerLink="/" fragment="products" title="Compare Heat Pumps, Aircons, Hot Water, Batteries">Compare Subsidised Quotes</a>
+            <a routerLink="/" fragment="rebate-calculator" title="Clean Energy Rebate & ROI Calculator">Rebate &amp; ROI Calculator</a>
+            @if (!currentUser() || userRole() !== 'vendor') {
+            <a routerLink="/register" [queryParams]="{ role: 'vendor' }" title="Join as a certified clean energy installer">Contractor Portal</a>
             }
         </div>
         <div class="auth-buttons">
             @if (!currentUser()) {
             <a routerLink="/login" class="btn btn-secondary btn-sm">Sign In</a>
-            <a routerLink="/register" class="btn btn-primary btn-sm">Sign Up</a>
+            <a routerLink="/request-quote" class="btn btn-primary btn-sm cta-navbar-btn">
+                <span class="material-icons nav-btn-icon">bolt</span> Compare Multi-Vendor Quotes
+            </a>
             } @else {
             @if (userRole() === 'vendor') {
             <a routerLink="/pricing" routerLinkActive="active" class="btn btn-text btn-sm"
-                style="margin-right: 1rem; color: var(--text-main); text-decoration: none; font-weight: 500;">Plans</a>
-            <a routerLink="/vendor" class="btn btn-secondary btn-sm" style="margin-right: 1rem;">Dashboard</a>
+                style="margin-right: 0.5rem; color: var(--text-main); text-decoration: none; font-weight: 500;">Plans</a>
+            <a routerLink="/vendor" class="btn btn-secondary btn-sm" style="margin-right: 0.5rem;">Dashboard</a>
             } @else if (userRole() === 'admin') {
-            <a routerLink="/admin" class="btn btn-secondary btn-sm" style="margin-right: 1rem;">Dashboard</a>
+            <a routerLink="/admin" class="btn btn-secondary btn-sm" style="margin-right: 0.5rem;">Dashboard</a>
             } @else {
-            <a routerLink="/buyer" class="btn btn-secondary btn-sm" style="margin-right: 1rem;">Dashboard</a>
+            <a routerLink="/request-quote" class="btn btn-primary btn-sm cta-navbar-btn" style="margin-right: 0.5rem;">
+                <span class="material-icons nav-btn-icon">bolt</span> Compare Multi-Vendor Quotes
+            </a>
+            <a routerLink="/buyer" class="btn btn-secondary btn-sm" style="margin-right: 0.5rem;">Dashboard</a>
             }
 
             <div class="dropdown">
-                <button class="avatar-btn">
+                <button class="avatar-btn" title="Account Menu">
                     {{ getInitials() }}
                 </button>
                 <div class="dropdown-content glass-panel profile-menu" style="right: 0; left: auto; min-width: 200px;">

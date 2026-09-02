@@ -18,10 +18,10 @@ import { AuthService } from '../../../core/services/auth.service';
 
             <div class="brand-content">
                 <div class="brand-logo">
-                    <span class="material-icons">compare_arrows</span>
+                    <span class="material-icons">bolt</span>
                 </div>
-                <h1 class="brand-name"><span>Quote</span>Compare</h1>
-                <p class="brand-tagline">Get the best price from vetted professionals — instantly.</p>
+                <h1 class="brand-name"><span>Procure</span> Now</h1>
+                <p class="brand-tagline">Compare Australian clean energy &amp; rebate-eligible quotes instantly.</p>
                 
                 <div class="feature-list" style="margin-top: 2rem;">
                     <div class="feature-item">

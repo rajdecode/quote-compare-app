@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 
 // Middleware - restrict CORS to known frontend origins
 // ALLOWED_ORIGINS can be comma-separated, e.g. "http://localhost:4200,https://myapp.onrender.com"
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:4200,https://quote-compare-app.onrender.com')
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:4200,https://quote-compare-app.onrender.com,https://procurenow.com.au,https://www.procurenow.com.au')
     .split(',')
     .map(o => o.trim())
     .filter(Boolean);
@@ -42,7 +42,7 @@ console.log('✅ Supabase Client initialized.');
 
 // Health Check
 app.get('/api/health', (req, res) => {
-    res.status(200).send('Quote Compare App Backend is running!');
+    res.status(200).send('Procure Now App Backend is running!');
 });
 
 const quoteRoutes = require('./routes/quote.routes');

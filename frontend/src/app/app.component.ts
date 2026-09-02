@@ -12,7 +12,7 @@ import { FooterComponent } from './core/components/footer/footer.component';
 })
 export class AppComponent {
     constructor() {
-        console.log('QuoteComparr App v1.3.5 - Zone.js Fix & No Persistence');
+        console.log('Procure Now App v2.0.0 - Clean Energy & Multi-Vendor Quote Engine');
     }
     title = 'frontend';
 }

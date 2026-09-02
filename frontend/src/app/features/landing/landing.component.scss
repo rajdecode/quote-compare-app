@@ -1346,3 +1346,481 @@
         }
     }
 }
+
+/* ==============================================
+   CLEAN ENERGY HERO & BADGE EXTENSIONS
+   ============================================== */
+
+.hero-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    color: #2563eb;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    .material-icons {
+        font-size: 1.1rem;
+        color: #059669;
+    }
+}
+
+.product-rebate-tag {
+    display: inline-block;
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ==============================================
+   CLEAN ENERGY REBATE & ROI CALCULATOR STYLES
+   ============================================== */
+
+.calculator-section {
+    padding: 40px 20px 80px;
+
+    .calc-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(5, 150, 105, 0.1);
+        color: #059669;
+        font-weight: 700;
+        font-size: 0.85rem;
+        padding: 6px 16px;
+        border-radius: 999px;
+        margin-bottom: 12px;
+        border: 1px solid rgba(5, 150, 105, 0.2);
+
+        .material-icons {
+            font-size: 1.1rem;
+        }
+    }
+}
+
+.calc-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 32px;
+    padding: 36px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
+
+    @media (max-width: 960px) {
+        grid-template-columns: 1fr;
+        padding: 24px;
+        gap: 28px;
+    }
+}
+
+.calc-inputs-panel,
+.calc-outputs-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 8px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e2e8f0;
+
+    .step-num-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: #2563eb;
+        color: white;
+        font-size: 0.85rem;
+        font-weight: 800;
+    }
+}
+
+.calc-form-group {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus-within {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+}
+
+.calc-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 8px;
+}
+
+.calc-info-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #059669;
+    background: #d1fae5;
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+.calc-select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #0f172a;
+    background-color: white;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s;
+
+    &:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+}
+
+.calc-slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    .calc-label {
+        margin: 0;
+    }
+}
+
+.calc-val-pill {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #1e293b;
+    background: white;
+    border: 1.5px solid #cbd5e1;
+    padding: 4px 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+
+    &.rebate-pill {
+        color: #059669;
+        background: #ecfdf5;
+        border-color: #a7f3d0;
+    }
+}
+
+.calc-range-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 6px;
+    background: #e2e8f0;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    margin: 10px 0 6px 0;
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #2563eb;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+        border: 2px solid white;
+        transition: transform 0.15s;
+
+        &:hover {
+            transform: scale(1.15);
+        }
+    }
+
+    &.rebate-slider::-webkit-slider-thumb {
+        background: #059669;
+        box-shadow: 0 2px 6px rgba(5, 150, 105, 0.4);
+    }
+}
+
+.range-bounds {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.calc-helper-text {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin: 8px 0 0 0;
+    line-height: 1.4;
+
+    &.rebate-helper {
+        display: flex;
+        align-items: flex-start;
+        gap: 5px;
+        color: #047857;
+        margin-top: 10px;
+
+        .material-icons {
+            font-size: 1rem;
+            margin-top: 1px;
+        }
+    }
+}
+
+/* Outputs Panel */
+.output-hero-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 18px;
+    padding: 24px;
+    color: white;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3);
+
+    .output-hero-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .hero-label {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .hero-saving-pill {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #34d399;
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        padding: 3px 10px;
+        border-radius: 999px;
+    }
+
+    .output-hero-price {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #ffffff;
+        letter-spacing: -1px;
+        line-height: 1.1;
+        margin: 6px 0 10px 0;
+
+        .currency-tag {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0;
+        }
+    }
+
+    .output-hero-desc {
+        font-size: 0.85rem;
+        color: #cbd5e1;
+        margin: 0;
+        line-height: 1.4;
+    }
+}
+
+.output-metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.metric-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 14px 18px;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+    }
+
+    &.spread-card {
+        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        border-color: #fde68a;
+    }
+
+    .metric-icon-wrap {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        &.icon-green {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        &.icon-blue {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        &.icon-amber {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .material-icons {
+            font-size: 1.4rem;
+        }
+    }
+
+    .metric-content {
+        flex: 1;
+    }
+
+    .metric-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .metric-value {
+        font-size: 1.35rem;
+        font-weight: 800;
+        line-height: 1.2;
+
+        small {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        &.text-green {
+            color: #059669;
+        }
+
+        &.text-blue {
+            color: #2563eb;
+        }
+
+        &.text-amber {
+            color: #b45309;
+        }
+    }
+
+    .metric-sub {
+        font-size: 0.78rem;
+        color: #94a3b8;
+        font-weight: 500;
+        display: block;
+        margin-top: 2px;
+    }
+}
+
+.ten-year-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 12px;
+    padding: 12px 16px;
+
+    .ten-year-icon {
+        font-size: 1.4rem;
+    }
+
+    .ten-year-text {
+        font-size: 0.85rem;
+        color: #065f46;
+        line-height: 1.4;
+
+        strong {
+            color: #047857;
+        }
+    }
+}
+
+.calc-action-card {
+    text-align: center;
+    margin-top: 4px;
+
+    .btn-calc-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        color: white;
+        font-size: 1.05rem;
+        font-weight: 800;
+        padding: 16px 24px;
+        border-radius: 14px;
+        text-decoration: none;
+        box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+        transition: all 0.2s;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px -5px rgba(37, 99, 235, 0.5);
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+        }
+
+        .material-icons {
+            font-size: 1.3rem;
+        }
+    }
+
+    .calc-cta-subtext {
+        font-size: 0.8rem;
+        color: #64748b;
+        margin: 8px 0 0 0;
+    }
+}
