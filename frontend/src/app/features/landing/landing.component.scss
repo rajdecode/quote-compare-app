@@ -17,21 +17,18 @@
 /* ── HERO SECTION ──────────────────────────── */
 .hero {
     position: relative;
-    padding: 56px 0 72px;
-    background-image: url('/assets/images/hero.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    border-bottom: 1px solid #e2e8f0;
+    padding: 72px 0 88px;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.88) 100%),
+                url('/assets/images/hero.jpg') center center / cover no-repeat;
+    border-bottom: 1px solid #1e293b;
     overflow: hidden;
+    color: #ffffff;
 }
 
 .hero-bg-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.65) 100%),
-                radial-gradient(circle at 50% 30%, rgba(37, 99, 235, 0.25) 0%, transparent 75%);
-    backdrop-filter: blur(2px);
+    background: radial-gradient(circle at 50% 30%, rgba(37, 99, 235, 0.18) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -39,62 +36,75 @@
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
+    z-index: 2;
 }
 
 .hero-card {
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    border-radius: 24px;
-    padding: 48px 36px;
-    box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.25);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .hero-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 14px;
-    background: #eff6ff;
-    color: #2563eb;
-    border: 1px solid #bfdbfe;
+    padding: 6px 16px;
+    background: rgba(37, 99, 235, 0.25);
+    color: #93c5fd;
+    border: 1px solid rgba(147, 197, 253, 0.35);
     border-radius: 9999px;
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     font-weight: 700;
     margin-bottom: 20px;
+    backdrop-filter: blur(8px);
 
     .material-icons {
         font-size: 1rem;
+        color: #60a5fa;
     }
 }
 
 .hero-title {
-    font-size: 3rem;
+    font-size: 3.4rem;
     font-weight: 800;
     line-height: 1.15;
     letter-spacing: -0.03em;
-    color: #0f172a;
+    color: #ffffff;
     margin: 0 0 16px;
 
     .gradient-text {
-        background: linear-gradient(135deg, #2563eb 0%, #059669 100%);
+        background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 2.2rem;
     }
 }
 
 .hero-subtitle {
-    font-size: 1.15rem;
+    font-size: 1.18rem;
     line-height: 1.6;
-    color: #475569;
+    color: #e2e8f0;
     max-width: 720px;
     margin: 0 0 32px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+
+    @media (max-width: 768px) {
+        font-size: 1rem;
+        margin-bottom: 24px;
+    }
 }
 
 .hero-cta-group {
@@ -105,6 +115,11 @@
     margin-bottom: 32px;
     width: 100%;
     max-width: 500px;
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+        gap: 12px;
+    }
 }
 
 .btn-hero-primary {
@@ -120,12 +135,18 @@
     font-weight: 700;
     border-radius: 12px;
     text-decoration: none;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
     transition: all 0.2s ease-in-out;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 
     &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.5);
+    }
+
+    @media (max-width: 480px) {
+        width: 100%;
+        box-sizing: border-box;
     }
 }
 
@@ -136,25 +157,32 @@
     justify-content: center;
     gap: 8px;
     padding: 14px 24px;
-    background: #f8fafc;
-    color: #1e293b;
-    border: 1.5px solid #cbd5e1;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
     font-size: 1rem;
     font-weight: 700;
     border-radius: 12px;
     text-decoration: none;
+    backdrop-filter: blur(8px);
     transition: all 0.2s ease-in-out;
 
     &:hover {
-        background: #f1f5f9;
-        border-color: #94a3b8;
+        background: rgba(255, 255, 255, 0.22);
+        border-color: rgba(255, 255, 255, 0.5);
         transform: translateY(-2px);
+    }
+
+    @media (max-width: 480px) {
+        width: 100%;
+        box-sizing: border-box;
     }
 }
 
 .hero-track-box {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 14px;
     padding: 14px 18px;
     display: flex;
@@ -163,12 +191,18 @@
     max-width: 540px;
     width: 100%;
     margin-bottom: 28px;
+    box-sizing: border-box;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
 
 .track-label {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #64748b;
+    color: #94a3b8;
     white-space: nowrap;
 }
 
@@ -181,15 +215,19 @@
 .track-input {
     flex: 1;
     padding: 8px 12px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     font-size: 0.88rem;
-    background: #ffffff;
-    color: #1e293b;
+    background: rgba(30, 41, 59, 0.8);
+    color: #ffffff;
+
+    &::placeholder {
+        color: #64748b;
+    }
 
     &:focus {
         outline: none;
-        border-color: #2563eb;
+        border-color: #38bdf8;
     }
 }
 
@@ -220,20 +258,21 @@
     display: flex;
     gap: 24px;
     justify-content: center;
-    flex-wrap: wrap;
-}
-
-.highlight-item {
-    display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: #475569;
+    flex-wrap: wrap;
 
-    .material-icons {
-        font-size: 1.1rem;
-        color: #059669;
+    .highlight-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #cbd5e1;
+
+        .material-icons {
+            font-size: 1.1rem;
+            color: #34d399;
+        }
     }
 }
 
