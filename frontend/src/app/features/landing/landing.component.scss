@@ -192,46 +192,50 @@
 }
 
 .hero-track-box {
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 14px;
-    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(16px);
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 16px 22px;
     display: flex;
     align-items: center;
-    gap: 14px;
-    max-width: 540px;
+    gap: 16px;
+    max-width: 560px;
     width: 100%;
     margin-bottom: 28px;
     box-sizing: border-box;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
 
     @media (max-width: 600px) {
         flex-direction: column;
         align-items: stretch;
+        padding: 16px;
+        gap: 12px;
     }
 }
 
 .track-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #94a3b8;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #0f172a;
     white-space: nowrap;
 }
 
 .track-input-group {
     display: flex;
     flex: 1;
-    gap: 6px;
+    gap: 8px;
 }
 
 .track-input {
     flex: 1;
-    padding: 8px 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    font-size: 0.88rem;
-    background: rgba(30, 41, 59, 0.8);
-    color: #ffffff;
+    padding: 10px 14px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    background: #ffffff;
+    color: #0f172a;
 
     &::placeholder {
         color: #64748b;
@@ -239,30 +243,34 @@
 
     &:focus {
         outline: none;
-        border-color: #38bdf8;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 }
 
 .track-btn {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 8px 14px;
+    gap: 6px;
+    padding: 10px 18px;
     background: #2563eb;
     color: #ffffff;
     border: none;
-    border-radius: 8px;
-    font-size: 0.85rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: all 0.15s ease-in-out;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
 
     &:hover {
         background: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.45);
     }
 
     .material-icons {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
 }
 

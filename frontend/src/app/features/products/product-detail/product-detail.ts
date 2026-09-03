@@ -125,46 +125,6 @@ export class ProductDetailComponent {
             benefits: ['Substantial annual bill reduction', 'Emergency backup power during grid outages', 'Seamless inverter & solar system integration', 'Vetted Australian clean energy specialists'],
             image: 'assets/battery.jpg',
             serviceType: 'battery'
-        },
-        'windows': {
-            title: 'Windows & Double Glazing',
-            subtitle: 'High-performance architectural windows & double glazing systems.',
-            description: 'Upgrade your building envelope with high-efficiency double and triple glazing, thermally broken aluminium, timber, and uPVC window frames. Reduce acoustic transmission and improve year-round climate regulation.',
-            benefits: ['Drastic thermal insulation & draft reduction', 'Significant noise dampening & acoustic comfort', 'Bushfire & cyclone-rated glazing options', 'Direct multi-supplier fabrication pricing'],
-            image: 'assets/window.jpg',
-            serviceType: 'windows'
-        },
-        'doors': {
-            title: 'Doors & Security Entry Systems',
-            subtitle: 'Architectural entry doors, security mesh & high-spec internal systems.',
-            description: 'Procure high-security entrance doors, acoustic internal doors, stacking sliding glass doors, and corrosion-resistant security screens from verified Australian manufacturers and carpenters.',
-            benefits: ['Stainless steel security mesh & multipoint locking', 'Energy-rated sliding & bi-fold glass doors', 'Custom timber and composite entry doors', 'Professional measuring and installation quotes'],
-            image: 'assets/door.jpg',
-            serviceType: 'doors'
-        },
-        'insulation': {
-            title: 'Thermal & Acoustic Insulation',
-            subtitle: 'Ceiling batts, wall acoustic solutions & underfloor insulation.',
-            description: 'Maximize your home or commercial building envelope efficiency with high R-value glasswool, rockwool, and polyester thermal insulation batts installed by certified trade teams.',
-            benefits: ['Up to 45% reduction in heating and cooling energy loss', 'Superior acoustic isolation between rooms and floors', 'Non-combustible fire-safe building materials', 'Fast, clean installation by insured trade specialists'],
-            image: 'assets/insulation.jpg',
-            serviceType: 'insulation'
-        },
-        'roofing': {
-            title: 'Roofing, Gutters & Restoration',
-            subtitle: 'Colorbond steel roofing, tile restoration & architectural rainwater systems.',
-            description: 'Protect and upgrade your property with premium Colorbond metal roofing, tile re-bedding, gutter guard installations, and full roof restoration packages from licensed Australian roofers.',
-            benefits: ['Genuine BlueScope Colorbond & Zincalume options', 'Complete flashing, valleys, and guttering packages', 'Comprehensive leak repair and structural tile coating', 'Multi-supplier competitive price comparison'],
-            image: 'assets/roofing.jpg',
-            serviceType: 'roofing'
-        },
-        'timber': {
-            title: 'Timber & Building Materials',
-            subtitle: 'Structural framing, hardwoods, engineered timber & building supplies.',
-            description: 'Direct procurement of structural LVL, treated pine, hardwood decking, formwork, and architectural timber profiles from verified Australian trade yards and timber merchants.',
-            benefits: ['FSC & PEFC certified sustainable Australian timber', 'MGP10 & F7 structural framing batches', 'Hardwood decking: Spotted Gum, Ironbark & Merbau', 'Bulk merchant trade discounts and delivery'],
-            image: 'assets/timber.jpg',
-            serviceType: 'timber'
         }
     };
 

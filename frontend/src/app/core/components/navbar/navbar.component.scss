@@ -498,23 +498,46 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 18px 20px;
+        padding: 16px 20px;
         border-bottom: 1px solid #e2e8f0;
+
+        .logo-slot-container {
+            display: flex;
+            align-items: center;
+
+            .brand-logo-img {
+                height: 30px;
+                max-height: 32px;
+                width: auto;
+                max-width: 140px;
+                object-fit: contain;
+                display: block;
+            }
+        }
     }
 
     .drawer-close-btn {
-        background: none;
-        border: none;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
         cursor: pointer;
-        color: #64748b;
+        color: #0f172a;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 6px;
-        border-radius: 6px;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        transition: all 0.15s ease-in-out;
+        z-index: 2005;
+        pointer-events: auto;
 
-        &:hover {
-            background-color: #f1f5f9;
+        &:hover, &:active {
+            background-color: #e2e8f0;
+            color: #000000;
+        }
+
+        .material-icons {
+            font-size: 1.4rem;
             color: #0f172a;
         }
     }

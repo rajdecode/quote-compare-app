@@ -24,7 +24,7 @@ export class LandingComponent {
     router = inject(Router);
     currentUser = this.authService.currentUser;
 
-    // Verified Categories
+    // Verified Categories (Core Launch Offering)
     categories: ProjectCategory[] = [
         {
             id: 'heat-pumps',
@@ -53,41 +53,6 @@ export class LandingComponent {
             badge: 'Water Quality',
             quoteServiceType: 'water-filter',
             savingsNote: 'Whole-house filtration, reverse osmosis, and UV clean drinking water treatment systems'
-        },
-        {
-            id: 'windows',
-            name: 'Windows & Double Glazing',
-            badge: 'Building Envelope',
-            quoteServiceType: 'windows',
-            savingsNote: 'High thermal-efficiency double glazing and architectural window systems'
-        },
-        {
-            id: 'doors',
-            name: 'Doors & Security Entry Systems',
-            badge: 'Access & Security',
-            quoteServiceType: 'doors',
-            savingsNote: 'Security mesh, acoustic internal doors, and sliding patio systems'
-        },
-        {
-            id: 'insulation',
-            name: 'Thermal & Acoustic Insulation',
-            badge: 'Thermal Comfort',
-            quoteServiceType: 'insulation',
-            savingsNote: 'Ceiling, wall batts, and underfloor thermal barrier insulation'
-        },
-        {
-            id: 'roofing',
-            name: 'Roofing, Gutters & Restoration',
-            badge: 'Structural Upgrade',
-            quoteServiceType: 'roofing',
-            savingsNote: 'Colorbond re-roofing, tile restoration, and gutter replacements'
-        },
-        {
-            id: 'timber',
-            name: 'Timber & Building Materials',
-            badge: 'Trade & Materials',
-            quoteServiceType: 'timber',
-            savingsNote: 'Framing timber, hardwoods, decking boards, and structural materials'
         }
     ];
 

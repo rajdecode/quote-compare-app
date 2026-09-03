@@ -1,26 +1,21 @@
 <div class="container page-content">
     <div class="glass-panel form-card">
-        <h2 style="font-size: 2rem; font-weight: 800; color: #0F172A; text-align: center;">Request a Quote</h2>
+        <div class="form-header-badge">
+            <span class="material-icons">bolt</span>
+            <span>Free · Compare Multi-Vendor Quotes</span>
+        </div>
+        <h2 style="font-size: 2rem; font-weight: 800; color: #0F172A; text-align: center; margin-bottom: 6px;">Request a Quote</h2>
         @if (!submissionSuccess) {
-        <p class="subtitle" style="text-align: center; font-size: 1.05rem;">Tell us what you need, and we'll match you
-            with top vendors.</p>
+        <p class="subtitle" style="text-align: center; font-size: 1rem; color: #64748B; margin-bottom: 24px;">Specify your upgrade requirements and receive direct quotes from vetted Australian suppliers.</p>
 
-        <form (ngSubmit)="onSubmit()" style="margin-top: 2rem;">
+        <form (ngSubmit)="onSubmit()" style="margin-top: 1.5rem;">
             <div class="form-group">
                 <label for="serviceType">Product / Upgrade Category</label>
                 <select id="serviceType" [(ngModel)]="serviceType" name="serviceType" required>
-                    <option value="heat-pump">Heat Pumps &amp; Hot Water Systems</option>
-                    <option value="aircon">Air Conditioning &amp; Reverse Cycle HVAC</option>
-                    <option value="battery">Home Solar Batteries &amp; Storage</option>
-                    <option value="water-filter">Water Filtration &amp; Treatment Systems</option>
-                    <option value="windows">Windows &amp; Double Glazing</option>
-                    <option value="doors">Doors &amp; Security Entry Systems</option>
-                    <option value="insulation">Thermal &amp; Acoustic Insulation</option>
-                    <option value="roofing">Roofing, Gutters &amp; Restoration</option>
-                    <option value="timber">Timber &amp; Building Materials</option>
-                    <option value="solar">Rooftop Solar &amp; Inverters</option>
-                    <option value="electrical">Electrical &amp; EV Infrastructure</option>
-                    <option value="plumbing">Plumbing &amp; Drainage Services</option>
+                    <option value="heat-pump">♨️ Heat Pumps &amp; Hot Water Systems</option>
+                    <option value="aircon">❄️ Air Conditioning &amp; Reverse Cycle HVAC</option>
+                    <option value="battery">⚡ Home Solar Batteries &amp; Storage</option>
+                    <option value="water-filter">💧 Water Filtration &amp; Treatment Systems</option>
                 </select>
             </div>
 

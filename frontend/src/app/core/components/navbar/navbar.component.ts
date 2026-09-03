@@ -32,12 +32,7 @@ export class NavbarComponent {
         { id: 'heat-pumps', title: 'Heat Pumps & Hot Water', icon: 'heat_pump', path: '/products/heat-pumps', description: 'High-efficiency heat pumps & hot water systems' },
         { id: 'aircons', title: 'Air Conditioning', icon: 'ac_unit', path: '/products/aircons', description: 'Reverse cycle split systems & ducted HVAC' },
         { id: 'batteries', title: 'Solar Batteries', icon: 'battery_charging_full', path: '/products/batteries', description: 'Home battery storage & backup power' },
-        { id: 'water-filters', title: 'Water Filtration', icon: 'water_drop', path: '/products/water-filters', description: 'Whole-house & under-sink purification systems' },
-        { id: 'windows', title: 'Windows & Glazing', icon: 'window', path: '/products/windows', description: 'Double glazing & high-performance windows' },
-        { id: 'doors', title: 'Doors & Entry Systems', icon: 'door_front', path: '/products/doors', description: 'Security, sliding & architectural doors' },
-        { id: 'insulation', title: 'Insulation', icon: 'thermostat', path: '/products/insulation', description: 'Ceiling, wall & underfloor thermal batts' },
-        { id: 'roofing', title: 'Roofing & Guttering', icon: 'roofing', path: '/products/roofing', description: 'Colorbond, metal & tile roofing upgrades' },
-        { id: 'timber', title: 'Timber & Building Materials', icon: 'forest', path: '/products/timber', description: 'Structural timber, framing & decking materials' }
+        { id: 'water-filters', title: 'Water Filtration', icon: 'water_drop', path: '/products/water-filters', description: 'Whole-house & under-sink purification systems' }
     ];
 
     toggleMobileMenu() {
