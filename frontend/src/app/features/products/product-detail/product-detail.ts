@@ -123,7 +123,7 @@ export class ProductDetailComponent {
             title: 'Thermal & Acoustic Insulation',
             subtitle: 'Ceiling batts, wall acoustic solutions & underfloor insulation.',
             description: 'Maximize your home or commercial building envelope efficiency with high R-value glasswool, rockwool, and polyester thermal insulation batts installed by certified trade teams.',
-            benefits: ['Up to 45% reduction in heating and cooling energy loss', 'Superior acoustic isolation between rooms and floors', 'Non-combustible fire-safe building materials', 'Fast, clean installation by insured contractors'],
+            benefits: ['Up to 45% reduction in heating and cooling energy loss', 'Superior acoustic isolation between rooms and floors', 'Non-combustible fire-safe building materials', 'Fast, clean installation by insured trade specialists'],
             image: 'assets/insulation.jpg',
             serviceType: 'insulation'
         },
@@ -131,7 +131,7 @@ export class ProductDetailComponent {
             title: 'Roofing, Gutters & Restoration',
             subtitle: 'Colorbond steel roofing, tile restoration & architectural rainwater systems.',
             description: 'Protect and upgrade your property with premium Colorbond metal roofing, tile re-bedding, gutter guard installations, and full roof restoration packages from licensed Australian roofers.',
-            benefits: ['Genuine BlueScope Colorbond & Zincalume options', 'Complete flashing, valleys, and guttering packages', 'Comprehensive leak repair and structural tile coating', 'Multi-contractor competitive price comparison'],
+            benefits: ['Genuine BlueScope Colorbond & Zincalume options', 'Complete flashing, valleys, and guttering packages', 'Comprehensive leak repair and structural tile coating', 'Multi-supplier competitive price comparison'],
             image: 'assets/roofing.jpg',
             serviceType: 'roofing'
         },

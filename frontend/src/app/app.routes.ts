@@ -15,6 +15,7 @@ export const routes: Routes = [
     { path: '', component: LandingComponent, canActivate: [guestGuard] },
     { path: 'login', component: Login, canActivate: [guestGuard] },
     { path: 'register', component: Register, canActivate: [guestGuard] },
+    { path: 'supplier/register', component: Register, canActivate: [guestGuard] },
     { path: 'contractor/register', component: Register, canActivate: [guestGuard] },
     { path: 'forgot-password', loadComponent: () => import('./features/auth/forgot-password/forgot-password').then(m => m.ForgotPassword) },
     { path: 'change-password', loadComponent: () => import('./features/auth/change-password/change-password').then(m => m.ChangePassword), canActivate: [authGuard] },

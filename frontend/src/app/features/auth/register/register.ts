@@ -26,7 +26,7 @@ export class Register {
   private route = inject(ActivatedRoute);
 
   constructor() {
-    if (this.router.url.includes('contractor')) {
+    if (this.router.url.includes('supplier') || this.router.url.includes('contractor')) {
       this.role = 'vendor';
     }
     this.route.queryParams.subscribe(params => {

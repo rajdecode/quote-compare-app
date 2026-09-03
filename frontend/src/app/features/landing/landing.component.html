@@ -19,7 +19,7 @@
 
                 <!-- Subheading -->
                 <p class="hero-subtitle">
-                    Compare multi-vendor quotes from vetted Australian suppliers and trade contractors across heating, cooling, hot water, building products, and property upgrades — all in one place.
+                    Compare multi-vendor quotes from vetted Australian suppliers and trade specialists across heating, cooling, hot water, building products, and property upgrades — all in one place.
                 </p>
 
                 <!-- CTA Action Buttons -->
@@ -28,9 +28,9 @@
                         <span class="material-icons">bolt</span>
                         Get Quotes
                     </a>
-                    <a href="#roi-calculator" class="btn btn-hero-secondary">
-                        <span class="material-icons">calculate</span>
-                        ROI &amp; Savings Calculator
+                    <a routerLink="/supplier/register" class="btn btn-hero-secondary">
+                        <span class="material-icons">storefront</span>
+                        Supplier Sign Up
                     </a>
                 </div>
 
@@ -70,7 +70,7 @@
         <div class="section-header">
             <span class="section-tag">Explore Marketplace</span>
             <h2>Verified Upgrade &amp; Procurement Categories</h2>
-            <p>Direct access to certified trade contractors and verified building material suppliers across Australia.</p>
+            <p>Direct access to verified Australian suppliers and trade specialists across the country.</p>
         </div>
 
         <div class="products-grid">
@@ -82,12 +82,12 @@
                             @if (cat.id === 'heat-pumps') { heat_pump }
                             @else if (cat.id === 'aircons') { ac_unit }
                             @else if (cat.id === 'batteries') { battery_charging_full }
+                            @else if (cat.id === 'water-filters') { water_drop }
                             @else if (cat.id === 'windows') { window }
                             @else if (cat.id === 'doors') { door_front }
                             @else if (cat.id === 'insulation') { thermostat }
                             @else if (cat.id === 'roofing') { roofing }
                             @else if (cat.id === 'timber') { forest }
-                            @else if (cat.id === 'water-filters') { water_drop }
                             @else { home_repair_service }
                         </span>
                     </div>
@@ -104,146 +104,13 @@
         </div>
     </section>
 
-    <!-- ═══ GENERALIZED ROI & MARKET SPREAD CALCULATOR ══════════════════════════════════════ -->
-    <section id="roi-calculator" class="calculator-section container">
-        <div class="section-header">
-            <span class="section-tag">Interactive Tool</span>
-            <h2>Procurement ROI &amp; Savings Calculator</h2>
-            <p>Calculate your competitive quote spread savings, estimated administrative hours eliminated, and net project costs.</p>
-        </div>
-
-        <div class="calc-card">
-            <!-- Left Column: Inputs -->
-            <div class="calc-inputs">
-                <div class="calc-step-header">
-                    <span class="step-badge">1</span>
-                    <h3>Project Configuration</h3>
-                </div>
-
-                <!-- Category Select -->
-                <div class="calc-field">
-                    <label for="calcCategory" class="calc-field-label">Category / Project Scope</label>
-                    <select id="calcCategory" [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange($event)" class="calc-control">
-                        @for (cat of categories; track cat.id) {
-                        <option [value]="cat.id">{{ cat.name }}</option>
-                        }
-                    </select>
-                </div>
-
-                <!-- Project Cost Slider & Input -->
-                <div class="calc-field">
-                    <div class="field-header">
-                        <label for="projectCost" class="calc-field-label">Estimated Project / Material Cost (AUD)</label>
-                        <span class="field-val-display">${{ projectCost | number }} AUD</span>
-                    </div>
-                    <input type="range" id="projectCost" [(ngModel)]="projectCost" [min]="currentCategory.minCost" [max]="currentCategory.maxCost" step="100" class="calc-slider">
-                    <div class="slider-bounds">
-                        <span>Min: ${{ currentCategory.minCost | number }}</span>
-                        <span>Benchmark: ${{ currentCategory.defaultCost | number }}</span>
-                        <span>Max: ${{ currentCategory.maxCost | number }}</span>
-                    </div>
-                </div>
-
-                <!-- Number of Competing Quotes Slider -->
-                <div class="calc-field">
-                    <div class="field-header">
-                        <label for="quotesEvaluated" class="calc-field-label">Number of Competing Quotes Evaluated</label>
-                        <span class="field-val-display">{{ quotesEvaluated }} Quotes ({{ spreadPercentage * 100 | number:'1.0-1' }}% Spread)</span>
-                    </div>
-                    <input type="range" id="quotesEvaluated" [(ngModel)]="quotesEvaluated" min="2" max="6" step="1" class="calc-slider">
-                    <div class="slider-bounds">
-                        <span>2 Quotes (~8% spread)</span>
-                        <span>3 Quotes (~11% spread)</span>
-                        <span>5+ Quotes (~15% spread)</span>
-                    </div>
-                </div>
-
-                <!-- Optional Rebate / Incentive Toggle -->
-                <div class="calc-field rebate-toggle-field">
-                    <label class="toggle-container">
-                        <input type="checkbox" [(ngModel)]="applyRebate">
-                        <span class="toggle-slider"></span>
-                        <span class="toggle-text">Deduct Government Rebate / Trade Subsidy (Optional)</span>
-                    </label>
-
-                    @if (applyRebate) {
-                    <div class="rebate-input-wrap">
-                        <label for="rebateAmount" class="sub-label">Estimated Eligible Rebate / Discount (AUD)</label>
-                        <div class="rebate-input-group">
-                            <span class="currency-prefix">$</span>
-                            <input type="number" id="rebateAmount" [(ngModel)]="rebateAmount" min="0" max="5000" step="50" class="calc-control rebate-input">
-                            <span class="currency-suffix">AUD</span>
-                        </div>
-                    </div>
-                    }
-                </div>
-            </div>
-
-            <!-- Right Column: Outputs -->
-            <div class="calc-outputs">
-                <div class="calc-step-header">
-                    <span class="step-badge">2</span>
-                    <h3>Estimated Savings &amp; Net Cost</h3>
-                </div>
-
-                <!-- Primary Net Cost Card -->
-                <div class="primary-result-card">
-                    <span class="result-label">Estimated Net Project Cost</span>
-                    <div class="result-price">
-                        ${{ netProjectCost | number }} <span class="aud-badge">AUD</span>
-                    </div>
-                    <p class="result-summary">
-                        Original base cost: ${{ projectCost | number }} &minus; ${{ marketSpreadSavings | number }} multi-quote savings
-                        @if (applyRebate && rebateAmount > 0) {
-                        &minus; ${{ rebateAmount | number }} rebate
-                        }
-                    </p>
-                </div>
-
-                <!-- Metrics Row -->
-                <div class="metrics-grid">
-                    <div class="metric-box">
-                        <div class="metric-icon green">
-                            <span class="material-icons">trending_down</span>
-                        </div>
-                        <div class="metric-info">
-                            <span class="metric-label">Market Spread Savings</span>
-                            <span class="metric-val text-green">${{ marketSpreadSavings | number }} AUD</span>
-                            <span class="metric-hint">{{ spreadPercentage * 100 | number:'1.0-1' }}% competitive price spread</span>
-                        </div>
-                    </div>
-
-                    <div class="metric-box">
-                        <div class="metric-icon blue">
-                            <span class="material-icons">schedule</span>
-                        </div>
-                        <div class="metric-info">
-                            <span class="metric-label">Admin Time Eliminated</span>
-                            <span class="metric-val text-blue">{{ adminHoursSaved }} Hours</span>
-                            <span class="metric-hint">No repetitive vendor phone tag</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CTA Action Box -->
-                <div class="calc-cta-box">
-                    <a [routerLink]="['/request-quote']" [queryParams]="{ serviceType: currentCategory.quoteServiceType }" class="btn btn-primary btn-block calc-submit-btn">
-                        <span class="material-icons">bolt</span>
-                        Get Quotes for {{ currentCategory.name }}
-                    </a>
-                    <span class="cta-microcopy">Free, side-by-side quotes from verified Australian trade suppliers</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- ═══ HOW IT WORKS ══════════════════════════════════════ -->
     <section id="how-it-works" class="how-section">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Simple 3-Step Process</span>
                 <h2>How Procure Now Works</h2>
-                <p>Transparent multi-vendor bidding without the hassle of individual contractor calls.</p>
+                <p>Transparent multi-vendor bidding without the hassle of individual supplier calls.</p>
             </div>
 
             <div class="steps-grid">
@@ -261,8 +128,8 @@
                     <div class="step-icon">
                         <span class="material-icons">groups</span>
                     </div>
-                    <h3>2. Vetted Contractors Quote</h3>
-                    <p>Verified Australian trade specialists and material suppliers review your request and submit tailored pricing.</p>
+                    <h3>2. Vetted Suppliers Quote</h3>
+                    <p>Verified Australian trade suppliers and specialists review your request and submit tailored pricing.</p>
                 </div>
 
                 <div class="step-card">
@@ -290,7 +157,7 @@
             </div>
             <div class="stat-card">
                 <div class="stat-num">450+</div>
-                <div class="stat-label">Vetted Contractors &amp; Suppliers</div>
+                <div class="stat-label">Vetted Australian Suppliers</div>
             </div>
             <div class="stat-card">
                 <div class="stat-num">4.9 ★</div>
@@ -311,9 +178,9 @@
                     <span class="material-icons">bolt</span>
                     Get Quotes Now
                 </a>
-                <a routerLink="/contractor/register" class="btn btn-hero-secondary">
-                    <span class="material-icons">badge</span>
-                    Join as a Contractor
+                <a routerLink="/supplier/register" class="btn btn-hero-secondary">
+                    <span class="material-icons">storefront</span>
+                    Join as a Supplier
                 </a>
             </div>
         </div>

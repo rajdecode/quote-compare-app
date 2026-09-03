@@ -139,19 +139,21 @@
 .products-mega-menu {
     position: absolute;
     top: 100%;
-    left: -80px;
-    width: 620px;
+    left: -120px;
+    width: 720px;
+    max-width: calc(100vw - 32px);
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 16px;
     box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(226, 232, 240, 0.8);
-    padding: 18px;
+    padding: 16px;
     z-index: 1002;
     visibility: hidden;
     opacity: 0;
     transform: translateY(8px);
     pointer-events: none;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
 
     &.show {
         visibility: visible;
@@ -184,6 +186,9 @@
     padding: 10px 12px;
     border-radius: 10px;
     text-decoration: none;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: hidden;
     transition: background-color 0.15s ease-in-out;
 
     &:hover {
@@ -200,8 +205,8 @@
     }
 
     .cat-icon-wrap {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
         border-radius: 8px;
         background: #f1f5f9;
         color: #2563eb;
@@ -212,13 +217,15 @@
         transition: all 0.15s ease-in-out;
 
         .material-icons {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
         }
     }
 
     .cat-info {
         display: flex;
         flex-direction: column;
+        min-width: 0;
+        flex: 1;
         overflow: hidden;
     }
 
@@ -226,18 +233,19 @@
         font-size: 0.88rem;
         font-weight: 700;
         color: #1e293b;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        white-space: normal;
+        line-height: 1.3;
+        word-break: break-word;
         transition: color 0.15s;
     }
 
     .cat-desc {
         font-size: 0.74rem;
         color: #64748b;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        white-space: normal;
+        line-height: 1.35;
+        margin-top: 2px;
+        word-break: break-word;
     }
 }
 
@@ -260,6 +268,7 @@
         }
     }
 
+    .btn-ghost-supplier,
     .btn-ghost-contractor {
         display: inline-flex;
         align-items: center;
