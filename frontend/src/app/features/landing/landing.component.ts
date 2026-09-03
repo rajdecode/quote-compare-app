@@ -4,16 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
-interface UpgradeOption {
+export interface ProjectCategory {
     id: string;
     name: string;
     badge: string;
     defaultCost: number;
-    defaultRebate: number;
     minCost: number;
     maxCost: number;
+    defaultRebate: number;
+    hasRebatePotential: boolean;
     quoteServiceType: string;
-    rebateNote: string;
     savingsNote: string;
 }
 
@@ -29,133 +29,172 @@ export class LandingComponent {
     router = inject(Router);
     currentUser = this.authService.currentUser;
 
-    // Calculator Upgrade Options
-    upgradeOptions: UpgradeOption[] = [
+    // Generalized Categories
+    categories: ProjectCategory[] = [
         {
-            id: 'heat-pump',
-            name: 'Heat Pump Water Heater (Replaces electric/gas hot water)',
-            badge: 'Up to 70% Hot Water Savings',
+            id: 'heat-pumps',
+            name: 'Heat Pumps & Hot Water Systems',
+            badge: 'High-Efficiency Electrification',
             defaultCost: 3800,
-            defaultRebate: 1200,
             minCost: 1500,
-            maxCost: 8000,
+            maxCost: 9000,
+            defaultRebate: 1200,
+            hasRebatePotential: true,
             quoteServiceType: 'heat-pump',
-            rebateNote: 'Eligible for Federal STCs + State VEU/NSW ESS/Peak demand subsidies',
-            savingsNote: 'Replaces inefficient gas/electric tanks, cutting water heating energy by ~65%'
+            savingsNote: 'Replaces inefficient gas/resistive water heaters with high COP heat pumps'
         },
         {
-            id: 'aircon',
-            name: 'High-Efficiency Air Conditioning / Reverse Cycle Split System',
-            badge: 'Top Energy Star Rating',
-            defaultCost: 2800,
-            defaultRebate: 800,
+            id: 'aircons',
+            name: 'Air Conditioning & Reverse Cycle HVAC',
+            badge: 'Climate Control',
+            defaultCost: 3200,
             minCost: 1200,
-            maxCost: 10000,
+            maxCost: 12000,
+            defaultRebate: 800,
+            hasRebatePotential: true,
             quoteServiceType: 'aircon',
-            rebateNote: 'Eligible for state-level energy upgrade incentives & peak demand rebates',
-            savingsNote: 'Provides ~35%+ efficiency gains over resistive heaters and older split systems'
+            savingsNote: 'Multi-split and ducted reverse cycle inverter climate control systems'
         },
         {
-            id: 'battery',
-            name: 'Home Solar Battery Storage',
-            badge: 'Energy Independence',
+            id: 'batteries',
+            name: 'Home Solar Batteries & Storage',
+            badge: 'Energy Storage',
             defaultCost: 9500,
-            defaultRebate: 1800,
             minCost: 4000,
-            maxCost: 22000,
+            maxCost: 24000,
+            defaultRebate: 1800,
+            hasRebatePotential: true,
             quoteServiceType: 'battery',
-            rebateNote: 'Eligible for Cheaper Home Battery subsidies + CER certificates',
-            savingsNote: 'Stores daytime solar for evening peak use, unlocking $800–$1,400/yr bill relief'
+            savingsNote: 'Stores daytime solar generation for evening peak load avoidance'
         },
         {
-            id: 'other',
-            name: 'Other Subsidised Electrification Upgrade',
-            badge: 'Clean Electrification',
-            defaultCost: 4500,
-            defaultRebate: 1000,
+            id: 'windows',
+            name: 'Windows & Double Glazing',
+            badge: 'Building Envelope',
+            defaultCost: 5400,
+            minCost: 1500,
+            maxCost: 25000,
+            defaultRebate: 600,
+            hasRebatePotential: false,
+            quoteServiceType: 'windows',
+            savingsNote: 'High thermal-efficiency double glazing and architectural window systems'
+        },
+        {
+            id: 'doors',
+            name: 'Doors & Security Entry Systems',
+            badge: 'Access & Security',
+            defaultCost: 2800,
+            minCost: 800,
+            maxCost: 12000,
+            defaultRebate: 400,
+            hasRebatePotential: false,
+            quoteServiceType: 'doors',
+            savingsNote: 'Security mesh, acoustic internal doors, and sliding patio systems'
+        },
+        {
+            id: 'insulation',
+            name: 'Thermal & Acoustic Insulation',
+            badge: 'Thermal Comfort',
+            defaultCost: 2400,
+            minCost: 800,
+            maxCost: 8000,
+            defaultRebate: 500,
+            hasRebatePotential: true,
+            quoteServiceType: 'insulation',
+            savingsNote: 'Ceiling, wall batts, and underfloor thermal barrier insulation'
+        },
+        {
+            id: 'roofing',
+            name: 'Roofing, Gutters & Restoration',
+            badge: 'Structural Upgrade',
+            defaultCost: 6500,
+            minCost: 2000,
+            maxCost: 30000,
+            defaultRebate: 800,
+            hasRebatePotential: false,
+            quoteServiceType: 'roofing',
+            savingsNote: 'Colorbond re-roofing, tile restoration, and gutter replacements'
+        },
+        {
+            id: 'timber',
+            name: 'Timber & Building Materials',
+            badge: 'Trade & Materials',
+            defaultCost: 4200,
             minCost: 1000,
-            maxCost: 15000,
-            quoteServiceType: 'heat-pump',
-            rebateNote: 'Eligible for federal and local clean energy certificate discounts',
-            savingsNote: 'Holistic household electrification and efficiency upgrades'
+            maxCost: 20000,
+            defaultRebate: 400,
+            hasRebatePotential: false,
+            quoteServiceType: 'timber',
+            savingsNote: 'Framing timber, hardwoods, decking boards, and structural materials'
+        },
+        {
+            id: 'water-filters',
+            name: 'Water Filtration & Treatment',
+            badge: 'Water Quality',
+            defaultCost: 1800,
+            minCost: 600,
+            maxCost: 6000,
+            defaultRebate: 300,
+            hasRebatePotential: false,
+            quoteServiceType: 'water-filter',
+            savingsNote: 'Whole-house filtration, reverse osmosis, and UV water treatment systems'
+        },
+        {
+            id: 'general',
+            name: 'General Electrical, Plumbing & Property Trade',
+            badge: 'Trade Procurement',
+            defaultCost: 3500,
+            minCost: 800,
+            maxCost: 25000,
+            defaultRebate: 500,
+            hasRebatePotential: false,
+            quoteServiceType: 'general',
+            savingsNote: 'Certified electrical rewiring, switchboards, EV chargers & plumbing trade'
         }
     ];
 
-    selectedCategory = 'heat-pump';
-    upfrontCost = 3800;
-    rebateAmount = 1200;
-    quarterlyBill = 850;
+    // Calculator State
+    selectedCategory = 'heat-pumps';
+    projectCost = 3800;
+    quotesEvaluated = 3;
+    applyRebate = false;
+    rebateAmount = 1000;
 
     onCategoryChange(categoryId: string) {
         this.selectedCategory = categoryId;
-        const opt = this.currentOption;
-        if (opt) {
-            this.upfrontCost = opt.defaultCost;
-            this.rebateAmount = opt.defaultRebate;
+        const cat = this.currentCategory;
+        if (cat) {
+            this.projectCost = cat.defaultCost;
+            this.rebateAmount = cat.defaultRebate;
+            this.applyRebate = cat.hasRebatePotential;
         }
     }
 
-    get currentOption(): UpgradeOption {
-        return this.upgradeOptions.find(o => o.id === this.selectedCategory) || this.upgradeOptions[0];
+    get currentCategory(): ProjectCategory {
+        return this.categories.find(c => c.id === this.selectedCategory) || this.categories[0];
     }
 
-    // Net Out-of-Pocket Cost (AUD): Upfront System Cost - Eligible Rebates
-    get netCost(): number {
-        return Math.max(0, this.upfrontCost - this.rebateAmount);
+    // Competitive spread percentage based on number of quotes evaluated
+    get spreadPercentage(): number {
+        if (this.quotesEvaluated <= 2) return 0.08;
+        if (this.quotesEvaluated === 3) return 0.11;
+        if (this.quotesEvaluated === 4) return 0.135;
+        return 0.15;
     }
 
-    // Annual Running Cost Savings (AUD)
-    get annualSavings(): number {
-        const annualBill = this.quarterlyBill * 4;
-        switch (this.selectedCategory) {
-            case 'heat-pump': {
-                // ~60% to 70% reduction in water heating energy (~$400–$800 AUD/yr)
-                const base = annualBill * 0.22;
-                return Math.round(Math.min(1050, Math.max(400, base)));
-            }
-            case 'aircon': {
-                // ~35% efficiency gain over older resistive/gas heating (~$350–$650 AUD/yr)
-                const base = annualBill * 0.16;
-                return Math.round(Math.min(850, Math.max(350, base)));
-            }
-            case 'battery': {
-                // Solar self-consumption optimization (~$800–$1,400 AUD/yr)
-                const base = annualBill * 0.35;
-                return Math.round(Math.min(1950, Math.max(800, base)));
-            }
-            case 'other':
-            default: {
-                const base = annualBill * 0.20;
-                return Math.round(Math.min(1200, Math.max(450, base)));
-            }
-        }
+    // Competitive Market Spread Savings (AUD)
+    get marketSpreadSavings(): number {
+        return Math.round(this.projectCost * this.spreadPercentage);
     }
 
-    // Payback Period (Years): Net Out-of-Pocket Cost / Annual Energy Savings
-    get paybackPeriodYears(): string {
-        if (this.annualSavings <= 0) return '0.0';
-        if (this.netCost <= 0) return '< 1';
-        const years = this.netCost / this.annualSavings;
-        return years < 1 ? '< 1' : years.toFixed(1);
+    // Procurement & Admin Hours Saved
+    get adminHoursSaved(): number {
+        return Math.round(this.quotesEvaluated * 2.2);
     }
 
-    // Multi-Quote Procurement Spread Value: extra ~$300–$600 AUD saved by comparing multiple certified installers
-    get multiVendorSpread(): number {
-        switch (this.selectedCategory) {
-            case 'heat-pump':
-                return 480;
-            case 'aircon':
-                return 390;
-            case 'battery':
-                return 650;
-            case 'other':
-            default:
-                return 420;
-        }
-    }
-
-    // 10-Year cumulative net financial benefit
-    get tenYearNetBenefit(): number {
-        return Math.max(0, (this.annualSavings * 10) - this.netCost + this.multiVendorSpread);
+    // Estimated Net Project Cost
+    get netProjectCost(): number {
+        const rebateDeduction = this.applyRebate ? this.rebateAmount : 0;
+        return Math.max(0, this.projectCost - this.marketSpreadSavings - rebateDeduction);
     }
 }

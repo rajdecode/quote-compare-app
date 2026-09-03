@@ -1,25 +1,53 @@
 <nav class="navbar">
     <div class="container navbar-content">
+        <!-- Brand & Logo Slot -->
         <!-- LOGO_PLACEHOLDER -->
-        <a [routerLink]="currentUser() ? getDashboardRoute() : '/'" class="logo" id="logoPlaceholder" title="Procure Now — Australian Clean Energy & Rebate-Eligible Quotes">
+        <a [routerLink]="currentUser() ? getDashboardRoute() : '/'" class="logo" id="logoPlaceholder" title="Procure Now — Australia's Multi-Vendor Quote Comparison Platform" (click)="closeMobileMenu()">
             <div class="logo-slot-container">
                 <span class="logo-badge">PN</span>
                 <span class="logo-text"><span class="logo-highlight">Procure</span> Now</span>
             </div>
         </a>
-        <div class="nav-links">
-            <!-- Navigation links -->
-            <a routerLink="/" fragment="products" title="Compare Heat Pumps, Aircons, Hot Water, Batteries">Compare Subsidised Quotes</a>
-            <a routerLink="/" fragment="rebate-calculator" title="Clean Energy Rebate & ROI Calculator">Rebate &amp; ROI Calculator</a>
-            @if (!currentUser() || userRole() !== 'vendor') {
-            <a routerLink="/register" [queryParams]="{ role: 'vendor' }" title="Join as a certified clean energy installer">Contractor Portal</a>
-            }
+
+        <!-- Desktop Navigation Links -->
+        <div class="nav-links desktop-only">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+            
+            <!-- Products Dropdown -->
+            <div class="nav-dropdown" (mouseenter)="productsDropdownOpen = true" (mouseleave)="productsDropdownOpen = false">
+                <button class="nav-dropdown-trigger" (click)="toggleProductsDropdown()" type="button">
+                    <span>Products</span>
+                    <span class="material-icons dropdown-arrow">expand_more</span>
+                </button>
+                <div class="products-mega-menu" [class.show]="productsDropdownOpen">
+                    <div class="mega-menu-grid">
+                        @for (cat of categories; track cat.id) {
+                        <a [routerLink]="cat.path" class="mega-menu-item" (click)="productsDropdownOpen = false">
+                            <div class="cat-icon-wrap">
+                                <span class="material-icons">{{ cat.icon }}</span>
+                            </div>
+                            <div class="cat-info">
+                                <span class="cat-title">{{ cat.title }}</span>
+                                <span class="cat-desc">{{ cat.description }}</span>
+                            </div>
+                        </a>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <a routerLink="/" fragment="roi-calculator">ROI Calculator</a>
         </div>
-        <div class="auth-buttons">
+
+        <!-- Desktop Action & Sign-up Buttons -->
+        <div class="auth-buttons desktop-only">
             @if (!currentUser()) {
-            <a routerLink="/login" class="btn btn-secondary btn-sm">Sign In</a>
-            <a routerLink="/request-quote" class="btn btn-primary btn-sm cta-navbar-btn">
-                <span class="material-icons nav-btn-icon">bolt</span> Compare Multi-Vendor Quotes
+            <a routerLink="/login" class="nav-login-link">Sign In</a>
+            <a routerLink="/contractor/register" class="btn btn-ghost-contractor">
+                Contractor Sign Up
+            </a>
+            <a routerLink="/request-quote" class="btn btn-primary btn-sm cta-quote-btn">
+                <span class="material-icons nav-btn-icon">bolt</span> Get Quotes
             </a>
             } @else {
             @if (userRole() === 'vendor') {
@@ -29,20 +57,21 @@
             } @else if (userRole() === 'admin') {
             <a routerLink="/admin" class="btn btn-secondary btn-sm" style="margin-right: 0.5rem;">Dashboard</a>
             } @else {
-            <a routerLink="/request-quote" class="btn btn-primary btn-sm cta-navbar-btn" style="margin-right: 0.5rem;">
-                <span class="material-icons nav-btn-icon">bolt</span> Compare Multi-Vendor Quotes
+            <a routerLink="/request-quote" class="btn btn-primary btn-sm cta-quote-btn" style="margin-right: 0.5rem;">
+                <span class="material-icons nav-btn-icon">bolt</span> Get Quotes
             </a>
             <a routerLink="/buyer" class="btn btn-secondary btn-sm" style="margin-right: 0.5rem;">Dashboard</a>
             }
 
+            <!-- User Avatar Dropdown -->
             <div class="dropdown">
                 <button class="avatar-btn" title="Account Menu">
                     {{ getInitials() }}
                 </button>
-                <div class="dropdown-content glass-panel profile-menu" style="right: 0; left: auto; min-width: 200px;">
-                    <div class="profile-header" style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <div style="font-weight: bold; color: var(--text-heading);">{{ getUserName() }}</div>
-                        <div style="font-size: 0.8rem; color: var(--text-dim);">{{ getUserEmail() }}</div>
+                <div class="dropdown-content glass-panel profile-menu">
+                    <div class="profile-header">
+                        <div class="profile-name">{{ getUserName() }}</div>
+                        <div class="profile-email">{{ getUserEmail() }}</div>
                     </div>
 
                     @if (userRole() === 'vendor') {
@@ -50,10 +79,71 @@
                     }
 
                     <a routerLink="/change-password">Change Password</a>
-                    <a (click)="logout()" style="cursor: pointer; color: #ef4444;">Sign Out</a>
+                    <a (click)="logout()" class="signout-link">Sign Out</a>
                 </div>
             </div>
             }
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="hamburger-btn mobile-only" (click)="toggleMobileMenu()" aria-label="Toggle Navigation Menu">
+            <span class="material-icons">{{ mobileMenuOpen ? 'close' : 'menu' }}</span>
+        </button>
+    </div>
+
+    <!-- Mobile Slide-Out Drawer -->
+    <div class="mobile-drawer-overlay" [class.open]="mobileMenuOpen" (click)="closeMobileMenu()"></div>
+    <div class="mobile-drawer" [class.open]="mobileMenuOpen">
+        <div class="drawer-header">
+            <div class="logo-slot-container">
+                <span class="logo-badge">PN</span>
+                <span class="logo-text"><span class="logo-highlight">Procure</span> Now</span>
+            </div>
+            <button class="drawer-close-btn" (click)="closeMobileMenu()">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+
+        <div class="drawer-body">
+            <div class="drawer-nav-section">
+                <a routerLink="/" class="drawer-nav-link" (click)="closeMobileMenu()">
+                    <span class="material-icons">home</span> Home
+                </a>
+                <a routerLink="/" fragment="roi-calculator" class="drawer-nav-link" (click)="closeMobileMenu()">
+                    <span class="material-icons">calculate</span> ROI Calculator
+                </a>
+            </div>
+
+            <div class="drawer-section-heading">Verified Products &amp; Upgrades</div>
+            <div class="drawer-categories-list">
+                @for (cat of categories; track cat.id) {
+                <a [routerLink]="cat.path" class="drawer-cat-link" (click)="closeMobileMenu()">
+                    <span class="material-icons">{{ cat.icon }}</span>
+                    <span>{{ cat.title }}</span>
+                </a>
+                }
+            </div>
+
+            <div class="drawer-actions">
+                @if (!currentUser()) {
+                <a routerLink="/request-quote" class="btn btn-primary btn-block drawer-btn" (click)="closeMobileMenu()">
+                    <span class="material-icons">bolt</span> Get Quotes
+                </a>
+                <a routerLink="/contractor/register" class="btn btn-secondary btn-block drawer-btn" (click)="closeMobileMenu()">
+                    Contractor Sign Up
+                </a>
+                <a routerLink="/login" class="drawer-login-link" (click)="closeMobileMenu()">
+                    Existing user? <strong>Sign In</strong>
+                </a>
+                } @else {
+                <a [routerLink]="getDashboardRoute()" class="btn btn-primary btn-block drawer-btn" (click)="closeMobileMenu()">
+                    Go to Dashboard
+                </a>
+                <button (click)="logout()" class="btn btn-secondary btn-block drawer-btn text-danger">
+                    Sign Out
+                </button>
+                }
+            </div>
         </div>
     </div>
 </nav>

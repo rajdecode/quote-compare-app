@@ -7,12 +7,20 @@
 
         <form (ngSubmit)="onSubmit()" style="margin-top: 2rem;">
             <div class="form-group">
-                <label for="serviceType">Clean Energy Upgrade / Service Category</label>
+                <label for="serviceType">Product / Upgrade Category</label>
                 <select id="serviceType" [(ngModel)]="serviceType" name="serviceType" required>
-                    <option value="heat-pump">Heat Pump Water Heater (Rebate Eligible · STCs/VEU/ESS)</option>
-                    <option value="battery">Home Solar Battery Storage (Rebate Eligible)</option>
-                    <option value="aircon">High-Efficiency Air Conditioning / Reverse Cycle Split System</option>
-                    <option value="water-filter">Water Filtration &amp; Treatment System</option>
+                    <option value="heat-pump">Heat Pumps &amp; Hot Water Systems</option>
+                    <option value="aircon">Air Conditioning &amp; Reverse Cycle HVAC</option>
+                    <option value="battery">Home Solar Batteries &amp; Storage</option>
+                    <option value="windows">Windows &amp; Double Glazing</option>
+                    <option value="doors">Doors &amp; Security Entry Systems</option>
+                    <option value="insulation">Thermal &amp; Acoustic Insulation</option>
+                    <option value="roofing">Roofing, Gutters &amp; Restoration</option>
+                    <option value="timber">Timber &amp; Building Materials</option>
+                    <option value="water-filter">Water Filtration &amp; Treatment Systems</option>
+                    <option value="solar">Rooftop Solar &amp; Inverters</option>
+                    <option value="electrical">Electrical &amp; EV Infrastructure</option>
+                    <option value="plumbing">Plumbing &amp; Drainage Services</option>
                 </select>
             </div>
 

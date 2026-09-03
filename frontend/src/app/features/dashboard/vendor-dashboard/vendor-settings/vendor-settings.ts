@@ -21,10 +21,18 @@ export class VendorSettings implements OnInit {
 
     // Available services
     availableServices = [
-        { id: 'heat-pump', label: 'Heat Pumps' },
-        { id: 'water-filter', label: 'Water Filters' },
-        { id: 'aircon', label: 'Aircons' },
-        { id: 'battery', label: 'Batteries' }
+        { id: 'heat-pump', label: 'Heat Pumps & Hot Water' },
+        { id: 'aircon', label: 'Air Conditioning & HVAC' },
+        { id: 'battery', label: 'Solar Batteries & Storage' },
+        { id: 'windows', label: 'Windows & Glazing' },
+        { id: 'doors', label: 'Doors & Entry Systems' },
+        { id: 'insulation', label: 'Insulation' },
+        { id: 'roofing', label: 'Roofing & Restoration' },
+        { id: 'timber', label: 'Timber & Building Materials' },
+        { id: 'water-filter', label: 'Water Filtration' },
+        { id: 'solar', label: 'Rooftop Solar & Inverters' },
+        { id: 'electrical', label: 'Electrical & EV Infrastructure' },
+        { id: 'plumbing', label: 'Plumbing & Drainage' }
     ];
 
     // Available States

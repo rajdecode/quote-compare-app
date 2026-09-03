@@ -26,10 +26,13 @@ export class Register {
   private route = inject(ActivatedRoute);
 
   constructor() {
+    if (this.router.url.includes('contractor')) {
+      this.role = 'vendor';
+    }
     this.route.queryParams.subscribe(params => {
-      if (params['plan']) {
-        this.plan = params['plan'];
-        this.role = 'vendor'; // If coming from pricing, assume vendor
+      if (params['plan'] || params['role'] === 'vendor') {
+        if (params['plan']) this.plan = params['plan'];
+        this.role = 'vendor';
       }
       if (params['returnUrl']) {
         this.returnUrl = params['returnUrl'];

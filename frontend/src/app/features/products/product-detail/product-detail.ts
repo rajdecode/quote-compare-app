@@ -73,9 +73,9 @@ export class ProductDetailComponent {
     contentMap: any = {
         'heat-pumps': {
             title: 'Heat Pump Water Heaters',
-            subtitle: 'Cut water heating energy by up to 70% with federal & state rebates.',
-            description: 'Heat pump hot water systems extract ambient heat from the air to heat your water efficiently. Backed by Small-scale Technology Certificates (STCs) and state schemes (VEU in VIC, ESS in NSW), heat pumps deliver massive annual running cost savings over legacy gas or resistive electric storage tanks.',
-            benefits: ['Up to $1,200+ in STCs and state subsidies', '60%–70% reduction in water heating electricity', 'Environmentally friendly refrigerant technology', 'Compatible with rooftop solar self-consumption'],
+            subtitle: 'Cut water heating energy by up to 70% with high-efficiency electrification.',
+            description: 'Heat pump hot water systems extract ambient heat from the air to heat your water efficiently. Heat pumps deliver massive annual running cost savings over legacy gas or resistive electric storage tanks.',
+            benefits: ['Up to 70% reduction in water heating energy', 'Environmentally friendly refrigerant technology', 'Compatible with rooftop solar self-consumption', 'Vetted Australian trade installers'],
             image: 'assets/heat-pump.jpg',
             serviceType: 'heat-pump'
         },
@@ -90,18 +90,58 @@ export class ProductDetailComponent {
         'aircons': {
             title: 'Reverse Cycle Air Conditioning',
             subtitle: 'Ultra-efficient heating and cooling for Australian climate conditions.',
-            description: 'Modern inverter reverse cycle split and ducted systems deliver superior year-round climate control while drastically lowering seasonal power bills. Claim peak-demand incentives and energy efficiency upgrade discounts through certified installers.',
-            benefits: ['~35%+ efficiency gains over resistive heaters', 'Smart WiFi zoning & climate automation', 'High Energy Star ratings & low decibel operation', 'Fast turnaround quotes from verified HVAC technicians'],
+            description: 'Modern inverter reverse cycle split and ducted systems deliver superior year-round climate control while drastically lowering seasonal power bills.',
+            benefits: ['High Energy Star ratings & low decibel operation', 'Smart WiFi zoning & climate automation', 'Inverter heating & cooling in a single system', 'Fast turnaround quotes from verified HVAC technicians'],
             image: 'assets/aircon.jpg',
             serviceType: 'aircon'
         },
         'batteries': {
             title: 'Home Solar Battery Storage',
             subtitle: 'Store excess solar energy and eliminate peak electricity rates.',
-            description: 'Maximize your rooftop solar generation by storing daytime surplus power for evening peak usage. Home batteries provide blackout protection, virtual power plant (VPP) revenue opportunities, and substantial annual bill reduction.',
-            benefits: ['Save $800–$1,400 AUD per year on grid power', 'Cheaper Home Battery subsidies & CER incentives', 'Emergency backup power during outages', 'Seamless inverter & solar system integration'],
+            description: 'Maximize your rooftop solar generation by storing daytime surplus power for evening peak usage. Home batteries provide blackout protection, virtual power plant (VPP) opportunities, and substantial bill reduction.',
+            benefits: ['Substantial annual bill reduction', 'Emergency backup power during grid outages', 'Seamless inverter & solar system integration', 'Vetted Australian clean energy specialists'],
             image: 'assets/battery.jpg',
             serviceType: 'battery'
+        },
+        'windows': {
+            title: 'Windows & Double Glazing',
+            subtitle: 'High-performance architectural windows & double glazing systems.',
+            description: 'Upgrade your building envelope with high-efficiency double and triple glazing, thermally broken aluminium, timber, and uPVC window frames. Reduce acoustic transmission and improve year-round climate regulation.',
+            benefits: ['Drastic thermal insulation & draft reduction', 'Significant noise dampening & acoustic comfort', 'Bushfire & cyclone-rated glazing options', 'Direct multi-supplier fabrication pricing'],
+            image: 'assets/window.jpg',
+            serviceType: 'windows'
+        },
+        'doors': {
+            title: 'Doors & Security Entry Systems',
+            subtitle: 'Architectural entry doors, security mesh & high-spec internal systems.',
+            description: 'Procure high-security entrance doors, acoustic internal doors, stacking sliding glass doors, and corrosion-resistant security screens from verified Australian manufacturers and carpenters.',
+            benefits: ['Stainless steel security mesh & multipoint locking', 'Energy-rated sliding & bi-fold glass doors', 'Custom timber and composite entry doors', 'Professional measuring and installation quotes'],
+            image: 'assets/door.jpg',
+            serviceType: 'doors'
+        },
+        'insulation': {
+            title: 'Thermal & Acoustic Insulation',
+            subtitle: 'Ceiling batts, wall acoustic solutions & underfloor insulation.',
+            description: 'Maximize your home or commercial building envelope efficiency with high R-value glasswool, rockwool, and polyester thermal insulation batts installed by certified trade teams.',
+            benefits: ['Up to 45% reduction in heating and cooling energy loss', 'Superior acoustic isolation between rooms and floors', 'Non-combustible fire-safe building materials', 'Fast, clean installation by insured contractors'],
+            image: 'assets/insulation.jpg',
+            serviceType: 'insulation'
+        },
+        'roofing': {
+            title: 'Roofing, Gutters & Restoration',
+            subtitle: 'Colorbond steel roofing, tile restoration & architectural rainwater systems.',
+            description: 'Protect and upgrade your property with premium Colorbond metal roofing, tile re-bedding, gutter guard installations, and full roof restoration packages from licensed Australian roofers.',
+            benefits: ['Genuine BlueScope Colorbond & Zincalume options', 'Complete flashing, valleys, and guttering packages', 'Comprehensive leak repair and structural tile coating', 'Multi-contractor competitive price comparison'],
+            image: 'assets/roofing.jpg',
+            serviceType: 'roofing'
+        },
+        'timber': {
+            title: 'Timber & Building Materials',
+            subtitle: 'Structural framing, hardwoods, engineered timber & building supplies.',
+            description: 'Direct procurement of structural LVL, treated pine, hardwood decking, formwork, and architectural timber profiles from verified Australian trade yards and timber merchants.',
+            benefits: ['FSC & PEFC certified sustainable Australian timber', 'MGP10 & F7 structural framing batches', 'Hardwood decking: Spotted Gum, Ironbark & Merbau', 'Bulk merchant trade discounts and delivery'],
+            image: 'assets/timber.jpg',
+            serviceType: 'timber'
         }
     };
 
