@@ -1,41 +1,43 @@
 <nav class="navbar">
     <div class="container navbar-content">
-        <!-- Brand & Logo Slot -->
-        <!-- LOGO_PLACEHOLDER -->
-        <a [routerLink]="currentUser() ? getDashboardRoute() : '/'" class="logo" id="logoPlaceholder" title="Procure Now — Australia's Multi-Vendor Quote Comparison Platform" (click)="closeMobileMenu()">
-            <div class="logo-slot-container">
-                @if (!logoFailed) {
-                <img src="assets/images/logo.png" alt="Procure Now" class="brand-logo-img" (error)="logoFailed = true">
-                } @else {
-                <span class="logo-badge">PN</span>
-                <span class="logo-text"><span class="logo-highlight">Procure</span> Now</span>
-                }
-            </div>
-        </a>
+        <div class="nav-left">
+            <!-- Brand & Logo Slot -->
+            <!-- LOGO_PLACEHOLDER -->
+            <a [routerLink]="currentUser() ? getDashboardRoute() : '/'" class="logo" id="logoPlaceholder" title="Procure Now — Australia's Multi-Vendor Quote Comparison Platform" (click)="closeMobileMenu()">
+                <div class="logo-slot-container">
+                    @if (!logoFailed) {
+                    <img src="assets/images/logo.png" alt="Procure Now" class="brand-logo-img" (error)="logoFailed = true">
+                    } @else {
+                    <span class="logo-badge">PN</span>
+                    <span class="logo-text"><span class="logo-highlight">Procure</span> Now</span>
+                    }
+                </div>
+            </a>
 
-        <!-- Desktop Navigation Links -->
-        <div class="nav-links desktop-only">
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-            
-            <!-- Products Dropdown -->
-            <div class="nav-dropdown" (mouseenter)="productsDropdownOpen = true" (mouseleave)="productsDropdownOpen = false">
-                <button class="nav-dropdown-trigger" (click)="toggleProductsDropdown()" type="button">
-                    <span>Products</span>
-                    <span class="material-icons dropdown-arrow">expand_more</span>
-                </button>
-                <div class="products-mega-menu" [class.show]="productsDropdownOpen">
-                    <div class="mega-menu-grid">
-                        @for (cat of categories; track cat.id) {
-                        <a [routerLink]="cat.path" class="mega-menu-item" (click)="productsDropdownOpen = false">
-                            <div class="cat-icon-wrap">
-                                <span class="material-icons">{{ cat.icon }}</span>
-                            </div>
-                            <div class="cat-info">
-                                <span class="cat-title">{{ cat.title }}</span>
-                                <span class="cat-desc">{{ cat.description }}</span>
-                            </div>
-                        </a>
-                        }
+            <!-- Desktop Navigation Links -->
+            <div class="nav-links desktop-only">
+                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+                
+                <!-- Products Dropdown -->
+                <div class="nav-dropdown" (mouseenter)="productsDropdownOpen = true" (mouseleave)="productsDropdownOpen = false">
+                    <button class="nav-dropdown-trigger" (click)="toggleProductsDropdown()" type="button">
+                        <span>Products</span>
+                        <span class="material-icons dropdown-arrow">expand_more</span>
+                    </button>
+                    <div class="products-mega-menu" [class.show]="productsDropdownOpen">
+                        <div class="mega-menu-grid">
+                            @for (cat of categories; track cat.id) {
+                            <a [routerLink]="cat.path" class="mega-menu-item" (click)="productsDropdownOpen = false">
+                                <div class="cat-icon-wrap">
+                                    <span class="material-icons">{{ cat.icon }}</span>
+                                </div>
+                                <div class="cat-info">
+                                    <span class="cat-title">{{ cat.title }}</span>
+                                    <span class="cat-desc">{{ cat.description }}</span>
+                                </div>
+                            </a>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

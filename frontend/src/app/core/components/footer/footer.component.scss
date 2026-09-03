@@ -15,9 +15,11 @@
 }
 
 .footer-brand {
-    .logo-highlight {
-        color: var(--primary-color);
-        font-weight: 700;
+    .footer-logo-img {
+        height: 36px;
+        width: auto;
+        object-fit: contain;
+        display: block;
     }
 
     p {
