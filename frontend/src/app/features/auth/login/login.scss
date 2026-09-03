@@ -80,36 +80,16 @@
     z-index: 1;
 }
 
-.brand-logo {
-    width: 64px;
-    height: 64px;
-    background: rgba(79, 70, 229, 0.12);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(79, 70, 229, 0.25);
-    border-radius: 18px;
+.brand-logo-wrap {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 28px;
+    margin-bottom: 20px;
 
-    .material-icons {
-        font-size: 2rem;
-        color: #4F46E5;
-    }
-}
-
-.brand-name {
-    font-size: 2.2rem;
-    font-weight: 800;
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-    color: #1E1B4B;
-
-    span {
-        background: linear-gradient(135deg, #4F46E5, #7C3AED);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+    .auth-brand-logo {
+        height: 40px;
+        width: auto;
+        object-fit: contain;
+        display: block;
     }
 }
 
@@ -144,7 +124,7 @@
     }
 }
 
-/* Testimonial */
+/* Testimonial & Guarantee Card */
 .testimonial-card {
     position: relative;
     z-index: 1;
@@ -168,33 +148,23 @@
         }
     }
 
-    .testimonial-author {
+    .guarantee-badge {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 8px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(165, 180, 252, 0.3);
 
-        .avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #4F46E5, #7C3AED);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .material-icons {
+            color: #2563eb;
+            font-size: 1.2rem;
+        }
+
+        .guarantee-badge-text {
+            font-size: 0.8rem;
             font-weight: 700;
-            font-size: 1rem;
-            color: white;
-        }
-
-        strong {
-            display: block;
-            font-size: 0.9rem;
-            color: #1E1B4B;
-        }
-
-        span {
-            font-size: 0.78rem;
-            color: #6366F1;
+            color: #1e1b4b;
+            letter-spacing: 0.2px;
         }
     }
 }

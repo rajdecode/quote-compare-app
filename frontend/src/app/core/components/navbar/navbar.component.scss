@@ -47,6 +47,14 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
+
+        .brand-logo-img {
+            height: 40px;
+            max-height: 40px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
     }
 
     .logo-badge {

@@ -13,7 +13,6 @@
 
                 <!-- Main Headline -->
                 <h1 class="hero-title">
-                    Procure Smarter.<br>
                     <span class="gradient-text">Compare Verified Quotes.</span>
                 </h1>
 
@@ -78,18 +77,7 @@
             <a [routerLink]="['/products', cat.id]" class="product-card">
                 <div class="product-card-top">
                     <div class="product-icon-wrap">
-                        <span class="material-icons">
-                            @if (cat.id === 'heat-pumps') { heat_pump }
-                            @else if (cat.id === 'aircons') { ac_unit }
-                            @else if (cat.id === 'batteries') { battery_charging_full }
-                            @else if (cat.id === 'water-filters') { water_drop }
-                            @else if (cat.id === 'windows') { window }
-                            @else if (cat.id === 'doors') { door_front }
-                            @else if (cat.id === 'insulation') { thermostat }
-                            @else if (cat.id === 'roofing') { roofing }
-                            @else if (cat.id === 'timber') { forest }
-                            @else { home_repair_service }
-                        </span>
+                        <span class="category-emoticon" [attr.aria-label]="cat.name">{{ getCategoryEmoji(cat.id) }}</span>
                     </div>
                     <span class="product-badge">{{ cat.badge }}</span>
                 </div>

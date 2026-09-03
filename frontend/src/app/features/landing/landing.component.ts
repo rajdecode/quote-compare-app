@@ -90,4 +90,31 @@ export class LandingComponent {
             savingsNote: 'Framing timber, hardwoods, decking boards, and structural materials'
         }
     ];
+
+    getCategoryEmoji(id: string): string {
+        switch (id) {
+            case 'heat-pumps':
+            case 'heat-pump':
+                return '♨️';
+            case 'aircons':
+            case 'aircon':
+                return '❄️';
+            case 'batteries':
+            case 'battery':
+            case 'solar':
+                return '⚡';
+            case 'water-filters':
+            case 'water-filter':
+                return '💧';
+            case 'windows':
+            case 'doors':
+                return '🪟';
+            case 'insulation':
+            case 'roofing':
+            case 'timber':
+                return '🏠';
+            default:
+                return '📦';
+        }
+    }
 }

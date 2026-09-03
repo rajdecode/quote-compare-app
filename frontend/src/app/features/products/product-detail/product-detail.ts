@@ -15,7 +15,14 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
         <div class="content-grid">
             <div class="main-content glass-panel">
-                <img [src]="product()?.image" [alt]="product()?.title" class="hero-image">
+                @if (!imageFailed && product()?.image) {
+                <img [src]="product()?.image" [alt]="product()?.title" class="hero-image" (error)="imageFailed = true">
+                } @else {
+                <div class="hero-image-fallback">
+                    <span class="fallback-emoji">{{ getCategoryEmoji(type) }}</span>
+                    <span class="fallback-title">{{ product()?.title }}</span>
+                </div>
+                }
                 <h2>Why Choose {{ product()?.title }}?</h2>
                 <p>{{ product()?.description }}</p>
                 
@@ -48,6 +55,21 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
     
     .main-content { padding: 2rem; }
     .hero-image { width: 100%; height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 2rem; background: #f0f0f0; }
+    .hero-image-fallback {
+        width: 100%;
+        height: 200px;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        border: 1px solid #bfdbfe;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .fallback-emoji { font-size: 3.5rem; line-height: 1; }
+    .fallback-title { font-size: 1.2rem; font-weight: 700; color: #1e3a8a; }
     h2 { font-size: 1.75rem; margin-bottom: 1rem; color: var(--primary); }
     h3 { font-size: 1.25rem; margin: 1.5rem 0 1rem; }
     p { line-height: 1.6; color: var(--text-body); margin-bottom: 1rem; }
@@ -69,6 +91,7 @@ export class ProductDetailComponent {
     private route = inject(ActivatedRoute);
 
     type = '';
+    imageFailed = false;
 
     contentMap: any = {
         'heat-pumps': {
@@ -157,5 +180,32 @@ export class ProductDetailComponent {
 
     getQuoteServiceType(): string {
         return this.product()?.serviceType || 'heat-pump';
+    }
+
+    getCategoryEmoji(type: string): string {
+        switch (type) {
+            case 'heat-pumps':
+            case 'heat-pump':
+                return '♨️';
+            case 'aircons':
+            case 'aircon':
+                return '❄️';
+            case 'batteries':
+            case 'battery':
+            case 'solar':
+                return '⚡';
+            case 'water-filters':
+            case 'water-filter':
+                return '💧';
+            case 'windows':
+            case 'doors':
+                return '🪟';
+            case 'insulation':
+            case 'roofing':
+            case 'timber':
+                return '🏠';
+            default:
+                return '📦';
+        }
     }
 }

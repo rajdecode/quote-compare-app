@@ -26,6 +26,7 @@ export class NavbarComponent {
 
     mobileMenuOpen = false;
     productsDropdownOpen = false;
+    logoFailed = false;
 
     categories: ProductCategory[] = [
         { id: 'heat-pumps', title: 'Heat Pumps & Hot Water', icon: 'heat_pump', path: '/products/heat-pumps', description: 'High-efficiency heat pumps & hot water systems' },

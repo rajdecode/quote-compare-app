@@ -4,8 +4,12 @@
         <!-- LOGO_PLACEHOLDER -->
         <a [routerLink]="currentUser() ? getDashboardRoute() : '/'" class="logo" id="logoPlaceholder" title="Procure Now — Australia's Multi-Vendor Quote Comparison Platform" (click)="closeMobileMenu()">
             <div class="logo-slot-container">
+                @if (!logoFailed) {
+                <img src="assets/images/logo.png" alt="Procure Now" class="brand-logo-img" (error)="logoFailed = true">
+                } @else {
                 <span class="logo-badge">PN</span>
                 <span class="logo-text"><span class="logo-highlight">Procure</span> Now</span>
+                }
             </div>
         </a>
 
@@ -42,7 +46,7 @@
             @if (!currentUser()) {
             <a routerLink="/login" class="nav-login-link">Sign In</a>
             <a routerLink="/register" class="btn btn-ghost-supplier">
-                Sign Up
+                Customer Sign Up
             </a>
             <a routerLink="/request-quote" class="btn btn-primary btn-sm cta-quote-btn">
                 <span class="material-icons nav-btn-icon">bolt</span> Get Quotes
@@ -94,8 +98,12 @@
     <div class="mobile-drawer" [class.open]="mobileMenuOpen">
         <div class="drawer-header">
             <div class="logo-slot-container">
+                @if (!logoFailed) {
+                <img src="assets/images/logo.png" alt="Procure Now" class="brand-logo-img" (error)="logoFailed = true">
+                } @else {
                 <span class="logo-badge">PN</span>
                 <span class="logo-text"><span class="logo-highlight">Procure</span> Now</span>
+                }
             </div>
             <button class="drawer-close-btn" (click)="closeMobileMenu()">
                 <span class="material-icons">close</span>
@@ -125,7 +133,7 @@
                     <span class="material-icons">bolt</span> Get Quotes
                 </a>
                 <a routerLink="/register" class="btn btn-secondary btn-block drawer-btn" (click)="closeMobileMenu()">
-                    Sign Up
+                    Customer Sign Up
                 </a>
                 <a routerLink="/login" class="drawer-login-link" (click)="closeMobileMenu()">
                     Existing user? <strong>Sign In</strong>
