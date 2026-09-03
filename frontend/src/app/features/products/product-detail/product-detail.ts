@@ -31,7 +31,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
                 <div class="glass-panel cta-card">
                     <h3>Ready to upgrade?</h3>
                     <p>Compare multi-vendor quotes from certified Australian installers today.</p>
-                    <a [routerLink]="['/request-quote']" [queryParams]="{ serviceType: getQuoteServiceType() }" class="btn btn-primary btn-block">Compare Multi-Vendor Quotes</a>
+                    <a [routerLink]="['/request-quote']" [queryParams]="{ serviceType: getQuoteServiceType() }" class="btn btn-primary btn-block">Get Quotes</a>
                 </div>
             </div>
         </div>
