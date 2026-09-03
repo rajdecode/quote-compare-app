@@ -2,7 +2,8 @@
   "name": "procure-now",
   "version": "2.0.0",
   "scripts": {
-    "build": "npm --prefix frontend install && npm --prefix frontend run build && npm --prefix backend install",
+    "build": "npm --prefix frontend install --include=dev && npm --prefix frontend run build && npm --prefix backend install",
+    "postinstall": "npm --prefix backend install",
     "start": "npm --prefix backend start"
   },
   "devDependencies": {
